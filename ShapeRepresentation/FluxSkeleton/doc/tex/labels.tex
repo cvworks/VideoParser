@@ -1,0 +1,47 @@
+% Label stuff
+% César Crusius - 1999
+%--------------------------------------------------------------------------------------------
+\message{ - label macros}
+\makeatletter
+% First we define the label definition macros. We do that because we're going to input the
+% aux file as soon as possible.
+\def\newlabel#1#2#3{\expandafter\gdef%
+  \csname r@#1\endcsname{#2}%
+  \expandafter\gdef\csname p@#1\endcsname{#3}}
+\def\ref#1{\link{\csname r@#1\endcsname}{#1}}
+\def\pageref#1{\link{\csname p@#1\endcsname}{#1}}
+% Now we define, open and load the aux file
+\def\auxfile{\jobname.aux}
+\IfFileExists{\auxfile}{\makeatletter\input\auxfile}{\message{No aux file yet.}}
+\newwrite\faux \openout\faux\auxfile
+% We then define a macro to write something to a file
+\def\fprintf#1#2{\bgroup\def\@@@@{\noexpand\protect\noexpand}\let\protect\@@@@
+  \edef\@@@{\write#1{#2}}\@@@\egroup}
+% Now to the private label macro
+% \l@bel labelid counter. This macro will write ``\newlabel{ID}{COUNTER}{PAGE}''
+% to the aux file. The \label macro is the same, but uses the most recently updated counter.
+\def\l@bel#1#2{\fprintf\faux{\string\newlabel{#1}{#2}{\the\pageno}}
+  \special{pdf: dest(#1) [ @thispage /FitH @ypos]}}
+\def\label#1{\l@bel{#1}{\the\count@label}}
+% This is the last counter incremented. It will be used with the \label macro.
+\newcount\count@label
+\def\advancecounter#1{\global\advance\csname#1\endcsname\@ne\count@label=\csname#1\endcsname}
+% Now to hypertext links (pdf). I need these macros. Don't ask me why.
+\def\thewidth{\the\wd0\space}
+\def\theheight{\the\ht0\space}
+\def\thedepth{\the\dp0\space}
+% Colors. People expect links to have colors. Yes indeed.
+\def\withcolor#1#2{\special{pdf: bc [ \csname #1\endcsname ]}{#2}\special{pdf: ec}}
+\def\red{1 0 0}\def\blue{0 0 1}\def\green{0 1 0}
+\let\linkcolor\blue
+% Hypertext Link: links text #1 to reference #2
+\def\link#1#2{\setbox0\hbox{\withcolor{linkcolor}{#1}}%
+  \special{pdf: ann 
+     width \thewidth\space height \theheight\space depth \thedepth\space
+     << /Type /Annot /Subtype /Link /Border [ 0 0 0 ] /A << /S /GoTo
+     /D (#2) >> >>}\box0\relax}
+% Outlines: outline with level #1 to title #2
+\def\outline#1#2{\leavevmode\raise\baselineskip\hbox{\special{pdf: outline #1
+  << /Title (#2) /Dest [ @thispage /FitH @ypos ] >> }}}
+
+\makeatother

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BFB61D1B-223A-4FEC-B416-669EF8720B0B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ObjectTracking</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ObjectTracking\BlobTracker.h" />
+    <ClInclude Include="..\..\ObjectTracking\BlobTrackerDBManager.h" />
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\KalmanBlobTracker.h" />
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\FilteredPoint.h" />
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\Target.h" />
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\Trace.h" />
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\CCExtractor.h" />
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\CommonUtilities.h" />
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\MinCutBlobTracker.h" />
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\Observation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ObjectTracking\BlobTracker.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\BlobTrackerDBManager.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\KalmanBlobTracker.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\FilteredPoint.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\Target.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\Trace.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\CCExtractor.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\CommonUtilities.cpp" />
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\MinCutBlobTracker.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

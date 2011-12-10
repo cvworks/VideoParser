@@ -1,0 +1,50 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=tex 2000.3.7)  27 MAY 2002 22:30
+**libsg
+(libsg.tex (cwebmac.tex
+\PPbox=\box16
+\MMbox=\box17
+\MGbox=\box18
+\MODbox=\box19
+\bak=\box20
+\bakk=\box21
+\ind=\count26
+\gdepth=\count27
+\secpagedepth=\count28
+\gtitle=\toks12
+\intersecskip=\skip18
+\toksA=\toks13
+\toksB=\toks14
+\toksC=\toks15
+\toksD=\toks16
+\toksE=\toks17
+\toksF=\toks18
+\usersanitizer=\toks19
+\countA=\count29
+\countB=\count30
+\countC=\count31
+\pagewidth=\dimen16
+\pageheight=\dimen17
+\fullpageheight=\dimen18
+\pageshift=\dimen19
+\cont=\write0
+\sbox=\box22
+\lbox=\box23
+\twodigits=\count32
+)
+\linenum=\count33
+ (tex/macros.tex
+\f@check=\read0
+\footno=\count34
+ (tex/labels.tex  - label macros
+No aux file yet.
+\faux=\write1
+\count@label=\count35
+) (tex/items.tex  - Itemizing macros
+\itemskip=\dimen20
+)) *1 [1
+\openout0 = `libsg.toc'.
+
+] *2 *3 *7 [2]
+[3] *11 *12 *15 [4] *18 *23 [5] [6] *30 *31 [7] *34 Index: (libsg.idx) [8]
+Section names: (libsg.scn) [9] Table of contents: (libsg.toc) [0] )
+Output written on libsg.dvi (10 pages, 19792 bytes).

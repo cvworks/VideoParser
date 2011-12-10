@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FastDebug|Win32">
+      <Configuration>FastDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1DBC80AF-317A-4A65-85AF-228EFEFD3722}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>VideoParserGUI</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetFastDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(FLTKDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(FLTKDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(FLTKDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\VideoParserGUI\Cartesian.h" />
+    <ClInclude Include="..\..\VideoParserGUI\CommandSelector.h" />
+    <ClInclude Include="..\..\VideoParserGUI\DrawingUtils.h" />
+    <ClInclude Include="..\..\VideoParserGUI\ImageView.h" />
+    <ClInclude Include="..\..\VideoParserGUI\ModeSelector.h" />
+    <ClInclude Include="..\..\VideoParserGUI\Plotter.h" />
+    <ClInclude Include="..\..\VideoParserGUI\MultithreadSync.h" />
+    <ClInclude Include="..\..\VideoParserGUI\ParameterSelector.h" />
+    <ClInclude Include="..\..\VideoParserGUI\TextView.h" />
+    <ClInclude Include="..\..\VideoParserGUI\UserArgumentsEditor.h" />
+    <ClInclude Include="..\..\VideoParserGUI\UserArgumentsQuickView.h" />
+    <ClInclude Include="..\..\VideoParserGUI\UserArgumentsShowGroup.h" />
+    <ClInclude Include="..\..\VideoParserGUI\VideoControlPanel.h" />
+    <ClInclude Include="..\..\VideoParserGUI\VideoParserUI.h" />
+    <ClInclude Include="..\..\VideoParserGUI\VideoParserWindow.h" />
+    <ClInclude Include="..\..\VideoParserGUI\ViewSelector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Tools\Combinatorics\Combinatorics.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\Cartesian.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\DrawingUtils.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\ImageView.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\Main.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\ModeSelector.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\Plotter.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\UserArgumentsQuickView.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\VideoControlPanel.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\VideoParserUI.cxx" />
+    <ClCompile Include="..\..\VideoParserGUI\VideoParserWindow.cpp" />
+    <ClCompile Include="..\..\VideoParserGUI\ViewSelector.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\VideoParserGUI\VideoParserUI.fl">
+      <FileType>Document</FileType>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)%(Filename).h; %(RootDir)%(Directory)%(Filename).cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)%(Filename).h; %(RootDir)%(Directory)%(Filename).cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">%(RootDir)%(Directory)%(Filename).h; %(RootDir)%(Directory)%(Filename).cxx;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FLTKDir)\fluid\fluid.exe -h %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)%(Filename).cxx -c %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(FLTKDir)\fluid\fluid.exe -h %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)%(Filename).cxx -c %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">$(FLTKDir)\fluid\fluid.exe -h %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)%(Filename).cxx -c %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling fluid file: %(Filename)%(Extension)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling fluid file: %(Filename)%(Extension)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">Compiling fluid file: %(Filename)%(Extension)</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

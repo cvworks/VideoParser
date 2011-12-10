@@ -1,0 +1,52 @@
+# Params for Rui
+
+Main {
+  readParamsFromDatabase = no
+  databaseReference = (ObjectLearner,modelDBPath)
+  verboseMode = yes
+  #alternateStdOut = output2.txt
+  exitWhenDone = no
+  #workingDirectory = ..\Results
+}
+
+FHImageSegmenter {
+  params = {0,200,20} {0,300,20} {0,400,20} {0.5,300,20} {0.5,400,20} 
+}
+
+Components {
+  ObjectLearner = None
+  ObjectRecognizer = None
+  ResultsAnalyzer = None
+  MotionEstimator = None
+  BackgroundSubtractor = None
+  ShapeParser = None
+}
+
+ObjectRecognizer {
+  excludeQueryObjectFromDB = no
+  excludeQueryViewFromDB = yes
+}
+
+VideoProcessor {
+  cacheParseData = yes 
+  inputFileName = C:\Users\Diego\Documents\Workspace\SharedDatasets\Rui\Output2\maskedVedio_region_leftcamera.mp4
+}
+
+ObjectLearner {
+  modelDBPath = experiment1test.db
+  learnModelViews = yes
+}
+
+ShapeParser {
+  maxNumParses = 1
+}
+
+ResultsAnalyzer { 
+  experimentTitle = kimia_sc_test
+  resultsFileName = issues1.txt
+}
+
+ShapeContextComp {
+  maxNumIterations = 1
+  doTPSWarp = no
+}

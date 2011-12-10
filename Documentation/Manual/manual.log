@@ -1,0 +1,93 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.9.24)  24 NOV 2010 13:34
+entering extended mode
+**D:/Diego/Documents/Workspace/VideoParser/Documentation/Manual/manual.tex
+(D:/Diego/Documents/Workspace/VideoParser/Documentation/Manual/manual.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, german-x-2009-06-19, ngerman-x-2009-06-19, french, loaded.
+(C:\Users\Diego\AppData\Roaming\MiKTeX\2.8\tex\latex\refman\refart.cls
+Document Class: refart 2006/11/13 v2.0e LaTeX document class
+\papermarginwidth=\skip41
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\leftmarginwidth=\dimen102
+\fullwidth=\dimen103
+\emptyfoottopmargin=\dimen104
+\emptyheadtopmargin=\dimen105
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip42
+\belowcaptionskip=\skip43
+\bibindent=\dimen106
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\makeidx.sty"
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(D:\Diego\Documents\Workspace\VideoParser\Documentation\Manual\pdf_info.tex)
+\@indexfile=\write3
+
+Writing index file manual.idx
+No file manual.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 33.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 33.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 33.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 43.
+No file manual.toc.
+\tf@toc=\write4
+[1
+
+{C:/Users/Diego/AppData/Local/MiKTeX/2.8/pdftex/config/pdftex.map}]
+No file manual.ind.
+[2] (D:\Diego\Documents\Workspace\VideoParser\Documentation\Manual\manual.aux) 
+) 
+Here is how much of TeX's memory you used:
+ 346 strings out of 495285
+ 4250 string characters out of 3179878
+ 49492 words of memory out of 3000000
+ 3606 multiletter control sequences out of 15000+200000
+ 8021 words of font info for 29 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 23i,8n,19p,220b,202s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/
+Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files 
+(x86)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86
+)/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/
+MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsl8.pfb><C:/Program Files (x86)/MiK
+TeX 2.8/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTe
+X 2.8/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on manual.pdf (2 pages, 118758 bytes).
+PDF statistics:
+ 53 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

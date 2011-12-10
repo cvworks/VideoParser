@@ -1,0 +1,116 @@
+# Region Adjacency Graph
+#
+# Sven Wachsmuth, 7.05.2003
+#
+libSRAGraph.a:
+	/u/swachsmu/Projects/RAG/ShockRAGraph/RCS
+
+- provided C++ classes:
+	ShockRAGraph: shockgraph computation derived from RAGraph
+	ShockRAGraphWin: visualization of region shockgraphs
+				derived from RAGraphWin
+
+- dependencies:
+	libRAGraph.a (Sven Wachsmuth)
+
+
+libRAGraph.a:
+	/u/swachsmu/Projects/RAG/RAGraph/RCS
+
+- provided C++ classes:
+	RAG_Region: C++ interface for region_info_t in libregion.a
+	RAG_Adjacency: C++ interface for region_adjacency_t in libregion.a
+	RAGraph: region adjacency graph based on LEDA-class 
+			GRAPH<RAG_Region,RAG_Adjacency>
+	RAGraphWin: visualization of RAGraph based on LEDA-class GraphWin
+
+- dependencies:
+	libregion.a (Sven Wachsmuth)
+	libpnmadd.a (Sven Wachsmuth)
+	libnetpbm.a       (public: http://netpbm.sourceforge.net)
+	LEDA/lib[WPGL].a  (commercial)
+	libX11.a          
+	libm.a           
+
+libpnmadd.a:
+	/u/swachsmu/Projects/Images/pnmadd/RCS
+	
+libregion.a:
+	/u/swachsmu/Projects/Images/region/RCS
+
+LEDA (local installation):
+	set environmental variables
+	setenv LEDAROOT /pkgs/LEDA/LEDA-4.3.1-complete_i386-linux-redhat-7.0-g++-3.0.1
+	setenv LD_LIBRARY_PATH /pkgs/gcc-3.0.2/linux/lib/:$LEDAROOT/:/usr/X11R6/lib/
+	set path=(/pkgs/gcc-3.0.2/linux/bin $path)
+
+testRAG:
+- Usage: 
+    testRAG -[rpcI:R:o:i:m:wVh] <ppm_input> [<RAG_file>]
+     <ppm_input>  ppm colorMap or '-' for <stdin> ("" for no ppm_input)
+     <RAG_file> read RAG from <RAG_file> or '-' for <stdin>.
+        if both input streams are '-' the <ppm_input> is ignored.
+     -r   <ppm_input> is interpreted as regionMap
+     -I <ppm>  read original image <ppm>
+     -R <ppm>  write regionMap to <ppm>
+     -c   write file set of region contours (default: seg_%d.pgm).
+     -p   print Region-Adjacency-Graph on <stdout>.
+     -o <format>  set name of region contour files to <format>.
+     -i <label> ignore regions with color/region label <label>.
+     -m <int>  ignore regions with more than <int> marginal pixels.
+     -w   show generated region-adjacency graph
+     -V   print version
+     -h   print this message.
+
+- visualization:
+	added functionality
+	- Layout/re-position: re-position graph nodes on region-map
+		(is automatically applied if window size changes)
+	- File/write contours: write contour-pgm-files for each region
+		(default filename seg_%d.pgm, %d is region label)
+	- File/write sel. contours: write contour-pgm-files for each selected
+		graph node
+	- File/write RAG (graph.rag): write region-adjacency-graph to file
+   		graph.rag
+ 	- File/print RAG: write region-adjacency-graph to <stdout>
+
+        - Graph/merge sel. contours: merge the last two selected graph nodes 
+
+	- Window/open info: open window for displaying region and
+		adjacency information
+		each left mouse click on a graph node or edge will
+		display the region or adjacency information
+	- Window/close info: close info window
+
+testSRAG:
+Usage: testSRAG -[hrwI<ppm>pco<format>i<label>m<int>d<file>D<file>] <ppm_input> [<RAG_file>]
+ <ppm_input>  ppm colorMap or '-' for <stdin> ("" for no ppm_input)
+ <RAG_file> read RAG from <RAG_file> or '-' for <stdin>.
+    if both input streams are '-' the <ppm_input> is ignored.
+ -r   <ppm_input> is interpreted as regionMap
+ -I <ppm>  read original image <ppm>
+ -R <ppm>  write regionMap to <ppm>
+ -c   write file set of region contours (default: seg_%d.pgm).
+ -p   print Region-Adjacency-Graph on <stdout>.
+ -o <format>  set name of region contour files to <format>.
+ -i <label> ignore regions with color/region label <label>.
+ -m <int>  ignore regions with more than <int> marginal pixels.
+ -w   show generated region-adjacency graph
+ -l <name> set <name> as DAG-Label instead of <ppm_input>.
+ -D <dbname>  store region shockgraphs in database <dbname>.
+ -d <dbname>  set db_name for reading shockgraph database.
+ -V   print version.
+ -v   verbose mode.
+ -h   print this message.
+
+- visualization:
+	added functionality
+	- see testRAG
+	- node-context-menu/view DAG: start shockgraph visualisation
+		(the started window will block the RAG-window and has
+		 to be finished by 'q' before using the RAG-window again)
+
+		 
+
+
+

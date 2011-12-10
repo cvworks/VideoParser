@@ -1,0 +1,35 @@
+
+# Set compiler variables
+
+LIB_NAME = sg
+
+ifeq "$(ARCH)" "Windows"
+	CXXFLAGS = -nologo -GX -GR -MD -DWIN32
+	ARCH_DEBUG_FLAGS = -Zi
+	ARCH_RELEASE_FLAGS = -O2
+	OBJFILE = %.obj
+	LIB_FULL_NAME = $(LIB_NAME).lib
+	ARFLAGS = -nologo -out:$(LIB_FULL_NAME)
+	CXX = cl
+	CC = cl
+	AR = lib
+	RM = cmd /C del
+	CP = cmd /C copy
+	MV = cmd /C move
+else
+	CXXFLAGS = -Wall -Wno-deprecated
+	ARCH_DBG_FLAG = -g
+	ARCH_RELEASE_FLAGS = -O3
+	OBJFILE = %.o
+	LIB_FULL_NAME = lib$(LIB_NAME).a
+	ARFLAGS = -cr $(LIB_FULL_NAME)
+	CP = cp
+endif
+
+ifeq "$(MODE)" "Debug"
+	CXXFLAGS += $(ARCH_DBG_FLAG) -D_DEBUG
+else
+	CXXFLAGS += $(ARCH_RELEASE_FLAGS)
+endif
+
+

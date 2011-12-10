@@ -1,0 +1,9 @@
+% Graphic macros
+% César Crusius - 1999
+%--------------------------------------------------------------------------------------------
+\message{ - plain TeX graphic macros}
+\makeatletter
+\def\pdfimage#1#2#3{\setbox0\hbox{}\wd0=#1\ht0=#2
+  \special{pdf: epdf width #1 (#3)}\box0}
+\makeatother
+\endinput

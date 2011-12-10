@@ -1,0 +1,60 @@
+\documentclass[twoside,letterpaper]{refart}
+\usepackage{makeidx}
+\usepackage{ifthen}
+% ifthen wird vom Bild von N.Beebe gebraucht!
+
+\def\bs{\char'134 } % backslash in \tt font.
+\newcommand{\ie}{i.\,e.,}
+\newcommand{\eg}{e.\,g..}
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
+
+\input{pdf_info}
+
+\title{VideoParser User's Manual}
+\author{Diego Macrini}
+
+\date{}
+\emergencystretch1em  %
+
+\pagestyle{myfootings}
+\markboth{Changing the layout with \textrm{\LaTeX}}%
+         {Changing the layout with \textrm{\LaTeX}}
+
+\makeindex 
+
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+        This document describes the capabilities of the 
+        \texttt{refart} and \texttt{refrep} classes for \LaTeXe. 
+        These classes do not work with \LaTeX\ 2.09. They contain some 
+        improvements over the original \texttt{refman} style which may result 
+        in different output and minor incompatibilities, but make refman 
+        work with paper sizes other than ISO A4, which I consider an 
+        improvement.
+\end{abstract}
+
+
+This manual is an addition to chapter~5 (``Designing It Yourself'') of 
+the \LaTeX-manual by Leslie Lamport.  It was originally written in 
+1988 by Hubert Partl and updated by me during the development of 
+\texttt{refman}~2.0.  The translation into English was done in summer 
+1998, almost 10 years after the initial release in German.
+
+\tableofcontents
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+
+\printindex
+
+\end{document}

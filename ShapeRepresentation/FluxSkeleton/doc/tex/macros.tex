@@ -1,0 +1,40 @@
+% Basic macros
+% César Crusius - 1999
+%--------------------------------------------------------------------------------------------
+\def\makeatletter{\catcode`\@11\relax}
+\def\makeatother{\catcode`\@12\relax}
+\makeatletter
+% load: make sure we don't input the same file twice.
+\let\unloaded\null
+\def\load#1{\expandafter\ifx\csname #1loaded\endcsname\unloaded\message{#1 already loaded.}
+  \else\input #1\relax\expandafter\let\csname #1loaded\endcsname\unloaded\fi}
+% This one is right out of LaTeX, very useful.
+\def\ifnextchar#1#2#3{%
+  \let\reserved@d=#1%
+  \def\reserved@a{#2}\def\reserved@b{#3}%
+  \futurelet\@let@token\@ifnch}
+\def\@ifnch{\ifx\@let@token\@sptoken\let\reserved@c\@xifnch
+  \else\ifx\@let@token\reserved@d\let\reserved@c\reserved@a
+    \else\let\reserved@c\reserved@b\fi\fi\reserved@c}
+% More file stuff. Almost straight out from LaTeX
+\newread\f@check
+\def\IfFileExists#1#2#3{
+  \openin\f@check#1
+  \ifeof\f@check
+     #3\relax
+  \else
+     #2\relax
+  \fi}
+% Footnotes
+\font\footfont=cmr7
+\newcount\footno \footno=1
+\let\texfootnote\footnote
+\def\footmarker#1{\m@th$\,^{\leavevmode\hbox{\footfont #1}}$}
+\def\footnote#1{\texfootnote{\footmarker{\the\footno}}{#1}\global\advance\footno by 1}
+% macros everybody use
+\load{tex/labels}
+\load{tex/items}
+\let\em\it
+% the end
+\makeatother
+\endinput

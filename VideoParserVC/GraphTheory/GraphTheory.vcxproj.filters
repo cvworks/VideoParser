@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Blossom5">
+      <UniqueIdentifier>{65bcee1e-7c10-439d-aa7e-e260adc100a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Blossom5">
+      <UniqueIdentifier>{c4d25dc1-009e-44a8-942b-83f65d5aaf27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MaxFlow">
+      <UniqueIdentifier>{857a7ac1-8de6-46a0-80e8-a02133c19d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlow">
+      <UniqueIdentifier>{4075e317-73f4-4abc-90b1-48b5f339c602}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\GraphTheory\BipartiteGraphMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\LemonBGMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5BGMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\block.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\LCA.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\PerfectMatching.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\PMimplementation.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\PQ.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\timer.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Blossom5\MinCost\MinCost.h">
+      <Filter>Header Files\Blossom5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\HungarianBGMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\GraphMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\GraphAlgorithms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\AttributedGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\Graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\GraphUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\EdgeMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\NodeMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\NodeMatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\CircularBGMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\ExactTreeMatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\NodeAssignment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\MaxFlow\block.h">
+      <Filter>Header Files\MaxFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\MaxFlow\FlowGraph.h">
+      <Filter>Header Files\MaxFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GraphTheory\LemonGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\GraphTheory\LemonBGMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\misc.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMduals.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMexpand.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMinit.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMinterface.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMmain.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMrepair.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\PMshrink.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5BGMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Blossom5\MinCost\MinCost.cpp">
+      <Filter>Source Files\Blossom5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\HungarianBGMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\GraphAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\GraphMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\Graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\CircularBGMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\ExactTreeMatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\MaxFlow\maxflow.cpp">
+      <Filter>Source Files\MaxFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\MaxFlow\FlowGraph.cpp">
+      <Filter>Source Files\MaxFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GraphTheory\LemonGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

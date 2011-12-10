@@ -1,0 +1,3 @@
+$(FLTKDir)\fluid\fluid.exe -h %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)%(Filename).cxx -c %(FullPath)
+Compiling fluid file: %(Filename)%(Extension)
+%(RootDir)%(Directory)%(Filename).h; %(RootDir)%(Directory)%(Filename).cxx;%(Outputs)

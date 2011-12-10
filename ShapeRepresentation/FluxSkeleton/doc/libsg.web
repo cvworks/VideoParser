@@ -1,0 +1,59 @@
+% -*- mode: tex; mode: cweb; -*-
+% USEFUL COMMANDS
+\def\newline{\vskip\baselineskip}
+\def\header#1{\hbox{\tt #1.h}}
+
+\let\K=\leftarrow
+
+% MODIFICATIONS TO CWEBMAC
+\secpagedepth=1
+
+\def\9#1#2{\&{#1}::\\{#2}}
+
+\newcount\linenum \linenum=0
+\font\linefont=cmss8
+%\def\6{\ifmmode\else\par\hangindent\ind em\noindent
+%\hbox to 0pt{\hss\global\advance\linenum by 1
+%\linefont\the\linenum\hskip 7mm}
+%\hangindent\ind em\noindent\kern\ind em\copy\bakk\ignorespaces\fi}
+
+% ADDITIONAL FONTS
+\let\em\it
+\font\scaps=cmcsc10
+\font\logo=cmss10
+
+% PREDEFINED MACROS
+\input tex/macros
+
+@s List int
+
+
+@** Introduction.
+This is a library to compute shock-graphs...
+
+@** Basic Types.
+
+@i ../web/Point.w
+@i ../web/Vector.w 
+
+@** Support Classes.
+
+@i ../web/Curve.w
+@i ../web/CurveSeg.w
+@i ../web/DiscreteSegCurve.w
+@i ../web/ArcLineSeg.w
+
+@** Appendix.
+
+@i ../web/SG.w
+
+
+@** Index.
+there is t
+
+
+
+
+
+
+

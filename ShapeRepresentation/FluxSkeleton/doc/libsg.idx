@@ -1,0 +1,50 @@
+\I\&{Arc}, \[26].
+\I\&{ArcLineSeg}, \[26], 27, 28.
+\I\\{ArcLineSeg\_HPP}, \[23].
+\I\&{ArcLineType}, \[26].
+\I\\{atT}, \[14].
+\I\\{centre}, \[26].
+\I\\{closed}, \[14].
+\I\\{closestPt}, \[17].
+\I\&{Curve}, \[14], 18, 21.
+\I\\{Curve\_HPP}, \[12].
+\I\&{CurveSeg}, \[17], 18, 21, 23, 27, 28.
+\I\\{CurveSeg\_HPP}, \[15].
+\I\&{DiscreteSegCurve}, \[21], 22.
+\I\\{DiscreteSegCurve\_HPP}, \[18].
+\I\\{distToPt}, \[14], \[17], \[22], \[27], \[28].
+\I\\{dot}, \[10].
+\I\\{endPt}, \[26].
+\I\\{epsilon}, \[6].
+\I\\{equal}, \[6].
+\I\\{getLength}, \[17].
+\I\\{isClose}, \[6].
+\I\\{isClosed}, \[14].
+\I\\{length}, \[14], \[17].
+\I\\{Line}, 26.
+\I\&{List}, 21, 33.
+\I\\{norm}, \[10].
+\I\\{normal}, \[14], \[17].
+\I\|{p}, \[6], \[14], \[17], \[22], \[27], \[28].
+\I\&{Point}, \[6], 14, 17, 21, 22, 26, 27, 28.
+\I\\{Point\_HPP}, \[4].
+\I\\{pointClosestToPt}, \[14].
+\I\\{points}, \[21].
+\I\\{pt}, \[14].
+\I\\{radius}, \[26].
+\I\\{segments}, \[21].
+\I\&{sg}, \[4], \[8], \[12], \[15], \[18], \[23].
+\I\\{sqrt}, 10.
+\I\\{startPt}, \[26].
+\I\\{subCurve}, \[14].
+\I\|{t}, \[14], \[17].
+\I\\{type}, \[26].
+\I\\{t0}, \[14].
+\I\\{t1}, \[14].
+\I\|{v}, \[10].
+\I\&{Vector}, \[10], 14, 17.
+\I\&{vector}, \[33].
+\I\\{Vector\_HPP}, \[8].
+\I\|{x}, \[6], \[10].
+\I\|{y}, \[6], \[10].
+

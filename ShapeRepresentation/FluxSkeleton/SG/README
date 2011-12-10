@@ -1,0 +1,16 @@
+This is a Shock Graph generation code from the libsg library that produces the
+new skeletons. The first idea is to convert the branches in the skeleton to 
+nodes in SG and the nodes in the skeleton to edges in SG (except the boundary
+nodes - those that end a branch). The next step is to be able to divide each
+branch of the skeleton and convert it into several nodes in the SG. The
+division can be controlled by gaussian smoothing which will be applied to the
+radius function along the branch before the division takes place. The last and
+most complicated step is to be able to convert many braches in the skeleton
+into one node in the SG. This may be neccessary if you have one long brach with
+several small branches coming from it and you want it be represented by a
+single node in the SG. A crude drawing of such an occurence is:
+
+  \   \     \      \   \
+ ------------------------       =>  converted to one node in SG.
+     /   /     /      /
+

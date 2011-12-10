@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\AFMMSkeleton">
+      <UniqueIdentifier>{1acad802-3d12-497e-ab8f-efe973e8d902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AFMMSkeleton">
+      <UniqueIdentifier>{6fd7efd5-035e-4672-a387-93e65e83b996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FluxSkeleton">
+      <UniqueIdentifier>{74ed0dbf-865b-47d1-9e29-156c85885160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FluxSkeleton">
+      <UniqueIdentifier>{8ddd3c12-9386-4db6-816e-db527e47cea7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\AFMMSkeleton.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\skeleton.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\field.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\genrl.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\flags.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\treeskel.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\ShapeDiff.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\SkelCompParams.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\mfmm.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\thin.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\moment.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\oldShapeDiff.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\queue.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\stack.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\byteswap.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\darray.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\distseq.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\dqueue.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\evol.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\field3.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\fmm.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\io.h">
+      <Filter>Header Files\AFMMSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\FluxPoint.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SkeletalInfo.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryInterval.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ShapeBoundary.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ContourCurve.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscretePointCurve.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Vector.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscreteSegCurve.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ShapeMaker.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraph.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\defines.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryPointMapping.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\TBBInterval.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSEdge.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSNode.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryPoint.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryInfo.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraphUtils.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\PartnerBranch.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundarySegmentArray.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\CurveSeg.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraphProject.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DistanceTransform.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Drawable.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSMakerUtils.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivergenceSkeletonMaker.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivergenceMap.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivArr.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivPt.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\PriorityQueueDP.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ApproxDiscreteSegCurve.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\LineSeg.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\CircSeg.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscreteSeg.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Point.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SplineSmooth.h">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SG.hpp">
+      <Filter>Header Files\FluxSkeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\NaiveDescriptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\BoundarySegments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeInformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\SkeletalGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCorner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\CornerDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCutter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContextTestData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ContourTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shaperepresentation\NaiveDescriptorComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContextComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptorComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\ContourTreeComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\HuMoments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\HuMomentsComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ShapeRepresentation\PointTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\mfmm.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\evol.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\skeleton.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\AFMMSkeleton.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\distseq.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\fmm.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\genrl.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\io.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\treeskel.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\flags.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\thin.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\byteswap.cpp">
+      <Filter>Source Files\AFMMSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\BoundaryPointMapping.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\ShapeMaker.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DDSGraph.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\TBBInterval.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\SkeletalInfo.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DDSGraphUtils.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\ShapeBoundary.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DivergenceSkeletonMaker.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DiscreteSegCurve.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DivArr.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\CircSeg.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\LineSeg.cpp">
+      <Filter>Source Files\FluxSkeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeInformation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\BoundaryCutter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\NaiveDescriptor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\SkeletalGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\BoundaryCorner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\CornerDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ContourTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeContextComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ContourTreeComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\HuMoments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\HuMomentsComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeDescriptor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,687 @@
+/* Based on Sinorca 2.0 and Gazette stylesheets, by Haran */
+
+/* ##### Common Styles ##### */
+
+body {
+  color: black;
+  background-color: rgb(230,230,230);
+  font-family: "Trebuchet ms",Trebuchet,Georgia,"Times New Roman",Times,Serif;
+  font-size: 80%;
+  margin: 0;
+  padding: 0;
+}
+
+html > body {
+  font-size: 10pt;
+}
+
+.doNotDisplay {
+  display: none;
+}
+
+acronym, .titleTip {
+  border-bottom: none;
+  cursor: help;
+}
+
+.smallCaps {
+  font-size: 110%;
+  font-variant: small-caps;
+}
+
+.sideNote {
+  background-color: rgb(230,230,255);
+  margin: 1ex 4em 1ex 3em;
+  padding: 1ex 1em 1ex 1em;
+  border-top: 0.3ex solid rgb(170,0,0);
+  border-bottom: 0.3ex solid rgb(170,0,0);
+}
+
+.warningNote {
+  background-color: white;
+  color: rgb(200,0,0);
+  margin: 1ex 4em 1ex 3em;
+  padding: 1ex 1em 1ex 1em;
+  border: 0.3ex solid rgb(170,0,0);
+  font-size: 120%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.smallText {
+  font-size: 80%;
+  line-height: 14px;
+}
+
+.submit {
+  font-size: 90%;
+  font-weight: bold;
+  color: white;
+  background: rgb(100,135,220);
+  cursor: pointer;
+  border: 1px solid rgb(100,135,220);
+}
+
+.textbox {
+  border: 1px solid rgb(100,135,220);
+  margin: 0;
+}
+
+input:focus, textarea:focus, select:focus, input:hover {
+  background : rgb(255,255,220);
+  color : black;
+}
+
+.icon {
+  padding-right: 1em;
+  border: 0;
+}
+
+/* separator bars */
+.separatorBar {
+  background-image: url(./images/hbar_hor.gif);
+  background-repeat: repeat-x;
+  line-height: 16px;
+  text-align: center;
+  margin: 1em 1em 0 1em;
+}
+
+.header1Bar {
+  background-image: url(./images/hbar_hor.gif);
+  background-repeat: repeat-x;
+  line-height: 16px;
+  margin-bottom: 0.8em
+}
+
+.titleBar {
+  color: white;
+  background-color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  font-size: 120%;
+  margin: 2em 0 1em 0;
+  padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+/* source code */
+div.codeCaption {
+  color: white;
+  background-color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  margin: 1em 15px 0 15px;
+  padding: 0.2em 1em 0.3em 1em;
+}
+div.codeBlock {
+  color: black;
+  background-color: rgb(230,230,255);
+  font-family: "Lucida Console","Courier New",courier,monospace;
+  font-weight: normal;
+  font-size: 80%;
+  line-height: 1.2em;
+  margin: 0 15px 0 15px;
+  padding: 0.2em 1em 0.2em 1em;
+  border: 1px solid rgb(170,0,0);
+}
+
+/* tables */
+div.dataTable {
+  margin: 0 15px 0 15px;
+}
+table.dataTable {
+  width: 99%;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: rgb(170,0,0);
+  background-color: rgb(230,230,255);
+}
+table.dataTable th, table.dataTable td {
+  border-width: 0 0 0 0;
+  border-style: solid;
+  border-color: rgb(170,0,0);
+  padding: 0 1em 0 1em;
+  text-align: left;
+}
+table.dataTable th {
+  color: white;
+  background-color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  vertical-align: bottom;
+}
+table.dataTable td {
+  vertical-align: top;
+}
+table.dataTable td.noPadding {
+  padding: 1px 2px 1px 2px;
+}
+
+table.infoWindow {
+  border: 1px solid black;
+  font-size: 80%;
+  line-height: 16px;
+  background-color: rgb(230,230,255);
+}
+
+table.projectlist {
+  width: 99%;
+  border: 0;
+  text-align: left;
+  vertical-align: top;
+}
+table.projectlist thead, table.projectlist tfoot {
+  background-color: rgb(100,135,220);
+  color: white;
+  font-weight: bold;
+}
+
+table.gridLines {
+  width: 99%;
+  border-collapse: collapse;
+  border: none;
+  background-color: rgb(230,230,255);
+}
+table.gridLines th, table.gridLines td {
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: rgb(170,0,0);
+  text-align: left;
+  vertical-align: top;
+  padding: 1px 2px 1px 2px;
+  font-size: 9pt;
+}
+table.gridLines th {
+  color: white;
+  background-color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  vertical-align: bottom;
+}
+
+/* ##### Header ##### */
+
+#header p {
+  margin: 0;
+  padding: 0;
+}
+
+.superHeader {
+  color: white;
+  background-color: rgb(100,135,220);
+  height: 22px;
+  font-size: 91%;
+}
+
+.superHeader a {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 0 0.25em 0 0.25em;
+}
+
+.superHeader a:hover {
+  text-decoration: underline;
+}
+
+.superHeader .left {
+  position: absolute;
+  left: 2mm;
+  top: 0.375em;
+}
+
+.superHeader .right {
+  position: absolute;
+  text-align: right;
+  right: 0;
+  top: 0;
+}
+
+.midHeader {
+  color: rgb(160,0,0);
+  background-color: transparent;
+  clear: both;
+  margin: 0 2mm 0 2mm;
+  padding: 0;
+}
+
+.midHeader .left {
+  color: rgb(170,0,0);
+  font-family: "Zapf Calligraphic 801 SWA", "Times New Roman", Georgia, Times, Serif;
+  font-size: 250%;
+  font-weight: normal;
+  text-align: left;
+}
+
+.midHeader .right {
+  color: rgb(0,102,204);
+  text-align: right;
+  float: right;
+  position: relative;
+  padding: 1ex 0 0 0;
+}
+
+.subHeader {
+  margin: 0;
+  padding: 0.75em 1ex 0.6ex 1ex;
+  border-bottom: 8px solid rgb(100,135,220);
+  clear: both;
+}
+
+.subHeader .headerquote {
+  color: rgb(100,135,220);
+  background-color: transparent;
+  font-style: italic;
+  float: right;
+  position: relative;
+  margin: 0.8ex 0 0 0;
+  padding: 0;
+}
+
+.subHeader .navigation {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0;
+}
+
+.subHeader .navigation li {
+  line-height: 1.75em;
+  margin-right: 1ex;
+  padding: 0;
+  display: inline;
+}
+
+.subHeader a {
+  color: rgb(100,135,220);
+  background-color: transparent;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.subHeader a:hover {
+  color: rgb(100,135,220);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.subHeader .navigation .tab {         /* IE */
+  color: rgb(150,150,150);
+  background-color: rgb(248,248,248);
+  text-decoration: none;
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.4ex 1.25em 0.8ex 1.25em;
+  border-top: 1px solid rgb(128,128,128);
+  border-right: 1px solid rgb(0,0,0);
+  border-left: 1px solid rgb(128,128,128);
+}
+
+.subHeader .navigation a.tab:hover {  /* IE */
+  color: rgb(100,135,220);
+  background-color: rgb(248,248,248);
+  text-decoration: none;
+  padding-bottom: 0.6ex;
+  border-top: 1px solid rgb(0,0,0);
+  border-right: 1px solid rgb(128,128,128);
+  border-left: 1px solid rgb(0,0,0);
+  position: relative;
+  left: 1px;
+  top: 1px;
+}
+
+.subHeader .navigation .highlighted { /* IE */
+  color: white;
+  background-color: rgb(100,135,220);
+  border-top-color: rgb(128,128,128);
+  border-right-color: rgb(0,0,0);
+  border-left-color: rgb(128,128,128);
+}
+
+/* IE 6.0 ignores the tags below (for the Mozilla/Firefox browsers), but
+ * IE 7.0 interprets them. Since the boxing model of IE 7.0 is still wrong,
+ * there is an extra stylesheet for IE only, which is conditionally loaded
+ * (conditional loading is a feature of IE only)
+ */
+
+html > body .subHeader .navigation .tab { /* Mozilla */
+  color: rgb(150,150,150);
+  background-color: rgb(248,248,248);
+  text-decoration: none;
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.5ex 1.25em 1.2ex 1.25em;
+  border-top: 1px solid rgb(128,128,128);
+  border-right: 1px solid rgb(128,128,128);
+  border-left: 1px solid rgb(128,128,128);
+  /* the following are currently only active in FireFox */
+  border-top-left-radius: 9px;
+  -moz-border-radius-topleft: 9px;
+  -webkit-border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  -moz-border-radius-topright: 9px;
+  -webkit-border-top-right-radius: 9px;
+}
+
+html > body .subHeader .navigation a.tab:hover { /* Mozilla */
+  color: rgb(100,135,220);
+  background-color: rgb(248,248,248);
+  text-decoration: none;
+  padding-bottom: 1.0ex;
+  border-top: 1px solid rgb(0,0,0);
+  border-right: 1px solid rgb(128,128,128);
+  border-left: 1px solid rgb(0,0,0);
+  position: relative;
+  left: 1px;
+  top: 1px;
+}
+
+html > body .subHeader .navigation .highlighted { /* Mozilla */
+  color: white;
+  background-color: rgb(100,135,220);
+  border-top-color: rgb(128,128,128);
+  border-right-color: rgb(0,0,0);
+  border-left-color: rgb(128,128,128);
+}
+
+.letterHead {
+  display: none;
+}
+
+
+/* ##### Side Bar ##### */
+
+#side-bar {
+  width: 15em;
+  float: left;
+  clear: left;
+  border-right: 1px solid rgb(102,102,102);
+}
+
+#side-bar div {
+  border-bottom: 1px solid rgb(102,102,102);
+  margin: 0 0 0 1mm;
+}
+
+.sideBarTitle {
+  color: rgb(170,0,0);
+  font-weight: bold;
+  margin: 0 0 0.5em 1mm;
+  padding: 1em 0 0 0;
+}
+
+.sideBarLink {
+  clear: both;
+  margin: 10px 0 10px 0;
+  padding: 0 0 0 0;
+  height: 1.5em;
+}
+
+#side-bar ul {
+  list-style-image: url(./images/pijlr.gif);
+  list-style-type: circle;
+  list-style-position: outside;
+  margin: 0 0 0 0;
+  padding: 0 0 1.1em 4ex;
+}
+
+#side-bar li {
+  margin: 0;
+  padding: 0.1ex 0;  /* Circumvents a rendering bug (?) in MSIE 6.0 */
+}
+
+#side-bar a, .thisPage {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  text-decoration: none;
+  margin: 0.4em 0 0.4em 0;
+  padding: 0.2ex 1ex 0.2ex 2mm;
+  display: block;
+}
+
+.thisPage {
+  color: rgb(170,0,0);
+  background-color: white;
+  padding: 0.1ex 1ex 0.2ex 2mm;
+  border-top: 1px solid rgb(102,102,102);
+  border-bottom: 1px solid rgb(102,102,102);
+}
+
+#side-bar a:hover {
+  color: white;
+  background-color: rgb(100,135,220);
+  text-decoration: none;
+}
+
+.sideBarText {
+  line-height: 1.5em;
+  margin: 0 0 1em 0;
+  padding: 0 1.5ex 0 1mm;
+  display: block;
+}
+
+#side-bar .sideBarText a {
+  text-decoration: underline;
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+#side-bar .sideBarText a:hover {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.lighterBackground {
+  color: inherit;
+  background-color: white;
+}
+
+.sideBarTable {
+  border: 0 0 0 0;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.sideBarCell {
+  width:16px;
+}
+
+/* ##### Main Copy ##### */
+
+#main-copy {
+  color: black;
+  background-color: rgb(255,255,255);
+  background-image: url(./images/watermrk.gif);
+  text-align: justify;
+  line-height: 1.5em;
+  margin: 0 0 0 15em;   /* left border same as sidebar width */
+  padding: 0.5mm 5mm 5mm 5mm;
+  border-left: 1px solid rgb(102,102,102);
+  border-right: 1px solid rgb(102,102,102);
+  border-bottom: 1px solid rgb(102,102,102);
+}
+
+#main-copy p {
+  margin: 0.8em 1ex 0.8em 0;
+  padding: 0;
+}
+
+#main-copy a {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+#main-copy a:hover {
+  text-decoration: none;
+}
+
+#main-copy a.extern {
+  background: url(images/external.png) right center no-repeat;
+  padding-right: 12px;
+}
+
+#main-copy h1 {
+  color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 160%;
+  font-weight: normal;
+  text-align: left;
+  margin: 1em 0 0 0;
+  padding: 0 0 0.2em 0;
+}
+
+#main-copy h2 {
+  color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 140%;
+  font-weight: normal;
+  text-align: left;
+  margin: 1em 0 0 0;
+}
+
+#main-copy h3 {
+  color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 110%;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  margin: 1em 0 0 0;
+}
+
+#main-copy h4 {
+  color: rgb(170,0,0);
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 100%;
+  font-weight: bold;
+  text-align: left;
+  margin: 1em 0 0 0;
+}
+
+#main-copy ul {
+  margin-left: 5mm; /* same as padding in #main-copy */
+  text-align: left;
+  list-style-image: url(./images/pijlr.gif);
+  list-style-type: circle;
+}
+
+#main-copy ol {
+  margin-left: 5mm; /* same as padding in #main-copy */
+  text-align: left;
+  list-style-type: decimal;
+  list-style-image: none;
+}
+
+#main-copy table {
+  text-align: left;
+}
+
+dl {
+  margin: 1em 1ex 2em 1ex;
+  padding: 0;
+}
+
+dt {
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+dd {
+  margin: 0 0 1em 2em;
+  padding: 0;
+}
+
+#iconlist dt {
+  font-family: Verdana,Arial,Helvetica,Swiss,sans-serif;
+  font-size: 125%;
+  font-weight: bold;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+#iconlist dd {
+  margin: 0 0 2em 50px;
+}
+
+/* ##### Footer ##### */
+
+#footer {
+  color: white;
+  background-color: rgb(100,135,220);
+  font-size: 91%;
+  border-top: 1px solid rgb(102,102,102);
+  margin: 0 0 0 0;
+  padding: 0.6ex 1ex 0.6ex 1ex;
+  clear: both;
+}
+
+#footer .left {
+  line-height: 1.2em;
+  float: left;
+  clear: left;
+}
+
+#footer .right {
+  text-align: right;
+  line-height: 1.2em;
+}
+
+#footer a {
+  color: white;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+#footer a:hover {
+  text-decoration: none;
+}
+
+/* ##### Picture roll-over ##### */
+
+#pic {
+  background-color: white;
+  position: relative;
+}
+
+#pic a .large {
+  border: 0px;
+  display: block;
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 0px;
+  height: 0px;
+}
+
+#pic a img {
+  border: 0;
+}
+
+#pic a.p1, #pic a.p1:visited {
+  background: white;
+  display: block;
+  left: 0;
+  top: 0;
+  text-decoration: none;
+}
+
+#pic a.p1:hover {
+  color: black;
+  text-decoration: none;
+}
+
+#pic a.p1:hover .large {
+  border: 1px solid black;
+  display: block;
+  position: absolute;
+  left: 100px;
+  top: -30px;
+  width: 240px;
+  height: 180px;
+}

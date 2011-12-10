@@ -1,0 +1,8 @@
+rev-0_1_0	(version 0.1: first release) DiscreteDivergenceSkeleton 
+		is implemented now.
+
+rev-0_0_2	(version 0.0.2) added README in lib/
+
+rev-0_0_1	(version 0.0.1) first tagged revision
+		before the packaged version. Has no curve splitting
+		and the DiscreteDivergenceSkeleton is not complete.

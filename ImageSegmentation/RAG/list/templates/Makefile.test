@@ -1,0 +1,159 @@
+ARCH=		Linux
+
+LIBSRCS=	lsInt.c lsULInt.c lsFloat.c lsDouble.c \
+		lsChar.c lsPt.c \
+		tupleInt.c tupleFloat.c tuplePt.c tupleLong.c \
+		lsPairFloat.c lsPairInt.c lsPairLong.c \
+		lsTripleInt.c \
+		btreeDouble.c btreeInt.c
+INCL_LS_GEN=	lsInt.h lsULInt.h lsFloat.h lsDouble.h lsPt.h lsChar.h \
+		lsPairFloat.h lsPairInt.h lsPairLong.h lsTripleInt.h
+INCL_TPL_GEN=	tupleInt.h tupleFloat.h tupleDouble.h tuplePt.h tupleLong.h
+INCL_BTREE_GEN=	btreeDouble.h btreeInt.h
+
+INCL_GEN=	$(INCL_LS_GEN) $(INCL_TPL_GEN) $(INCL_BTREE_GEN)
+LSED_GEN=	lsInt-lsed lsULInt-lsed lsFloat-lsed lsDouble-lsed \
+		lsChar-lsed  lsPt-lsed tupleDouble-lsed \
+		lsPairInt-lsed lsPairLong-lsed lsTripleInt-lsed \
+		lsPairFloat-lsed tupleInt-lsed tupleFloat-lsed \
+		tuplePt-lsed lsLongTpl-lsed btreeDouble-lsed btreeInt-lsed
+INCLUDES=	$(INCL_GEN) list.h list_macro.h tuple.h tuple_macro.h \
+		btree.h btree_macro.h \
+		iterate.h string+.h buffer.h partition.h random.h \
+		string_dict.h hashmap.h
+LIBOBJS=	$(LIBSRCS:.c=.o) iterate.o string+.o buffer.o \
+		partition.o random.o string_dict.o hashmap.o
+LIB=		liblist.a
+
+LIBDIR=		../../lib
+INCLUDEDIR=	../../include/list
+#GRP=            ai
+
+CLEAN=		$(LIBOBJS) $(LSED_GEN)
+REMOVE=		$(LIB) $(LIBSRCS) $(INCL_GEN) list.h tuple.h
+
+#
+#
+# Standardeinstellungen
+#
+CFLAGS+=	-I. -I../../include 
+ifeq ($(ARCH),Linux) 
+CC=		gcc
+else
+CFLAGS+=	-std1 -warnprotos 
+endif
+
+#CFLAGS+=	-g
+CFLAGS+=	-O4
+
+#LDLIBS+=	-lm
+
+#
+# evtl. um div. Debugging-Ausgaben zu aktivieren
+#
+
+#
+# evtl. architektur-/systemabhaengige Einstellungen
+#
+#CFLAGS+=	-DNO_RALLOC_OF_VOID	# falls realloc(NULL) != malloc()
+#CFLAGS+=	-DMM_USE_DOUBLE
+
+all:	list.h tuple.h btree.h $(LIB)
+
+ls%.c:	$(INCL_GEN) _list.c $(LSED_GEN)
+	sed -f $(@:.c=-lsed) _list.c > $@
+ls%.h:		_list.h $(LSED_GEN)
+	sed -f $(@:.h=-lsed) _list.h > $@
+
+lsInt-lsed:	list-lsed.mk
+	./list-lsed.mk lsInt int > $@
+
+lsULInt-lsed:	list-lsed.mk
+	./list-lsed.mk lsULInt "unsigned long int" > $@
+
+lsFloat-lsed:	list-lsed.mk
+	./list-lsed.mk lsFloat float > $@
+
+lsDouble-lsed:	list-lsed.mk
+	./list-lsed.mk lsDouble double > $@
+
+lsChar-lsed:	list-lsed.mk
+	./list-lsed.mk lsChar char > $@
+
+lsPt-lsed:	list-lsed.mk
+	./list-lsed.mk lsPt "void *" > $@
+
+list.h:		$(LSED_GEN) $(INCL_LS_GEN) list.h.mk
+	./list.h.mk $(INCL_LS_GEN) > $@
+
+lsPairFloat-lsed:	list-lsed.mk
+	./list-lsed.mk lsPairFloat "pairFloat_t" > $@
+
+lsPairInt-lsed: list-lsed.mk
+	./list-lsed.mk lsPairInt "pairInt_t" > $@
+
+lsPairLong-lsed: list-lsed.mk
+	./list-lsed.mk lsPairLong "pairLong_t" > $@
+
+lsTripleInt-lsed: list-lsed.mk
+	./list-lsed.mk lsTripleInt "tripleInt_t" > $@
+
+iterate.o:	list.h
+
+tuple%.c:	$(INCL_GEN) _tuple.c _tuple.h $(LSED_GEN)
+	sed -f $(@:.c=-lsed) _tuple.c > $@
+tuple%.h:	$(INCL_GEN) _tuple.h $(LSED_GEN)
+	sed -f $(@:.h=-lsed) _tuple.h > $@
+
+tupleInt-lsed:	tpl-lsed.mk
+	./tpl-lsed.mk Int "int" > $@
+
+tupleFloat-lsed:	tpl-lsed.mk
+	./tpl-lsed.mk Float "float" > $@
+
+tupleDouble-lsed:	tpl-lsed.mk
+	./tpl-lsed.mk Double "double" > $@
+
+tuplePt-lsed:	tpl-lsed.mk
+	./tpl-lsed.mk Pt "void *" > $@
+
+tupleLong-lsed:	tpl-lsed.mk
+	./tpl-lsed.mk Long "long int" > $@
+
+tuple.h:	$(INCL_TPL_GEN) tpl.h.mk
+	./tpl.h.mk $(INCL_TPL_GEN) > $@
+
+btree%.c:	$(INCL_BTREE_GEN) _btree.h _btree.c $(LSED_GEN)
+	sed -f $(@:.c=-lsed) _btree.c | sed -f `echo $(@:.c=-lsed) | sed -e s/btree/ls/g` > $@
+
+btree%.h:	_btree.h $(LSED_GEN)
+	sed -f $(@:.h=-lsed) _btree.h | sed -f `echo $(@:.h=-lsed) | sed -e s/btree/ls/g` > $@
+
+btreeDouble-lsed:	btr-lsed.mk
+	./btr-lsed.mk Double "double" > $@
+
+btreeInt-lsed:	btr-lsed.mk
+	./btr-lsed.mk Int "int" > $@
+
+btree.h:	$(INCL_BTREE_GEN)
+	./btr.h.mk $(INCL_BTREE_GEN) > $@
+
+$(LIB):		$(LIBOBJS)
+	$(AR) $(ARFLAGS) $(LIB) $?
+
+install:	$(LIB) $(INCLUDES)
+	install -d $(LIBDIR) $(INCLUDEDIR)
+	install -m 664 $(LIB) $(LIBDIR)
+	install -m 664 $(INCLUDES) $(INCLUDEDIR)
+	touch install
+
+clean:
+	rm -f $(CLEAN)
+
+remove:		clean
+	rm -f $(REMOVE)
+
+removeAll:	remove
+	rm -f $(LIBDIR)/$(LIB)
+	rm -fR $(INCLUDEDIR)
+

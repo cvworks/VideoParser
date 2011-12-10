@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\CvBackgroundSubtractor">
+      <UniqueIdentifier>{0fb6e2fc-018b-4f4b-8af7-e6d6a691a254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CvBackgroundSubtractor">
+      <UniqueIdentifier>{05209967-e263-4318-86e6-1f0d462ca517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GraphcutBackgroundSubtractor">
+      <UniqueIdentifier>{154b922a-8216-408a-ad2e-660c7d537fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GraphcutBackgroundSubtractor">
+      <UniqueIdentifier>{bb8ac575-88fb-45ee-a7d1-5cd87b778d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AffineMotionEstimator">
+      <UniqueIdentifier>{e3add758-178c-408d-9a89-0d0d969a9e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AffineMotionEstimator">
+      <UniqueIdentifier>{22fbf392-356c-419d-beee-41c80609af90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FSMBackgroundSubtractor">
+      <UniqueIdentifier>{ac3cb315-4c1b-4d91-a91e-887667afc95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FSMBackgroundSubtractor">
+      <UniqueIdentifier>{18d25241-a5af-449b-bcf3-75ade3e1aa6d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundSubtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\MotionEstimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvGaussBackgroundSubtractor.h">
+      <Filter>Header Files\CvBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvFGDBackgroundSubtractor.h">
+      <Filter>Header Files\CvBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\GraphcutBackgroundSubtractor.h">
+      <Filter>Header Files\GraphcutBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\blob.h">
+      <Filter>Header Files\GraphcutBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\graph.h">
+      <Filter>Header Files\GraphcutBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\common.h">
+      <Filter>Header Files\GraphcutBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\block.h">
+      <Filter>Header Files\GraphcutBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\AffineMotionEstimator.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\basicUtils.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\pyramid.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-affine.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-translation.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\outliers.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\planar.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\affine-warp.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\ctf-image.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\derivatives.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\gm2.h">
+      <Filter>Header Files\AffineMotionEstimator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\FSMBackgroundSubtractor\FSMBackgroundSubtractor.h">
+      <Filter>Header Files\FSMBackgroundSubtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundFeatureSubtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\FeatureGridSubtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VideoSegmentation\AdaptiveBackgroundSubtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\VideoSegmentation\BackgroundSubtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\MotionEstimator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvGaussBackgroundSubtractor.cpp">
+      <Filter>Source Files\CvBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvFGDBackgroundSubtractor.cpp">
+      <Filter>Source Files\CvBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\GraphcutBackgroundSubtractor.cpp">
+      <Filter>Source Files\GraphcutBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\maxflow.cpp">
+      <Filter>Source Files\GraphcutBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\graph.cpp">
+      <Filter>Source Files\GraphcutBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\AffineMotionEstimator.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\ctf-image.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\pyramid.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-translation.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-affine.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\outliers.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\gm2.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\derivatives.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\basicUtils.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\affine-warp.cpp">
+      <Filter>Source Files\AffineMotionEstimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\FSMBackgroundSubtractor\FSMBackgroundSubtractor.cpp">
+      <Filter>Source Files\FSMBackgroundSubtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\BackgroundFeatureSubtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\VideoSegmentation\AdaptiveBackgroundSubtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

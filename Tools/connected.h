@@ -1,0 +1,193 @@
+/* 
+	Find connect components in an image.
+	By Ali Rahimi
+	ali@mit.edu
+	Jun 2001.
+
+	See connected.cc for how to use this package.
+*/
+#pragma once
+
+#include <vector>
+#include <algorithm>
+
+template <class T, T V>
+struct constant
+{
+	operator T() const { return V; }
+};
+
+/* 
+	Finds connect components in an image.
+*/
+class ConnectedComponents
+{
+public:
+	ConnectedComponents(int soft_maxlabels) : labels(soft_maxlabels) {
+		clear();
+	}
+	void clear() {
+		std::fill(labels.begin(), labels.end(), Similarity());
+		highest_label = 0;
+	}
+	template<class Tin, class Tlabel, class Comparator, class Boolean>
+	int connected(const Tin *img, Tlabel *out,
+		int width, int height, Comparator,
+		Boolean K8_connectivity);
+
+
+
+private:
+	struct Similarity {
+		Similarity() : id(0), sameas(0) {}
+		Similarity(int _id, int _sameas) : id(_id), sameas(_sameas) {}
+		Similarity(int _id) : id(_id), sameas(_id) {}
+		int id, sameas, tag;
+	};
+
+	bool is_root_label(int id) {
+		return (labels[id].sameas == id);
+	}
+	int root_of(int id) {
+		while (!is_root_label(id)) {
+			// link this node to its parent's parent, just to shorten
+			// the tree.
+			labels[id].sameas = labels[labels[id].sameas].sameas;
+
+			id = labels[id].sameas;
+		}
+		return id;
+	}
+	bool is_equivalent(int id, int as) {
+		return (root_of(id) == root_of(as));
+	}
+	bool merge(int id1, int id2) {
+		if(!is_equivalent(id1, id2)) {
+			labels[root_of(id1)].sameas = root_of(id2);
+			return false;
+		}
+		return true;
+	}
+	int new_label() {
+		// Thanks to Pierre Grinspan for suggesting using capacity()
+		// instead of size() here.
+		if(highest_label+1 > int(labels.capacity()))
+			labels.reserve(highest_label*2);
+		labels.resize(highest_label+1);
+		labels[highest_label] = Similarity(highest_label);
+		return highest_label++;
+	}
+
+
+	template<class Tin, class Tlabel, class Comparator, class Boolean>
+	void label_image(const Tin *img, Tlabel *out,
+		int width, int height, Comparator,
+		Boolean K8_connectivity);
+	template<class Tlabel>
+	int relabel_image(Tlabel *out, int width, int height);
+
+
+	std::vector<Similarity> labels;
+	int highest_label;
+};
+
+template<class Tin, class Tlabel, class Comparator, class Boolean>
+int
+ConnectedComponents::connected(const Tin *img, Tlabel *labelimg,
+							   int width, int height, Comparator SAME,
+							   Boolean K8_connectivity)
+{
+	label_image(img,labelimg, width,height, SAME, K8_connectivity);
+	return relabel_image(labelimg, width,height);
+}
+
+
+
+
+template<class Tin, class Tlabel, class Comparator, class Boolean>
+void
+ConnectedComponents::label_image(const Tin *img, Tlabel *labelimg,
+								 int width, int height, Comparator SAME,
+								 const Boolean K8_CONNECTIVITY)
+{
+	int r=0,c=0;
+
+	const Tin *row = img;
+	const Tin *last_row = 0;
+
+	struct Label_handler 
+	{
+		Label_handler(const Tin *img, Tlabel *limg) :
+			piximg(img), labelimg(limg) {}
+
+		Tlabel &operator()(const Tin *pixp) { return labelimg[pixp-piximg]; }
+
+		const Tin *piximg;
+		Tlabel *labelimg;
+	} label(img, labelimg);
+
+	clear();
+
+	label(&row[0]) = (Tlabel) new_label();
+
+	// label the first row.
+	for(c=1, r=0; c<width; ++c) {
+		if(SAME(row[c], row[c-1]))
+			label(&row[c]) = label(&row[c-1]);
+		else
+			label(&row[c]) = (Tlabel) new_label();
+	}
+
+	// label subsequent rows.
+	for(r=1; r<height; ++r)    {
+		// label the first pixel on this row.
+		last_row = row;
+		row = &img[width*r];
+
+		if(SAME(row[0], last_row[0]))
+			label(&row[0]) = label(&last_row[0]);
+		else
+			label(&row[0]) = (Tlabel) new_label();
+
+		// label subsequent pixels on this row.
+		for(int c=1; c<width; ++c)	{
+			int mylab = -1;
+
+			// inherit label from pixel on the left if we're in the same blob.
+			if(SAME(row[c],row[c-1]))
+				mylab = int(label(&row[c-1]));
+			for(int d=(K8_CONNECTIVITY?-1:0); d<1; ++d) {
+				// if we're in the same blob, inherit value from above pixel.
+				// if we've already been assigned, merge its label with ours.
+				if(SAME(row[c], last_row[c+d])) {
+					if(mylab>=0) merge(mylab, int(label(&last_row[c+d])));
+					else mylab = int(label(&last_row[c+d]));
+				}
+			}
+			if(mylab>=0) label(&row[c]) = static_cast<Tlabel>(mylab);
+			else label(&row[c]) = (Tlabel) new_label();
+
+			if(K8_CONNECTIVITY && SAME(row[c-1], last_row[c]))
+				merge(int(label(&row[c-1])), int(label(&last_row[c])));
+		}
+	}
+}
+
+template<class Tlabel>
+int ConnectedComponents::relabel_image(Tlabel *labelimg, int width, int height)
+{
+	int newtag = 0;
+
+	// Add a sequential ID to every root label
+	for (int id=0; id < int(labels.size()); ++id)
+		if (is_root_label(id))
+			labels[id].tag = newtag++;
+
+	// Create a label image using the ID of the root label of each component
+	for (int i = 0; i<width*height; ++i)
+		labelimg[i] = (Tlabel) labels[root_of(int(labelimg[i]))].tag;
+
+	// Return the number of IDs used
+	return newtag;
+}
+

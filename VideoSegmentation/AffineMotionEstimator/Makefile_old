@@ -1,0 +1,49 @@
+STD_ROOT = /usr/local
+VXL_ROOT = /usr/local/include
+FLTK_ROOT = /pkgs/fltk-1.1.7
+PB_TRACKER_ROOT = ../..
+ROOT = .
+
+FLUID = fluid
+
+CFLAGS = -D_DEBUG -O3 -Wall
+#CFLAGS = -D_DEBUG -O0 -g3 -Wall
+
+INCS = -I$(STD_ROOT)/include \
+       -I$(VXL_ROOT)/core \
+       -I$(VXL_ROOT)/vcl \
+       -I$(FLTK_ROOT)/include \
+       -I$(PB_TRACKER_ROOT)
+
+LIBS = -L$(STD_ROOT)/lib \
+       -L$(FLTK_ROOT)/lib
+
+C_SRCS = $(wildcard *.c)
+CPP_SRCS = $(wildcard *.cpp)
+FL_SRCS = $(wildcard *.fl)
+HEADERS = $(wildcard *.h)
+
+OBJS = $(C_SRCS:%.c=%.o) $(CC_SRCS:%.cc=%.o) $(CXX_SRCS:%.cxx=%.o) $(CPP_SRCS:%.cpp=%.o) $(FL_SRCS:%.fl=%.o)
+
+#OBJS  = $(C_SRCS:$(ROOT)/%.c=%.o) $(CC_SRCS:$(ROOT)/%.cc=%.o) $(CXX_SRCS:$(ROOT)/%.cxx=%.o) $(CPP_SRCS:$(ROOT)/%.cpp=%.o)
+#HEADERS = $(C_SRCS:%.c=%.h) $(CC_SRCS:%.cc=%.h) $(CXX_SRCS:%.cxx=%.h) $(CPP_SRCS:%.cpp=%.h) $(FL_SRCS:%.fl=%.h)
+
+OUT_FNAME = libAffineMotion.a
+
+%.o: %.c $(HEADERS)
+	$(CXX) -c $(CFLAGS) $(INCS) -o $@ $<
+
+%.o: %.cpp $(HEADERS)
+	$(CXX) -c $(CFLAGS) $(INCS) -o $@ $<
+
+%.o: %.cxx $(HEADERS)
+	$(CXX) -c $(CFLAGS) $(INCS) -o $@ $<
+
+%.cxx: %.fl
+	$(FLUID) -c $<
+
+$(OUT_FNAME): $(OBJS)
+	$(AR) -r $@ $(OBJS)
+
+clean:
+	-rm -f *.o $(OUT_FNAME)

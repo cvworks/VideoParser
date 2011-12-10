@@ -1,0 +1,90 @@
+% Math macros
+% César Crusius - 1999
+%--------------------------------------------------------------------------------------------
+\message{ - plain TeX Math macros}
+\makeatletter
+% Useful macros
+\def\unquad{\hskip-1em}
+\def\halfquad{\hskip.5em}
+% Parenthesis, sets and stuff
+\def\surround#1#2#3{\left#1#3\right#2}
+\def\set{\ifnextchar [{\set@id}{\set@def}}
+\def\set@id[#1]{{\cal #1}}
+\def\set@def#1{\surround\{\}{#1}}
+\def\kernel{\set[N]}
+% Accents
+\def\odot{\mathaccent"0017 }% Open dot
+% Functions
+\def\diag{\mathop{\rm diag}\nolimits}
+\def\exp#1{e^{#1}}
+\def\frac#1#2{\bgroup #1 \over #2 \egroup}
+% Operators
+\def\rank{\mathop{\rm rank}}
+\def\range{\bgroup\cal R\egroup}
+% Functions that accepts various formats, like \inv(A)
+\def\inv{\ifnextchar ({\inv@par}{\ifnextchar [{\inv@brace}{\inv@norm}}}
+\def\inv@norm#1{{#1}^{-1}}
+\def\inv@par(#1){\inv@norm{\surround(){#1}}}
+\def\inv@brace[#1]{\inv@norm{\surround[]{#1}}}
+\def\pinv{\ifnextchar ({\pinv@par}{\pinv@norm}}
+\def\pinv@norm#1{{{#1}^{+}}}
+\def\pinv@par(#1){\inv@norm{\surround(){#1}}}
+% Fields
+\def\realsprint{{\bf R}}
+\def\reals{\ifnextchar [{\reals@}{\realsprint}}
+\def\reals@[#1]{\ifnextchar [{\reals@@[#1]}{\realsprint^{#1}}}
+\def\reals@@[#1][#2]{\realsprint^{{#1}\times{#2}}}
+% Norms
+\def\norm{\ifnextchar [{\norm@id}{\norm@no}}
+\def\norm@id[#1]#2{\surround\|\|{#2}_{#1}}
+\def\norm@no#1{\surround\|\|{#1}}
+% Matrices. We already have \matrix and \pmatrix.
+\def\bmatrix#1{\surround[]{\matrix{#1}}}
+% Gather
+\def\gather#1{\ifnextchar *{\displaylines}{\gatherno{#1}}}
+\def\gatherno#1{\displ@y \tabskip\centering
+  \halign to\displaywidth{\hfil$\@lign\displaystyle{##}$\hfil
+  &\llap{$\@lign##$}\tabskip\z@skip\crcr
+  #1\crcr}}
+% multieqalign
+\def\multieqalign#1{\null\,\vcenter{\openup\jot\m@th
+  \ialign{\strut\hfil$\displaystyle{##}$&$\displaystyle{{}##}$\hfil&&
+        \strut\hfil$\displaystyle{##}$&$\displaystyle{{}##}$\hfil\crcr
+        #1\crcr}}\,}
+% Logic relations
+\def\implies{\quad\Longrightarrow\quad}
+\def\suchthat{\,:\,}
+% Proofs
+\def\qedsymbol{\setbox0=\vbox{\hbox{Q}}\vrule width\wd0 height \ht0 depth \dp0}
+\def\qed{\null\nobreak\hfill\qedsymbol\par}
+% Optimization problems
+% We define the \optimize macro to work as
+% \optimize[vars]{cost function}{constraint & range}{what to do with cost function}
+% Based on this macro we define \minimize and \maximize ones.
+\def\optimize{\ifnextchar [\@@ptimize\@ptimize}
+\def\@ptimize#1#2#3{\d@optimize{#1}{#2}{$\mathop{\rm #3}$}}
+\def\@@ptimize[#1]#2#3#4{\d@optimize{#2}{#3}{$\mathop{\rm #4}\limits_{#1}$}}
+\def\d@optimize#1#2#3{\setbox0=\vbox{\hbox{\rm subject to}}
+\vcenter{\m@th\ialign{\hskip\wd0\quad$##$\hfil&\qquad$##$\hfil\strut\crcr
+\omit\hbox to\wd0{#3\hss}\quad$#1$\hfil\strut\hbox{\vrule width0pt depth6pt height0pt}\crcr
+\hskip-\wd0\unquad\copy0\quad#2\crcr}}}
+\def\minimize{\ifnextchar [\@@minimize\@minimize}
+\def\@minimize#1#2{\optimize{#1}{#2}{minimize}}
+\def\@@minimize[#1]#2#3{\optimize[#1]{#2}{#3}{minimize}}
+\def\maximize{\ifnextchar [\@@maximize\@maximize}
+\def\@maximize#1#2{\optimize{#1}{#2}{maximize}}
+\def\@@maximize[#1]#2#3{\optimize[#1]{#2}{#3}{maximize}}
+% Labels and theorems and such
+\newcount\count@eq \count@eq=0
+\newcount\count@lem \count@lem=0
+\newcount\count@theo \count@theo=0
+\def\lemma{\advancecounter{count@lem}\par\noindent{\bf Lemma \the\count@lem:\ }}
+\def\theorem{\advancecounter{count@theo}\par\noindent{\bf Theorem \the\count@theo:\ }}
+\def\eqref#1{(\ref{#1})}
+% with eqlabel we have to backup a little for pdf links...
+\def\eqlabel#1{\advancecounter{count@eq}\null
+  \leavevmode\raise2\baselineskip\hbox to0pt{\l@bel{#1}{\the\count@eq}\hss}
+  \eqno{(\the\count@eq)}}
+% the end
+\makeatother
+\endinput

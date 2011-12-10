@@ -1,0 +1,13 @@
+s/btree_t/btreeDouble_t/g
+s/btree_nil/btreeDouble_nil/g
+s/btree_Nil/btreeDouble_Nil/g
+s/btree_free/btreeDouble_free/g
+s/btree_Free/btreeDouble_Free/g
+s/btree_setNil/btreeDouble_setNil/g
+s/btree_realloc/btreeDouble_realloc/g
+s/btree_cpy/btreeDouble_cpy/g
+s/btree_Cpy/btreeDouble_Cpy/g
+s/btree_newParent/btreeDouble_newParent/g
+s/btree_newNode/btreeDouble_newNode/g
+s/btree_addParent/btreeDouble_addParent/g
+s/btree_addNode/btreeDouble_addNode/g

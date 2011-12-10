@@ -1,0 +1,44 @@
+region_adjacency_set:
+
+idea of the algorithm:
+
+- trace contour of each region and check boundary pixels in 4-neighborhood
+- if label changes end section and begin new section
+
+act =  last contour pixel
+last = pre-last contour pixel
+                           144
+last_direction defined by  103
+                           223
+
+for next = first .. last pixel
+                              144
+    next_direction defined by 103
+                              223                               40000
+                                                                01230
+    state_number defined by [last_direction][next_direction] <- 00123
+           (number of pixels to check)                          03012
+                                                                02301
+
+    check offset in reverse order [next_direction][j] <- 2468 where offset 123
+                                                         2460              804
+                                                         8240              765
+                                                         6820
+                                                         4680
+        if label change 
+        	end section at last pixel and store last checked pixel
+        	start section at act  pixel and store act checked pixel
+
+	set last_label to actual label
+	set last checked pixel to act checked pixel
+
+    set last_direction to next_direction
+    set act pixel to next pixel 
+
+if last_label is defined
+    end section at last checked pixel
+
+return adjacency
+
+
+

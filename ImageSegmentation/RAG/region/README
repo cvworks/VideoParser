@@ -1,0 +1,117 @@
+regioninfo.c: region_contourByMaskOp(...)
+
+The function scans the outline of a region given a regionMap.
+There are two parameters:
+- n_gap: defines the size of the mask used for scanning
+	(the bigger the larger gaps in the contour are closed)
+- n_offset: defines an offset of the contour to the region-pixels
+	(0 means that the contour pixels are region pixels,
+	 1 means that the contour pixels are adjacenct to the region pixels,
+	 2.. leaves an offset to the region pixels)
+
+Given the two parameters, a mask is defined that is used for scanning the
+outline of the region (lookup defines ordering of checked pixels, offset
+defines step to next contour-pixel, ch_dir defines new direction of search):
+
+n_gap=0,n_offset=0:
+	
+	mask for direction (->): lookup: x1    offset: x-    ch_dir: x-
+                                          0             \             |
+
+n_gap=1,n_offset=0:
+
+	mask for direction (->): lookup: x45   offset: x--   ch_dir: x--
+                                          13            \-            |-
+                                          02            |\            ||
+
+n_gap=1,n_offset=1:
+
+	mask for direction (->): lookup: 645   offset: /--   ch_dir: ---
+                                         x13           x\-           x|-
+                                          02            |\            ||
+
+n_gap=2,n_offset=1:
+
+	mask for direction (->): lookup: G6AEF offset: /---- ch_dir: -----
+                                         x259D         x\---         x|---
+                                          148C          |\--          ||--
+                                          037B          |\--          ||--
+
+Design of mask has to prevent any loop-situation:
+
+Any design with ch_dir: !--  has some loop-situations because of the 
+                        x\-   up-direction (!). It must not be changed
+                         |\   (so correct would be a right-direction (-)).
+
+
+e.g. 534  is an illegal mask, because of the following case:
+     x12
+     0  
+            #####                                                      ..    
+           #     #      ..                                             ...
+            #    #    #... #            #   x#    #..  #    #.   #    #x 
+          ####..## -> ##x ##  -> ... -> ## .## -> ##.x## -> ##x ## -> ##
+             x..                           ..       .        .
+              .
+
+     /--- is an illegal mask, because of this case:
+     x\\
+      |              ####       ####          ####       ####       ####
+                    #    #     # z  #        #    #     #    #     #    #
+                    #.    #    #y ...#       #   x #    #..   #    # x   #
+               ->   .#.   # ->  #x.. # -> ->  # .. # ->  #.x  # ->  #    #
+     ####...##   ####x  ##    ##  .##       ##   ##    ## . ##    ##   ##
+        x..
+         .
+
+     /--- is an illegal mask, because of this case:
+     x\-
+      |\
+                    #####     #####     #####
+                   # ... #   # ..y #   #     #
+                    #... #    # x z#    #    #
+      ####...  -> ####x  # -> ##   # -> ##  x#    ##.
+         x..##          ##        ##       .##     ..x##
+          ..                               ...     ...
+
+     /--- is an illegal mask, because of this case:
+     x\--
+      |\
+                    ######     ######      ######      ######     ######
+                   # ...  #   # ..yz #    #      #    #      #   #      #
+                    #...  #    # x   #     #    x#     #...  #    #..   #
+      ####...# -> ####x  ## -> ##   ## ->  ##  .## ->  ##..x## -> ##.x ##
+         x...                                  ...       ..        ..
+          ..                                    ..
+
+     /- or /--  are illegal masks, because of this case:
+     x\    x\
+         
+          ###        ###                ###         ###
+         #   #      #   #              #   #       #   #
+        #    #  -> #    #   -> ... -> #    #   -> #    #
+	#   ###    # ..###            # .x###     #.x ###
+	###.       ###x               ###         ###
+          x.
+
+     /--- and /--- are illegal masks, because of this case:
+     x\       x\-
+      |        |
+
+          #####       #####            #####       #####       #####
+         #     #     #.    #          #  xy #     #     #     #     #
+        #     #     # ..  #          #    z#     #  .  #     # .   #
+        #    #      #zy..#           #    #      # ..x#      #..x #
+        ###...#  -> ###x  #  ->...-> ###   #  -> ###.  #  -> ###   #
+          x..
+           .
+
+     /-- is an illegal mask, because of this case:
+     x\-
+      |\
+
+       ###########  -> ... -> ########## -> ########## -> #########
+        x..      #                     #     ...     #      x..   #
+         ..      #             ..      #     .x      #       ..   #
+          #      #              #x     #      #      #     #      #
+          #######               #######       #######      #######

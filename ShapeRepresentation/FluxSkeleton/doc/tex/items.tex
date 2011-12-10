@@ -1,0 +1,8 @@
+\message{ - Itemizing macros}
+\makeatletter
+\newdimen\itemskip
+\itemskip=.5\baselineskip
+\def\item{\vskip\itemskip\par\noindent\hang\textindent}
+\def\itemize{\vskip\abovedisplayskip}
+\def\enditemize{\vskip\belowdisplayskip\par\noindent}
+\makeatother

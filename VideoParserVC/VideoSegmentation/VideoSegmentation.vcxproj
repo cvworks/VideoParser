@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FastDebug|Win32">
+      <Configuration>FastDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2DC4A09E-14EE-41AA-9214-E3F60EAF4A48}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>VideoSegmentation</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetFastDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\VideoSegmentation\AdaptiveBackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\affine-warp.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\AffineMotionEstimator.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\basicUtils.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\ctf-image.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\derivatives.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\gm2.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\outliers.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\planar.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\pyramid.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-affine.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-translation.h" />
+    <ClInclude Include="..\..\VideoSegmentation\AffineMotionEstimator\robust.h" />
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundFeatureSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundStats.h" />
+    <ClInclude Include="..\..\VideoSegmentation\BackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvFGDBackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvGaussBackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\FeatureGridSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\FSMBackgroundSubtractor\FSMBackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\blob.h" />
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\block.h" />
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\common.h" />
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\graph.h" />
+    <ClInclude Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\GraphcutBackgroundSubtractor.h" />
+    <ClInclude Include="..\..\VideoSegmentation\MotionEstimator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\VideoSegmentation\AdaptiveBackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\affine-warp.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\AffineMotionEstimator.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\basicUtils.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\ctf-image.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\derivatives.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\gm2.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\outliers.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\pyramid.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-affine.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\AffineMotionEstimator\robust-translation.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\BackgroundFeatureSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\BackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvFGDBackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\CvBackgroundSubtractor\CvGaussBackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\FSMBackgroundSubtractor\FSMBackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\graph.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\GraphcutBackgroundSubtractor.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\GraphcutBackgroundSubtractor\maxflow.cpp" />
+    <ClCompile Include="..\..\VideoSegmentation\MotionEstimator.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

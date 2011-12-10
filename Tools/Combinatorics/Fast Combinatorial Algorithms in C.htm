@@ -1,0 +1,250 @@
+
+<!-- saved from url=(0070)http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Fast Combinatorial Algorithms in C</title>
+
+<meta name="author" content="Siegfried Koepf">
+<meta name="description" content="Fast Combinatorial Algorithms in C, Open Source Project">
+<meta name="keywords" content="Siegfried Koepf,Koepf&#39;s Editions,computer projects,combinatorial algorithms,in C,cobinatorics,combinations,permutations,variations,necklaces,partitions">
+<meta name="robots" content="index,nofollow">
+</head>
+
+<body bgcolor="#f6f6ff" text="#000000" link="#0000ff" vlink="#800080" alink="#ff0000">
+
+<p>
+<font color="#0000c0" size="+2"><u><b>Fast Combinatorial Algorithms in C</b></u></font><br>
+Siegfried Koepf, February 2009
+</p>
+
+<p>
+<font color="#0000c0" size="+1"><u>Introduction</u></font><br>
+This is not an introduction to the functionality or analysis of combinatorial algorithms. This subject has been investigated and discussed in detail by numerous experts. Really excellent technical literature exists on this topic and a small <a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#literature">selection of in part freely available books</a> is listed below. The programs published here were also highly inspired by these writings.
+</p>
+
+<p>
+The purpose of this site is to provide some combinatorial algorithms as C code. I wrote these programs in recent years in connection with my practical and theoretical work as a composer and they turned out to be extremely fast and useful tools.
+</p>
+
+<p>
+These programs are about <i>exhaustive generation</i> of classical combinatorial objects in a well-defined order. They all follow the same paradigm: they generate the desired sequences one after the other and make them available to the calling program for further processing. We start by calling a function
+</p>
+
+<p>
+<i>gen_xxx_init(...)</i>
+</p>
+
+<p>
+(where <i>xxx</i> represents the abbreviated name of the related combinatorial class). This function examines the passed arguments for some special cases and writes the first instance of the desired patterns to an array. After the evaluation of the return value the function
+</p>
+
+<p>
+<i>gen_xxx_next(...)</i>
+</p>
+
+<p>
+is called in a loop to iteratively compute lexicographic successors until the list of objects has been entirely enumerated.
+</p>
+
+<p>
+"In general, the lexicographic successor of any combinatorial pattern <i>a</i><sub>1</sub>...<i>a<sub>n</sub></i> is obtainable by a three-step procedure:<br>
+1) Find the largest <i>j</i> such that <i>a<sub>j</sub></i> can be increased.<br>
+2) Increase <i>a<sub>j</sub></i> by the smallest feasible amount.<br>
+3) Find the lexicographically least way to extend the new <i>a</i><sub>1</sub>...<i>a<sub>j</sub></i> to a complete pattern"<a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#_ftn_01" name="_ftnref_01">(1)</a>.
+</p>
+
+<p>
+The comments in the source files refer frequently to this paradigm. However, in some situations it will be slightly modified, for example by enumerating in reverse lexicographic order (see <a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#Partitions"><i>Partitions</i></a>) or in colex order (see <a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#k-Partitions"><i>k-partitions</i></a>). Another exception is the program for generating <a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#Permutations"><i>Permutations with repetitions</i></a>. Here the function <i>gen_perm_rep_init</i> does not initialize the given array. This has to be done in advance by the calling program, at which point the elements must be arranged in increasing order to obtain all possible permutations. By the way, if these elements are also distinct, this algorithm generates all <i>Permutations without repetitions</i>.
+</p>
+
+<p>
+<font color="#0000c0" size="+1"><u>Code</u></font><br>
+All programs are written in ANSI-C. They work iteratively and in-place. Two files are provided for each algorithm: one of them containing the actual combinatorial code and a second one as an example of its usage. Additionally, all programs must include the header file <a href="http://www.aconnect.de/friends/editions/computer/generate/_generate.h" target="_blank"><tt>_generate.h</tt></a>. Further information and appropriate references are to be found in the individual C files.
+</p>
+
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      k-combinations without repetition in lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/comb_norep.c" target="_blank"><tt>          comb_norep.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/comb_norep_example.c" target="_blank"><tt>  comb_norep_example.c</tt></a></td></tr>
+<tr><td rowspan="11" valign="top"><b><tt>Example with<br>
+<i>n</i> = 5, <i>k</i> = 3</tt></b></td></tr>
+<tr><td><tt>0 1 2</tt></td></tr>
+<tr><td><tt>0 1 3</tt></td></tr>
+<tr><td><tt>0 1 4</tt></td></tr>
+<tr><td><tt>0 2 3</tt></td></tr>
+<tr><td><tt>0 2 4</tt></td></tr>
+<tr><td><tt>0 3 4</tt></td></tr>
+<tr><td><tt>1 2 3</tt></td></tr>
+<tr><td><tt>1 2 4</tt></td></tr>
+<tr><td><tt>1 3 4</tt></td></tr>
+<tr><td><tt>2 3 4</tt></td></tr>
+</tbody></table>
+</p>
+
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      k-combinations with repetition in lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/comb_rep.c" target="_blank"><tt>            comb_rep.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/comb_rep_example.c" target="_blank"><tt>    comb_rep_example.c</tt></a></td></tr>
+<tr><td rowspan="11" valign="top"><b><tt>Example with<br>
+<i>n</i> = 3, <i>k</i> = 3</tt></b></td></tr>
+<tr><td><tt>0 0 0</tt></td></tr>
+<tr><td><tt>0 0 1</tt></td></tr>
+<tr><td><tt>0 0 2</tt></td></tr>
+<tr><td><tt>0 1 1</tt></td></tr>
+<tr><td><tt>0 1 2</tt></td></tr>
+<tr><td><tt>0 2 2</tt></td></tr>
+<tr><td><tt>1 1 1</tt></td></tr>
+<tr><td><tt>1 1 2</tt></td></tr>
+<tr><td><tt>1 2 2</tt></td></tr>
+<tr><td><tt>2 2 2</tt></td></tr>
+</tbody></table>
+</p>
+
+<a name="Permutations"></a>
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      Permutations with repetition in lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/perm_rep.c" target="_blank"><tt>            perm_rep.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/perm_rep_example.c" target="_blank"><tt>    perm_rep_example.c</tt></a></td></tr>
+<tr><td rowspan="13" valign="top"><b><tt>Example with<br>
+<i>n</i> = 4, <i>{1, 2, 2, 3}</i></tt></b></td></tr>
+<tr><td><tt>1 2 2 3</tt></td></tr>
+<tr><td><tt>1 2 3 2</tt></td></tr>
+<tr><td><tt>1 3 2 2</tt></td></tr>
+<tr><td><tt>2 1 2 3</tt></td></tr>
+<tr><td><tt>2 1 3 2</tt></td></tr>
+<tr><td><tt>2 2 1 3</tt></td></tr>
+<tr><td><tt>2 2 3 1</tt></td></tr>
+<tr><td><tt>2 3 1 2</tt></td></tr>
+<tr><td><tt>2 3 2 1</tt></td></tr>
+<tr><td><tt>3 1 2 2</tt></td></tr>
+<tr><td><tt>3 2 1 2</tt></td></tr>
+<tr><td><tt>3 2 2 1</tt></td></tr>
+</tbody></table>
+</p>
+
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      Variations with repetition in lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/vari_rep.c" target="_blank"><tt>            vari_rep.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/vari_rep_example.c" target="_blank"><tt>    vari_rep_example.c</tt></a></td></tr>
+<tr><td rowspan="9" valign="top"><b><tt>Example with<br>
+<i>m</i> = 2, <i>n</i> = 3</tt></b></td></tr>
+<tr><td><tt>0 0 0</tt></td></tr>
+<tr><td><tt>0 0 1</tt></td></tr>
+<tr><td><tt>0 1 0</tt></td></tr>
+<tr><td><tt>0 1 1</tt></td></tr>
+<tr><td><tt>1 0 0</tt></td></tr>
+<tr><td><tt>1 0 1</tt></td></tr>
+<tr><td><tt>1 1 0</tt></td></tr>
+<tr><td><tt>1 1 1</tt></td></tr>
+</tbody></table>
+</p>
+
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      Necklaces in lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/neck.c" target="_blank"><tt>                neck.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/neck_example.c" target="_blank"><tt>        neck_example.c</tt></a></td></tr>
+<tr><td rowspan="15" valign="top"><b><tt>Example with<br>
+<i>m</i> = 2, <i>n</i> = 6</tt></b></td></tr>
+<tr><td><tt>0 0 0 0 0 0</tt></td></tr>
+<tr><td><tt>0 0 0 0 0 1</tt></td></tr>
+<tr><td><tt>0 0 0 0 1 1</tt></td></tr>
+<tr><td><tt>0 0 0 1 0 1</tt></td></tr>
+<tr><td><tt>0 0 0 1 1 1</tt></td></tr>
+<tr><td><tt>0 0 1 0 0 1</tt></td></tr>
+<tr><td><tt>0 0 1 0 1 1</tt></td></tr>
+<tr><td><tt>0 0 1 1 0 1</tt></td></tr>
+<tr><td><tt>0 0 1 1 1 1</tt></td></tr>
+<tr><td><tt>0 1 0 1 0 1</tt></td></tr>
+<tr><td><tt>0 1 0 1 1 1</tt></td></tr>
+<tr><td><tt>0 1 1 0 1 1</tt></td></tr>
+<tr><td><tt>0 1 1 1 1 1</tt></td></tr>
+<tr><td><tt>1 1 1 1 1 1</tt></td></tr>
+</tbody></table>
+</p>
+
+<a name="Partitions"></a>
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      Partitions in reverse lexicographic order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/part.c" target="_blank"><tt>                part.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/part_example.c" target="_blank"><tt>        part_example.c</tt></a></td></tr>
+<tr><td rowspan="12" valign="top"><b><tt>Example with<br>
+<i>n</i> = 6</tt></b></td></tr>
+<tr><td><tt>6</tt></td></tr>
+<tr><td><tt>5 1</tt></td></tr>
+<tr><td><tt>4 2</tt></td></tr>
+<tr><td><tt>4 1 1</tt></td></tr>
+<tr><td><tt>3 3</tt></td></tr>
+<tr><td><tt>3 2 1</tt></td></tr>
+<tr><td><tt>3 1 1 1</tt></td></tr>
+<tr><td><tt>2 2 2</tt></td></tr>
+<tr><td><tt>2 2 1 1</tt></td></tr>
+<tr><td><tt>2 1 1 1 1</tt></td></tr>
+<tr><td><tt>1 1 1 1 1 1</tt></td></tr>
+</tbody></table>
+</p>
+
+<a name="k-Partitions"></a>
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+<tbody><tr><td colspan="2"><font color="#0000c0" size="+1">                                                                      k-partitions in colex order</font></td></tr>
+<tr><td valign="top"><b><tt>Source files</tt></b></td><td><a href="http://www.aconnect.de/friends/editions/computer/generate/k_part.c" target="_blank"><tt>              k_part.c</tt></a><br>
+                                                          <a href="http://www.aconnect.de/friends/editions/computer/generate/k_part_example.c" target="_blank"><tt>      k_part_example.c</tt></a></td></tr>
+<tr><td rowspan="10" valign="top"><b><tt>Example with<br>
+<i>n</i> = 10, <i>k</i> = 4</tt></b></td></tr>
+<tr><td><tt>7 1 1 1</tt></td></tr>
+<tr><td><tt>6 2 1 1</tt></td></tr>
+<tr><td><tt>5 3 1 1</tt></td></tr>
+<tr><td><tt>4 4 1 1</tt></td></tr>
+<tr><td><tt>5 2 2 1</tt></td></tr>
+<tr><td><tt>4 3 2 1</tt></td></tr>
+<tr><td><tt>3 3 3 1</tt></td></tr>
+<tr><td><tt>4 2 2 2</tt></td></tr>
+<tr><td><tt>3 3 2 2</tt></td></tr>
+</tbody></table>
+</p>
+
+<p>
+<font color="#0000c0" size="+1"><u>Bugs</u></font><br>
+Bug reports are welcome <a href="javascript:void(0)" onclick="window.open(&#39;http://mail.google.com/mail/u/0/?view=cm&amp;fs=1&amp;tf=1&amp;to=s.koepf[at]aconnect[dot]de&#39;,&#39;Compose new message&#39;,&#39;width=640,height=480&#39;)" rel="noreferrer">here</a>.
+</p>
+
+<p>
+<font color="#0000c0" size="+1"><u>Download und license</u></font><br>
+The C sources on this site are published under the <i>GNU General Public License version 3</i>, see the file <a href="http://www.aconnect.de/friends/editions/computer/generate/COPYING" target="_blank"><tt>COPYING</tt></a>.<br>
+They can be downloaded here: <a href="http://www.aconnect.de/friends/editions/computer/generate/generate.zip"><tt>generate.zip</tt></a>.
+</p>
+
+<a name="literature"></a>
+<p>
+<font color="#0000c0" size="+1"><u>Additional reading material</u></font><br>
+Arndt, Jörg: <i>Matters Computational: ideas, algorithms, source code.</i> 2009. URL: http://www.jjj.de/fxt (26.04.2009).<br>
+Knuth, Donald E.: <i>The Art of Computer Programming, Vol. 4: Fascicle 2. Generating All Tuples and Permutations.</i> Upper Saddle River, NJ 2005.<br>
+Knuth, Donald E.: <i>The Art of Computer Programming, Vol. 4: Fascicle 3. Generating All Combinations and Partitions.</i> Upper Saddle River, NJ 2005.<br>
+Knuth, Donald E.: <i>The Art of Computer Programming, Vol. 4: Fascicle 4. History of Combinatorial Generation.</i> Upper Saddle River, NJ 2006.<br>
+Nijenhuis Albert/Wilf, Herbert: <i>Combinatorial Algorithms.</i> New York 1978. URL: http://www.math.upenn.edu/~wilf (02.02.2009).<br>
+Ruskey, Frank: <i>Combinatorial Generation.</i> Working Version 2003. URL: http://www.1stworks.com/ref/RuskeyCombGen.pdf (02.02.2009).<br>
+</p>
+
+<p>
+<font size="-1">
+<a href="http://www.aconnect.de/friends/editions/computer/combinatoricode_e.htm#_ftnref_01" name="_ftn_01">(1)</a> Knuth, Donald E.: <i>The Art of Computer Programming, Vol. 4: Fascicle 2. Generating All Tuples and Permutations.</i> Upper Saddle River, NJ 2005, 40.
+</font>
+</p>
+
+<p>
+<font color="#d00000">Copyright (c) 2009 by Siegfried Koepf</font>
+</p>
+
+<p>
+(Last update: 22.08.2009)
+</p>
+
+<center><a href="http://www.aconnect.de/friends/editions/writings/writings.htm">[back to KOEPF'S WRITINGS]</a></center>
+
+
+</body></html>

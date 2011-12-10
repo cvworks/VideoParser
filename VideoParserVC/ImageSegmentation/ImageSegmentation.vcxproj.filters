@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\FHSegmenter">
+      <UniqueIdentifier>{cd0d6168-44f6-47a5-b4d5-ac11c4c6e61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FHSegmenter">
+      <UniqueIdentifier>{710f2a38-4128-4ca5-8399-27d293d9c6c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LevelSetMethod">
+      <UniqueIdentifier>{18e96b89-4644-43c3-9c2f-acb43eb36639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LevelSetMethod">
+      <UniqueIdentifier>{30bddf57-2719-486c-ad0c-0a7c8526f337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TurboPixels">
+      <UniqueIdentifier>{c722a752-d9b9-4163-84f6-b9cd7ddf5c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TurboPixels">
+      <UniqueIdentifier>{92276bd7-7b81-4158-bf7c-10c2d5264157}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ImageSegmentation\ImageSegmenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\CvPyrImageSegmenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\segment-image.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\FHImageSegmenter.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\filter.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\imconv.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\misc.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\pnmfile.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\convolve.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\image.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\imutil.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\RegionAnalyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\Region.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\RegionPyramid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\LevelSetMethod\FMM_Callback_API.h">
+      <Filter>Header Files\LevelSetMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\LevelSetMethod\FMM_Core.h">
+      <Filter>Header Files\LevelSetMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\LevelSetMethod\FMM_Heap.h">
+      <Filter>Header Files\LevelSetMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\LevelSetMethod\lsm_fast_marching_method.h">
+      <Filter>Header Files\LevelSetMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\TurboPixels\TurboPixels.h">
+      <Filter>Header Files\TurboPixels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FeatureDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\BlobFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\Blob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ImageSegmentation\FHSegmenter\FHGraphSegmenter.h">
+      <Filter>Header Files\FHSegmenter</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ImageSegmentation\ImageSegmenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\CvPyrImageSegmenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\FHSegmenter\FHImageSegmenter.cpp">
+      <Filter>Source Files\FHSegmenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\RegionAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\LevelSetMethod\FMM_Core.cpp">
+      <Filter>Source Files\LevelSetMethod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\LevelSetMethod\FMM_Heap.cpp">
+      <Filter>Source Files\LevelSetMethod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\LevelSetMethod\lsm_FMM_field_extension2d.cpp">
+      <Filter>Source Files\LevelSetMethod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\TurboPixels\TurboPixels.cpp">
+      <Filter>Source Files\TurboPixels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\FeatureDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\BlobFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageSegmentation\Blob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

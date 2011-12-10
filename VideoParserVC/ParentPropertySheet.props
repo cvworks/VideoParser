@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <RootDir>$(SolutionDir)..</RootDir>
+    <LibRoot>$(SolutionDir)..\..\..\Libraries</LibRoot>
+    <OpenCVVersion>231</OpenCVVersion>
+    <OpenCVConfiguration>$(Configuration)</OpenCVConfiguration>
+    <OpenCVDir>$(LibRoot)\OpenCV2.3.1</OpenCVDir>
+    <OpenCVBuild>$(OpenCVDir)\vs2010</OpenCVBuild>
+    <OpenCVIncSnap>$(OpenCVDir)/.;$(OpenCVDir)/include;$(OpenCVDir)/include/opencv;$(OpenCVDir)/modules/core/include;$(OpenCVDir)/modules/flann/include;$(OpenCVDir)/modules/imgproc/include;$(OpenCVDir)/modules/video/include;$(OpenCVDir)/modules/highgui/include;$(OpenCVDir)/modules/ml/include;$(OpenCVDir)/modules/calib3d/include;$(OpenCVDir)/modules/features2d/include;$(OpenCVDir)/modules/objdetect/include;$(OpenCVDir)/modules/legacy/include;$(OpenCVDir)/modules/contrib/include;</OpenCVIncSnap>
+    <OpenCVIncDist>$(OpenCVDir)\build\include</OpenCVIncDist>
+    <OpenCVInc>$(OpenCVIncDist)</OpenCVInc>
+    <OpenCVLib>$(OpenCVBuild)\lib\$(OpenCVConfiguration);$(OpenCVDir)\3rdparty\lib\$(OpenCVConfiguration)</OpenCVLib>
+    <OpenCVBin>$(OpenCVBuild)\bin\$(OpenCVConfiguration)</OpenCVBin>
+    <FLTKDir>$(LibRoot)\fltk-1.1.10</FLTKDir>
+    <VXLInc>$(LibRoot)\vxl-1.14.0</VXLInc>
+    <VXLBin>$(VXLInc)\bin</VXLBin>
+    <VXLLib>$(VXLBin)\lib\$(Configuration)</VXLLib>
+    <FLTKLib>$(FLTKDir)\lib</FLTKLib>
+    <BoostDir>$(LibRoot)\boost_1_48_0</BoostDir>
+    <BoostInc>$(BoostDir)\boost</BoostInc>
+    <BoostLib>$(BoostDir)\stage\lib</BoostLib>
+    <LEMONDir>$(LibRoot)\lemon-1.2.3</LEMONDir>
+    <LEMONInc>$(LEMONDir);$(LEMONDir)\vs2010</LEMONInc>
+    <LEMONLib>$(LEMONDir)\vs2010\lemon\$(Configuration)</LEMONLib>
+    <MySQLDir>$(LibRoot)\MySQLCCon</MySQLDir>
+    <MySQLInc>$(MySQLDir)\include</MySQLInc>
+    <MySQLLib>$(MySQLDir)\lib\opt</MySQLLib>
+    <MySQLBin>$(MySQLLib)</MySQLBin>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir>$(SolutionDir)..\..\..\Builds\$(SolutionName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\..\Builds\$(SolutionName)\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions>/D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 
+/D _CRT_SECURE_NO_DEPRECATE
+/DCOMPILE_DBG_STATEMENTS %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(VXLBin)\vcl;$(VXLInc)\vcl;$(VXLBin)\core;$(VXLInc)\core;$(OpenCVInc);$(LEMONInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libmysql.lib;mysqlclient.lib;mysys.lib;Tools.lib;GraphTheory.lib;MachineLearning.lib;ImageSegmentation.lib;ObjectTracking.lib;VideoSegmentation.lib;ShapeRepresentation.lib;ShapeParsing.lib;ShapeMatching.lib;ObjectRecognition.lib;VideoRepresentation.lib;VideoParser.lib;lemon.lib;Vfw32.lib;fltkgl$(FLTKLibSubfix).lib;fltk$(FLTKLibSubfix).lib;opencv_core$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_flann$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_imgproc$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_highgui$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_ml$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_video$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_objdetect$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_features2d$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_calib3d$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_legacy$(OpenCVVersion)$(OpenCVLibSubfix).lib;opencv_contrib$(OpenCVVersion)$(OpenCVLibSubfix).lib;vsl.lib;vgl.lib;vbl_io.lib;v3p_netlib.lib;vnl_algo.lib;vnl_io.lib;vil_algo.lib;vul_io.lib;mpeg2.lib;vo.lib;vbl.lib;vul.lib;vnl.lib;geotiff.lib;vil.lib;vcl.lib;jpeg.lib;tiff.lib;png.lib;z.lib;opengl32.lib;glu32.lib;wsock32.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(OpenCVLib);$(FLTKLib);$(VXLLib);$(MySQLLib);$(LEMONLib);$(BoostLib);C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="RootDir">
+      <Value>$(RootDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LibRoot">
+      <Value>$(LibRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVVersion">
+      <Value>$(OpenCVVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVConfiguration">
+      <Value>$(OpenCVConfiguration)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVDir">
+      <Value>$(OpenCVDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVBuild">
+      <Value>$(OpenCVBuild)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVIncSnap">
+      <Value>$(OpenCVIncSnap)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVIncDist">
+      <Value>$(OpenCVIncDist)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVInc">
+      <Value>$(OpenCVInc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVLib">
+      <Value>$(OpenCVLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVBin">
+      <Value>$(OpenCVBin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FLTKDir">
+      <Value>$(FLTKDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="VXLInc">
+      <Value>$(VXLInc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="VXLBin">
+      <Value>$(VXLBin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="VXLLib">
+      <Value>$(VXLLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FLTKLib">
+      <Value>$(FLTKLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BoostDir">
+      <Value>$(BoostDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BoostInc">
+      <Value>$(BoostInc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BoostLib">
+      <Value>$(BoostLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LEMONDir">
+      <Value>$(LEMONDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LEMONInc">
+      <Value>$(LEMONInc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LEMONLib">
+      <Value>$(LEMONLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MySQLDir">
+      <Value>$(MySQLDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MySQLInc">
+      <Value>$(MySQLInc)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MySQLLib">
+      <Value>$(MySQLLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MySQLBin">
+      <Value>$(MySQLBin)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

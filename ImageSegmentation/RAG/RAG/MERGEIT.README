@@ -1,0 +1,33 @@
+ABSTRACT ALGORITHM FOR MERGE-ITERATION
+
+construct MergeGraph from <graph>:
+
+FORALL_NODES node in <graph> {
+	new node with label <node>
+}
+FORALL_EDGES edge in <graph> {
+	new edge connecting nodes in MergeGraph that have node-labels
+		connected by <edge> in <graph>
+}
+FORALL_NODES node beginning with last node in MergeGraph {
+	reduce node and label introduced edges by deleted edge-labels and
+		<node>
+}
+
+initialize MergeList:
+
+compute next MergeList:
+
+FORALL_MERGES(merge,prev_merge_list) {
+
+	adjset = compute list of nodes adjacent to <merge> ;
+	adjset_edges = compute edges connecting <merge> and nodes in <adjset>
+	last   = last node in <merge>
+
+	FORALL_NODES(r, successors_of <last> AND member in <adjset>) {
+		add-to <merge> += node-list associated with edge to <r>
+		add-to <merge> += <r>
+		
+		insert new merge dependent on size of merge
+	}
+}

@@ -1,0 +1,40 @@
+\I\X26:ArcLineSeg definition\X
+\U23.
+\I\X27, 28:ArcLineSeg implementation\X
+\U24.
+\I\X25:ArcLineSeg includes\X
+\U23.
+\I\X23:\.{ArcLineSeg.hpp }\X
+\I\X14:Curve class definition\X
+\U12.
+\I\X13:Curve includes\X
+\U12.
+\I\X12:\.{Curve.hpp }\X
+\I\X17:CurveSeg class definition\X
+\U15.
+\I\X16:CurveSeg includes\X
+\U15.
+\I\X15:\.{CurveSeg.hpp }\X
+\I\X21:DiscreteSegCurve definition\X
+\U18.
+\I\X22:DiscreteSegCurve implementation\X
+\U19.
+\I\X20:DiscreteSegCurve includes\X
+\U18.
+\I\X18:\.{DiscreteSegCurve.hpp }\X
+\I\X6:Point class definition\X
+\U4.
+\I\X4:\.{Point.hpp }\X
+\I\X31:\.{SG.hpp }\X
+\I\X10:Vector class definition\X
+\U8.
+\I\X8:\.{Vector.hpp }\X
+\I\X32:global includes\X
+\U31.
+\I\X33:global typedefs\X
+\U31.
+\I\X5:point include files\X
+\U4.
+\I\X9:vector include files\X
+\U8.
+

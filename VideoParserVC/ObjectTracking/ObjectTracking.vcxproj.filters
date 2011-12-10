@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\KalmanBlobTracker">
+      <UniqueIdentifier>{b0030476-59a9-4369-9a76-ed9126de1b5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\KalmanBlobTracker">
+      <UniqueIdentifier>{66450b73-1f5e-4e57-a2b6-655198ddef10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MinCutBlobTracker">
+      <UniqueIdentifier>{c74c662e-f3f8-4773-b1fb-923b1b9def25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MinCutBlobTracker">
+      <UniqueIdentifier>{04d5653b-f91e-4dbf-bdfa-984f2d92c91c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\FilteredPoint.h">
+      <Filter>Header Files\KalmanBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\Target.h">
+      <Filter>Header Files\KalmanBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\Trace.h">
+      <Filter>Header Files\KalmanBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\BlobTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\KalmanBlobTracker\KalmanBlobTracker.h">
+      <Filter>Header Files\KalmanBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\MinCutBlobTracker.h">
+      <Filter>Header Files\MinCutBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\CCExtractor.h">
+      <Filter>Header Files\MinCutBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\CommonUtilities.h">
+      <Filter>Header Files\MinCutBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\MinCutBlobTracker\Observation.h">
+      <Filter>Header Files\MinCutBlobTracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectTracking\BlobTrackerDBManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\FilteredPoint.cpp">
+      <Filter>Source Files\KalmanBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\Target.cpp">
+      <Filter>Source Files\KalmanBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\Trace.cpp">
+      <Filter>Source Files\KalmanBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\BlobTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\KalmanBlobTracker\KalmanBlobTracker.cpp">
+      <Filter>Source Files\KalmanBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\MinCutBlobTracker.cpp">
+      <Filter>Source Files\MinCutBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\CCExtractor.cpp">
+      <Filter>Source Files\MinCutBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\MinCutBlobTracker\CommonUtilities.cpp">
+      <Filter>Source Files\MinCutBlobTracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectTracking\BlobTrackerDBManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

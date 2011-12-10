@@ -1,0 +1,92 @@
+% Page layout configuration
+% César Crusius - 1998
+%--------------------------------------------------------------------------------------------
+% Each page has a header and a footer (possibly empty), differentiated between even and odd
+% pages. The user can define new page styles using the command \newstyle. The command takes
+% two arguments: the new style name and the commands to execute it. After the definition,
+% you can specify the current style by using \pagestyle, or specify this page style only by 
+% using \thispagestyle.
+\message{- Plain TeX page style configuration}
+\makeatletter
+\def\@globalstyle{plain}
+\def\@pagestyle{plain}
+\def\pagestyle#1{\global\def\@globalstyle{#1}\thispagestyle{#1}}
+\def\thispagestyle#1{\global\def\@pagestyle{#1}}
+\def\newstyle#1#2{\expandafter\def\csname style#1\endcsname{#2}}
+% The empty page style clear header and footer
+\newstyle{empty}{%
+  \global\def\lheader{}%
+  \global\def\rheader{}%
+  \global\def\lfooter{}%
+  \global\def\rfooter{}}
+% The 'plain' page style has the page number centered at the footer
+\newstyle{plain}{%
+  \global\def\lheader{}%
+  \global\def\rheader{}%
+  \global\def\lfooter{\line{\hfil\rm\the\pageno\hfil}}%
+  \global\def\rfooter{\line{\hfil\rm\the\pageno\hfil}}}
+%--------------------------------------------------------------------------------------------
+% Page dimensions. \headersize is the distance from the top of the text and the baseline of
+% the header, and \footsize is the distance from the bottom of the text and the baseline of
+% the footer.
+\newdimen\headersize \headersize=1cm
+\newdimen\footersize \footersize=1cm
+\newdimen\actualhsize \actualhsize=\hsize
+%--------------------------------------------------------------------------------------------
+% Modifying page dimensions. \leftmargin and \topmargin don't need to know the actual paper size.
+% \rightmargin and \bottommargin require the page width and height respectively. The top and
+% bottom margins are in respect to the text body, not headers and footers.
+\def\leftmargin#1{\global\advance\actualhsize\hoffset%
+  \global\hoffset=#1\global\advance\hoffset-1in%
+  \global\advance\actualhsize-1\hoffset%
+  \setcols{\columns}}
+\def\topmargin#1{\global\advance\vsize\voffset%
+  \global\voffset=#1\global\advance\voffset-1in%
+  \global\advance\vsize-1\voffset}
+\def\rightmargin#1#2{% #1 is margin, #2 is paper width
+  \global\actualhsize=#1\global\multiply\actualhsize\m@ne%
+  \global\advance\actualhsize-1in%
+  \global\advance\actualhsize-1\hoffset\global\advance\actualhsize#2%
+  \setcols{\columns}}
+\def\bottommargin#1#2{% #1 is margin, #2 is paper height
+  \global\vsize=#1\global\multiply\vsize\m@ne%
+  \global\advance\vsize-1in%
+  \global\advance\vsize-1\voffset\global\advance\vsize#2}
+%--------------------------------------------------------------------------------------------
+% Multi columns.
+% The page is stored in colbox(i,ii,ii,iv). When printed, they're separated by colsep.
+\newcount\columns \columns=\@ne
+\newcount\thiscol \thiscol=\@ne
+\newdimen\colsep  \colsep=1cm
+\newbox\colboxi \newbox\colboxii \newbox\colboxiii \newbox\colboxiv
+% Do not modify the parameters directly. Instead, use the following commands
+\def\hsiz@{\global\hsize=\actualhsize\advance\columns\m@ne\dimen\z@=-\colsep%
+  \multiply\dimen\z@\columns\advance\columns\@ne%
+  \global\advance\hsize\dimen\z@%
+  \global\divide\hsize\columns}
+\def\setcols#1{\global\columns=#1\hsiz@}
+\def\setsep#1{\global\colsep=#1\hsiz@}
+%--------------------------------------------------------------------------------------------
+% The output routine
+\output{\global\setbox\csname colbox\romannumeral\thiscol\endcsname \vbox{\pagebody}
+\ifnum\columns>\thiscol% if not last page column just update the column number
+\global\advance\thiscol\@ne%
+\else%
+\csname style\@pagestyle\endcsname%                                      use page style
+\shipout\vbox{\hsize=\actualhsize\@printheader\@allcolumns\@printfooter}%output page
+\thispagestyle{\@globalstyle}%                                           restore global page style
+\global\advance\pageno by\@ne%                                           advance page number
+\global\thiscol=\@ne%
+\fi}
+\def\@allcolumns{\hbox to\hsize{\vbox to\vsize{\unvbox\colboxi}%
+  \hskip\colsep\vbox to\vsize{\unvbox\colboxii}%
+  \hskip\colsep\vbox to\vsize{\unvbox\colboxiii}%
+  \hskip\colsep\vbox to\vsize{\unvbox\colboxiv}\hss}}
+\def\@printheader{\vbox to\z@{\vskip-\headersize%
+    \line{\ifodd\pageno\rheader\else\lheader\fi}%
+    \vss}\nointerlineskip}
+\def\@printfooter{\vbox to\z@{\vskip\footersize%
+    \line{\ifodd\pageno\rfooter\else\lfooter\fi}\vss}}
+% end
+\makeatother
+\endinput

@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\BoostMap">
+      <UniqueIdentifier>{72f69b48-1bea-44ca-bf9c-a010b5318c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BoostMap">
+      <UniqueIdentifier>{95cf7994-41c9-46b7-878b-fbe19afb182d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EM">
+      <UniqueIdentifier>{c76c5252-3dce-44fa-aa36-9007d59f7fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EM">
+      <UniqueIdentifier>{9bf1fcb4-00ee-4fc2-b3fa-b6ba1f346aa7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\embedding_optimization.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\embeddings.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\vp_tree.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\algebra.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\auxiliaries.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\base_interpreter.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\definitions.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\drawing.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\drawing_temp.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\general_templates.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\image.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\io_aux.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\matrix.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\memory.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\memory_classes.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\pc_aux.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\precomputed.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_algo.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_algo_templates.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_image.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\undefine.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\v_types.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\wrapper.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_kdd.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_map.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_nn.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boosting.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\refinement.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\uci_learning.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\spline.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\vplatform.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\angles.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\spline_auxiliaries.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\local_data.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\BoostMapEmbedder.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\FeatureEmbedder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\BoostMap_module.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\retrieval_statistics.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\class_embedding.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\class_sensitive_classifier.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\BoostMap_data.h">
+      <Filter>Header Files\BoostMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\ModelHierarchy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\ModelMetadata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\ObjectLearner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\EM\ExpectationMaximizer.h">
+      <Filter>Header Files\EM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\EM\GaussianMixture.h">
+      <Filter>Header Files\EM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MachineLearning\BehaviorAnalyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_kdd.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_map.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_nn.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boosting.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\refinement.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\uci_learning.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\algebra.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\auxiliaries.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\base_interpreter.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\drawing.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\drawing_temp.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\general_templates.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\image.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\matrix.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\memory.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\pc_aux.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\precomputed.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_algo.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_algo_templates.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_image.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\v_types.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\embedding_optimization.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\embeddings.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\vp_tree.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\BoostMapEmbedder.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\wrapper.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\io_aux.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\BoostMap_module.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\BoostMap_data.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_kdd_utils.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\class_sensitive_classifier.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\class_embedding.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\retrieval_statistics.cpp">
+      <Filter>Source Files\BoostMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\ModelHierarchy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\ObjectLearner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\FeatureEmbedder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\EM\ExpectationMaximizer.cpp">
+      <Filter>Source Files\EM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\EM\GaussianMixture.cpp">
+      <Filter>Source Files\EM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\MachineLearning\BehaviorAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

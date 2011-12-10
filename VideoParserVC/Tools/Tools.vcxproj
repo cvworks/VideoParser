@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FastDebug|Win32">
+      <Configuration>FastDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6E1B77B3-9723-4681-AE18-7754FAA9D70F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Tools</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetFastDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\Tools\ANNSearch\include;$(MySQLInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\Tools\ANNSearch\include;$(MySQLInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\Tools\ANNSearch\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\bd_tree.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_fix_rad_search.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_pr_search.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_search.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_split.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_tree.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_util.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\pr_queue.h" />
+    <ClInclude Include="..\..\Tools\ANNSearch\src\pr_queue_k.h" />
+    <ClInclude Include="..\..\Tools\BasicTempTypes.h" />
+    <ClInclude Include="..\..\Tools\BasicTypes.h" />
+    <ClInclude Include="..\..\Tools\BasicTypesSerialization.h" />
+    <ClInclude Include="..\..\Tools\BasicUtils.h" />
+    <ClInclude Include="..\..\Tools\BeliefPropagation.h" />
+    <ClInclude Include="..\..\Tools\CIELabColor.h" />
+    <ClInclude Include="..\..\Tools\ColorMatrix.h" />
+    <ClInclude Include="..\..\Tools\Combinatorics\Combinatorics.h" />
+    <ClInclude Include="..\..\Tools\connected.h" />
+    <ClInclude Include="..\..\Tools\cv.h" />
+    <ClInclude Include="..\..\Tools\CvMatView.h" />
+    <ClInclude Include="..\..\Tools\CvUtils.h" />
+    <ClInclude Include="..\..\Tools\cv_legacy.h" />
+    <ClInclude Include="..\..\Tools\FileAttributes.h" />
+    <ClInclude Include="..\..\Tools\ImageSerialization.h" />
+    <ClInclude Include="..\..\Tools\InputImageInfo.h" />
+    <ClInclude Include="..\..\Tools\MatrixUtils.h" />
+    <ClInclude Include="..\..\Tools\PixelwiseFrameBuffer.h" />
+    <ClInclude Include="..\..\Tools\SafeQueue.h" />
+    <ClInclude Include="..\..\Tools\SimpleMatrix.h" />
+    <ClInclude Include="..\..\Tools\SpatioTemporalScale.h" />
+    <ClInclude Include="..\..\Tools\SQLDatabase.h" />
+    <ClInclude Include="..\..\Tools\Time.h" />
+    <ClInclude Include="..\..\Tools\TruthTable.h" />
+    <ClInclude Include="..\..\Tools\CvGraph.h" />
+    <ClInclude Include="..\..\Tools\DirWalker.h" />
+    <ClInclude Include="..\..\Tools\Exceptions.h" />
+    <ClInclude Include="..\..\Tools\Feedback.h" />
+    <ClInclude Include="..\..\Tools\GenericParameters.h" />
+    <ClInclude Include="..\..\Tools\HelperFunctions.h" />
+    <ClInclude Include="..\..\Tools\ImageUtils.h" />
+    <ClInclude Include="..\..\Tools\IplImageView.h" />
+    <ClInclude Include="..\..\Tools\KDTree.h" />
+    <ClInclude Include="..\..\Tools\LinearAlgebra.h" />
+    <ClInclude Include="..\..\Tools\LogFile.h" />
+    <ClInclude Include="..\..\Tools\MathUtils.h" />
+    <ClInclude Include="..\..\Tools\MaxProducts.h" />
+    <ClInclude Include="..\..\Tools\MultiLineTable.h" />
+    <ClInclude Include="..\..\Tools\Mutex.h" />
+    <ClInclude Include="..\..\Tools\NamedColor.h" />
+    <ClInclude Include="..\..\Tools\Num2StrConverter.h" />
+    <ClInclude Include="..\..\Tools\ParamFile.h" />
+    <ClInclude Include="..\..\Tools\PersistentHierarchicalMetadata.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\CubicBezier.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\EuclideanLineSegment.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\LineSegment.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PiecewiseApprox.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PiecewiseApprox.hxx" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyBezierApprox.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyLineApprox.h" />
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyLineTLSApprox.h" />
+    <ClInclude Include="..\..\Tools\Point.h" />
+    <ClInclude Include="..\..\Tools\Semaphore.h" />
+    <ClInclude Include="..\..\Tools\Serialization.h" />
+    <ClInclude Include="..\..\Tools\SimpleDatabase.h" />
+    <ClInclude Include="..\..\Tools\SimpleList.h" />
+    <ClInclude Include="..\..\Tools\SmartArray.h" />
+    <ClInclude Include="..\..\Tools\SmartMatrix.h" />
+    <ClInclude Include="..\..\Tools\STLMatrix.h" />
+    <ClInclude Include="..\..\Tools\STLPrint.h" />
+    <ClInclude Include="..\..\Tools\STLUtils.h" />
+    <ClInclude Include="..\..\Tools\Timer.h" />
+    <ClInclude Include="..\..\Tools\Tuple.h" />
+    <ClInclude Include="..\..\Tools\UserArguments.h" />
+    <ClInclude Include="..\..\Tools\UserEvents.h" />
+    <ClInclude Include="..\..\Tools\VisSysComponent.h" />
+    <ClInclude Include="..\..\Tools\VisSysUtils.h" />
+    <ClInclude Include="..\..\Tools\VSCDataSerializer.h" />
+    <ClInclude Include="..\..\Tools\ZTString.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\ANN.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_fix_rad_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_pr_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_tree.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\brute.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_dump.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_fix_rad_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_pr_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_search.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_split.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_tree.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_util.cpp" />
+    <ClCompile Include="..\..\Tools\ANNSearch\src\perf.cpp" />
+    <ClCompile Include="..\..\Tools\ColorMatrix.cpp" />
+    <ClCompile Include="..\..\Tools\DirWalker.cpp" />
+    <ClCompile Include="..\..\Tools\Feedback.cpp" />
+    <ClCompile Include="..\..\Tools\HelperFunctions.cpp" />
+    <ClCompile Include="..\..\Tools\ImageUtils.cpp" />
+    <ClCompile Include="..\..\Tools\IplImageView.cpp" />
+    <ClCompile Include="..\..\Tools\KDTree.cpp" />
+    <ClCompile Include="..\..\Tools\LogFile.cpp" />
+    <ClCompile Include="..\..\Tools\MultiLineTable.cpp" />
+    <ClCompile Include="..\..\Tools\Mutex.cpp" />
+    <ClCompile Include="..\..\Tools\NamedColor.cpp" />
+    <ClCompile Include="..\..\Tools\ParamFile.cpp" />
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyBezierApprox.cpp" />
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyLineApprox.cpp" />
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyLineTLSApprox.cpp" />
+    <ClCompile Include="..\..\Tools\Semaphore.cpp" />
+    <ClCompile Include="..\..\Tools\SimpleDatabase.cpp" />
+    <ClCompile Include="..\..\Tools\SpatioTemporalScale.cpp" />
+    <ClCompile Include="..\..\Tools\SQLDatabase.cpp" />
+    <ClCompile Include="..\..\Tools\STLUtils.cpp" />
+    <ClCompile Include="..\..\Tools\Time.cpp" />
+    <ClCompile Include="..\..\Tools\Timer.cpp" />
+    <ClCompile Include="..\..\Tools\UserArguments.cpp" />
+    <ClCompile Include="..\..\Tools\VisSysComponent.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

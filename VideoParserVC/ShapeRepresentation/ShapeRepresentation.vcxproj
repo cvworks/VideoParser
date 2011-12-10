@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FastDebug|Win32">
+      <Configuration>FastDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{436FB326-E0AF-48C4-B36D-8E6F5E5525FE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ShapeRepresentation</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetFastDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\ShapeRepresentation\FluxSkeleton\include;$(SolutionDir)\..\ShapeRepresentation\AFMMSkeleton\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\ShapeRepresentation\FluxSkeleton\include;$(SolutionDir)\..\ShapeRepresentation\AFMMSkeleton\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FastDebug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\ShapeRepresentation\FluxSkeleton\include;$(SolutionDir)\..\ShapeRepresentation\AFMMSkeleton\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\AFMMSkeleton.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\byteswap.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\darray.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\distseq.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\dqueue.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\evol.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\field.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\field3.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\flags.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\fmm.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\genrl.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\io.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\mfmm.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\moment.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\oldShapeDiff.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\queue.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\ShapeDiff.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\SkelCompParams.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\skeleton.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\stack.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\thin.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\AFMMSkeleton\include\treeskel.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCorner.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCut.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\BoundaryCutter.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\BoundarySegments.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ContourTree.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ContourTreeComp.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\CornerDetector.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ApproxDiscreteSegCurve.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryInfo.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryInterval.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryPoint.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundaryPointMapping.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\BoundarySegmentArray.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\CircSeg.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ContourCurve.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\CurveSeg.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSEdge.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraph.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraphProject.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSGraphUtils.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSMakerUtils.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DDSNode.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\defines.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscretePointCurve.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscreteSeg.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DiscreteSegCurve.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DistanceTransform.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivArr.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivergenceMap.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivergenceSkeletonMaker.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\DivPt.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Drawable.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\FluxPoint.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\LineSeg.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\PartnerBranch.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Point.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\PriorityQueueDP.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SG.hpp" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ShapeBoundary.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\ShapeMaker.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SkeletalInfo.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\SplineSmooth.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\TBBInterval.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\FluxSkeleton\include\Vector.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\HuMoments.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\HuMomentsComp.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\NaiveDescriptor.h" />
+    <ClInclude Include="..\..\shaperepresentation\NaiveDescriptorComp.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\PointTransform.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContext.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContextComp.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeContextTestData.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptor.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptors.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeInformation.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\ShapeDescriptorComp.h" />
+    <ClInclude Include="..\..\ShapeRepresentation\SkeletalGraph.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\AFMMSkeleton.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\byteswap.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\distseq.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\evol.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\flags.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\fmm.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\genrl.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\io.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\mfmm.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\skeleton.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\thin.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\AFMMSkeleton\treeskel.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\BoundaryCorner.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\BoundaryCutter.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ContourTree.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ContourTreeComp.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\CornerDetector.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\BoundaryPointMapping.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\CircSeg.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DDSGraph.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DDSGraphUtils.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DiscreteSegCurve.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DivArr.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\DivergenceSkeletonMaker.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\LineSeg.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\ShapeBoundary.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\ShapeMaker.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\SkeletalInfo.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\FluxSkeleton\src\TBBInterval.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\HuMoments.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\HuMomentsComp.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\NaiveDescriptor.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeContext.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeContextComp.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeDescriptor.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\ShapeInformation.cpp" />
+    <ClCompile Include="..\..\ShapeRepresentation\SkeletalGraph.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

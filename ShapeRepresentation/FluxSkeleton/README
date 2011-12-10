@@ -1,0 +1,113 @@
+1. COMPILING
+
+To compile the library, simple type "make" at the top level. This
+produces lib/libsg.a
+
+To compile the test, you may type "make tests". 
+
+Try the following:
+
+cd libsg
+make
+cd tests
+make testDivergenceSkeletonMaker
+
+Now get a image.ppm file and run
+
+./testDivergenceSkeletonMaker image.ppm -s > image-skeleton.ps
+
+This produces a PostScript file that you can then run through convert to get
+
+convert image-skeleton.ps image-skeleton.eps
+
+and look at with gv, say. Note that image-skeleton.ps does not display
+very well, you need to convert it to .eps
+
+Another test one can run is 
+
+./testDivergenceSkeletonMaker image.ppm -d > image-skeleton.ppm
+
+Type 
+
+./testDivergenceSkeletonMaker 
+
+to see what the program can do.
+
+
+2. THE IDEA
+
+***************
+(1) This file provides minimal information about libsg. It should be
+    enough so one can start using the library while a more comprehensive
+    documentation is being written.
+
+(2) Look at testDivergenceSkeletonMaker.cpp to see the whole process
+***************
+
+The library's (libsg) primary goal is to compute skeletons (as subsets
+of the medial axis) of shapes described closed curves. For now, there
+is only support for single-curve shapes, but the framework allows to
+easily extend to the general case. 
+
+A shape is represented by the class Shape; in turn, curves are given
+by the class Curve and its subclasses. It is a good idea to look at
+Curve.h and DiscreteSegCurve.h to get a feel for what the reasoning
+behind this organization is.
+
+There is a class SimpleShape that can be created by a SimpleShapeMaker
+object. The latter can be treated as binary array (e.g. for binary
+images) where the foreground is by default the value "false", since
+
+Shape *SimpleShapeMaker::getShape(bool foreground=false)
+
+so one can call getShape() with the appropriate foreground
+colour. Look at the test*.cpp files
+(e.g. testDivergenceSkeletonMaker.cpp) for an example on how this
+works.
+
+Once we have a shape, we can create a DistanceTransform object that
+knows how to compute the distance between any point on the plane and
+the closest one on the contour of the shape. It can also give the
+gradient value of the DT at any point on the plane.
+
+Next, the DivergenceMap object can be made. It also returns a value
+for any point on the plane.
+
+Finally, feeding the DM to a DivergenceSkeletonMaker object one can
+obtain a DiscreteDivergenceSkeleton.
+
+
+
+3. A COUPLE OF WORDS ABOUT THE DiscreteDivergenceSkeleton
+
+Look at DiscreteDivergenceSkeleton.h to see how the structure is
+defined. One also finds there the definition of the nodes and edges of
+such a skeleton (after all, the skeleton is a graph). The edges can
+return the length of the portion of the contour that created it for
+both the "left" and "right" sides:
+
+	methods getRightSegLength() AND  getLeftSegLength() 
+
+The edges can also return the list of FluxPoint that they
+contain. Simply call 
+	
+	FluxPointsList &getFluxPoints()  // FluxPointList is a std::vector
+
+To get the two ends of the edge, call getN1() and getN2(). 
+It is always possible to get the skeleton the edge belongs to by
+calling getSkeleton().
+
+As for the skeleton nodes, have a few self-explanatory methods:
+
+	getFlux()     // the flux value at the point
+	getPoint()    // a Point structure for the location
+	getDist()     // shortest distance to boundary
+	getSkeleton() // the skeleton the node belongs to
+
+Finally, the skeleton as such has these useful methods:
+
+	getDivergenceMap()     // the DivergenceMap for the Shape.
+	getShape()             // returns the Shape this is a sk of.
+
+	getNodes()  // A list of nodes (well a vector)
+	getEdges()  // A list of edges (well a vector)

@@ -1,0 +1,43 @@
+
+Legend: (-) to be done; 
+	(+) partailly done;  
+	(*) done completely
+
+(-)	Implement computeDistance(point, t1, t2) for CircSeg as well
+
+(-)	Implement multiscale discrete divergence skeleton. That is,
+	start at a low resolution and thin with a high divergence
+	threshold; then add more points around this first
+	approximation of the skeleton at higher resolution and thin
+	again. 
+
+(-)     The isInside() function in SimpleShape must be implemented.
+	Right now, it always returns false.
+
+(-)     For actual DT and divergence calculations (inside/outside
+        actually) it is important to have smooth curves as
+        contours. Maybe a new Curve type is required specifically for
+        binary images.
+
+(-)     DiscreteSegCurve has some inefficiencies -- closest point related
+
+(-)     Make sure the destructors kill everything.
+
+
+!) Update DiscreteShape; that is, remove the drawing parts and such...
+   enough to use the sign...
+
+For Curve's:
+	imlpement subCurve()
+	test cloning
+ 	    this includes DiscreteSegCurve CurveSeg and LineSeg
+
+
+In RecLattice:
+	implement completely the getIndex function. 
+	here index[0] is the closest point and index[3] is the furthest
+
+Solved     There is a weird behavior of testDistanceTransform when compiled
+by not     with optimization -- both -O and -O2 cause it to seg. fault in
+using      flood_fill() inside the construction of a DiscreteShape. It may be
+DiscShape  caused by a small heap in the compilation...

@@ -1,0 +1,5 @@
+A RAG_Region is basically a pointer to a region_info_t (see reginfo.h), which contains the countour, moments, centrod and max-min coordinates of the region, as well as its color and label.
+
+A RAG_Adjacency is basically a pointer to a region_adjacency_t (see adjacency.h), which contains the two countour_region segments corresponding to the overlapping contour of the pair of regions.
+
+A RAGGraph has nodes that are of type RAG_Region and edges that are of type RAG_Adjacency.

@@ -1,0 +1,7 @@
+# Image Sequence File
+
+version = 1
+rootDir = .\ButterflyClip
+glob = *.bmp
+
+

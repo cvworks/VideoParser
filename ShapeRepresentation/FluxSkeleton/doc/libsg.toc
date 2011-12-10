@@ -1,0 +1,15 @@
+\catcode `\@=11\relax 
+\ZZ {Introduction}{0}{1}{1}{}
+\ZZ {Basic Types}{0}{2}{2}{}
+\ZZ {Point}{2}{3}{2}{}
+\ZZ {Vector}{2}{7}{2}{}
+\ZZ {Support Classes}{0}{11}{4}{}
+\ZZ {Curve (Interface)}{2}{12}{4}{}
+\ZZ {CurveSeg (Interface)}{2}{15}{4}{}
+\ZZ {DiscreteSegCurve(implements \PB {\&{Curve}})}{2}{18}{5}{}
+\ZZ {ArcLineSeg (implements \PB {\&{CurveSeg}})}{2}{23}{6}{}
+\ZZ {Appendix}{0}{30}{7}{}
+\ZZ {Global Definitions}{2}{31}{7}{}
+\ZZ {Index}{0}{34}{8}{}
+
+\catcode `\@=12\relax 

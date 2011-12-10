@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A7AFA320-0EAE-466E-9D30-B5A5D29AA19F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>MachineLearning</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ParentPropertySheetRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(RootDir)\MachineLearning\BoostMap;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 
+ %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(RootDir)\MachineLearning\BoostMap;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 
+ %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\MachineLearning\BehaviorAnalyzer.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\embeddings.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\embedding_optimization.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\spline.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\spline_auxiliaries.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\algorithms\vp_tree.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\algebra.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\angles.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\auxiliaries.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\base_interpreter.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\definitions.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\drawing.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\drawing_temp.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\general_templates.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\image.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\io_aux.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\local_data.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\matrix.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\memory.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\memory_classes.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\pc_aux.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\precomputed.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_algo.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_algo_templates.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\simple_image.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\undefine.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\vplatform.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\v_types.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\basics\wrapper.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\BoostMapEmbedder.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boosting.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\BoostMap_data.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\BoostMap_module.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_kdd.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_map.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\boost_nn.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\class_embedding.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\class_sensitive_classifier.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\refinement.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\retrieval_statistics.h" />
+    <ClInclude Include="..\..\MachineLearning\BoostMap\learning\uci_learning.h" />
+    <ClInclude Include="..\..\MachineLearning\EM\ExpectationMaximizer.h" />
+    <ClInclude Include="..\..\MachineLearning\EM\GaussianMixture.h" />
+    <ClInclude Include="..\..\MachineLearning\FeatureEmbedder.h" />
+    <ClInclude Include="..\..\MachineLearning\ModelHierarchy.h" />
+    <ClInclude Include="..\..\MachineLearning\ModelMetadata.h" />
+    <ClInclude Include="..\..\MachineLearning\ObjectLearner.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\MachineLearning\BehaviorAnalyzer.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\embeddings.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\embedding_optimization.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\algorithms\vp_tree.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\algebra.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\auxiliaries.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\base_interpreter.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\drawing.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\drawing_temp.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\general_templates.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\image.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\io_aux.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\matrix.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\memory.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\pc_aux.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\precomputed.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_algo.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_algo_templates.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\simple_image.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\v_types.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\basics\wrapper.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\BoostMapEmbedder.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boosting.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\BoostMap_data.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\BoostMap_module.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_kdd.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_kdd_utils.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_map.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\boost_nn.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\class_embedding.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\class_sensitive_classifier.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\refinement.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\retrieval_statistics.cpp" />
+    <ClCompile Include="..\..\MachineLearning\BoostMap\learning\uci_learning.cpp" />
+    <ClCompile Include="..\..\MachineLearning\EM\ExpectationMaximizer.cpp" />
+    <ClCompile Include="..\..\MachineLearning\EM\GaussianMixture.cpp" />
+    <ClCompile Include="..\..\MachineLearning\FeatureEmbedder.cpp" />
+    <ClCompile Include="..\..\MachineLearning\ModelHierarchy.cpp" />
+    <ClCompile Include="..\..\MachineLearning\ObjectLearner.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

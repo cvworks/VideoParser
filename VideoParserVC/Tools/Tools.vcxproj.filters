@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\PiecewiseApprox">
+      <UniqueIdentifier>{fa7f8550-5824-4609-9689-fda4213b2e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PiecewiseApprox">
+      <UniqueIdentifier>{ee738d2e-a3b9-44ef-83a7-34d91c23c4b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ANNSearch">
+      <UniqueIdentifier>{56c8b946-31d9-4ce7-b46a-846d78e2ee0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ANNSearch">
+      <UniqueIdentifier>{8143ee16-bd5a-42e1-86c0-e181f66adf22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Combinatorics">
+      <UniqueIdentifier>{e53db0a5-16d8-480d-9101-07e5cd8aaeeb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\CubicBezier.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\EuclideanLineSegment.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\LineSegment.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PiecewiseApprox.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PiecewiseApprox.hxx">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyBezierApprox.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyLineApprox.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PiecewiseApprox\PolyLineTLSApprox.h">
+      <Filter>Header Files\PiecewiseApprox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_tree.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_util.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\pr_queue.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\pr_queue_k.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_fix_rad_search.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_pr_search.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_search.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\kd_split.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ANNSearch\src\bd_tree.h">
+      <Filter>Header Files\ANNSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Combinatorics\Combinatorics.h">
+      <Filter>Header Files\Combinatorics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\BasicTempTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\BasicTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\BasicUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\BeliefPropagation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ColorMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\connected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\CvGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\DirWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\GenericParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\HelperFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ImageUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\IplImageView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\KDTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\LinearAlgebra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\LogFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\MathUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\MaxProducts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\MultiLineTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\NamedColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Num2StrConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ParamFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PersistentHierarchicalMetadata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Semaphore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SimpleDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SimpleList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SmartArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SmartMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\STLMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\STLPrint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\STLUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Tuple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\UserArguments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\VisSysComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\VSCDataSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ZTString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Feedback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\TruthTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ImageSerialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\UserEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\VisSysUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\MatrixUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\CIELabColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\CvMatView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\BasicTypesSerialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\FileAttributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SQLDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SafeQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\InputImageInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\PixelwiseFrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SimpleMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SpatioTemporalScale.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\cv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\CvUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\cv_legacy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyBezierApprox.cpp">
+      <Filter>Source Files\PiecewiseApprox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyLineApprox.cpp">
+      <Filter>Source Files\PiecewiseApprox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\PiecewiseApprox\PolyLineTLSApprox.cpp">
+      <Filter>Source Files\PiecewiseApprox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_util.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\perf.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\brute.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_dump.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_fix_rad_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_pr_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_split.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\kd_tree.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\ANN.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_fix_rad_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_pr_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_search.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ANNSearch\src\bd_tree.cpp">
+      <Filter>Source Files\ANNSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ColorMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\DirWalker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\HelperFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ImageUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\IplImageView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\KDTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\LogFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\MultiLineTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\Mutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\NamedColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\ParamFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\Semaphore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SimpleDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\UserArguments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\VisSysComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\Feedback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\STLUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\Time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SQLDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SpatioTemporalScale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,9 @@
+# VideoParser configuration file
+
+Main {
+  verboseMode = yes
+}
+
+VideoProcessor {
+  inputFileName = butterfly.isf 
+}

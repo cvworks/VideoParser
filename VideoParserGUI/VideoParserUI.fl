@@ -1,0 +1,514 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0110 
+do_not_include_H_from_C 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "VideoParserUI.h"} {global
+} 
+
+decl {\#include "UserArgumentsQuickView.h"} {global
+} 
+
+decl {extern vpl::UserArguments g_userArgs;} {global
+} 
+
+class VideoParserUI {open
+} {
+  Function {VideoParserUI()} {open
+  } {
+    Fl_Window mainWindow {
+      label {Video Parser} open selected
+      xywh {527 216 966 645} type Double
+      code0 {\#include "VideoParserWindow.h"}
+      class VideoParserWindow visible
+    } {
+      Fl_Group ctrlPanel1 {
+        label {Display 1} open
+        xywh {25 81 435 504} box PLASTIC_UP_BOX
+        code0 {\#include "VideoControlPanel.h"}
+        class VideoControlPanel
+      } {
+        Fl_Box imageView1 {
+          label {Image View 1}
+          xywh {25 81 435 322} box BORDER_BOX
+          code0 {\#include "ImageView.h"}
+          class ImageView
+        }
+        Fl_Choice viewSelector1 {
+          callback {mainWindow->OnViewSelection(o);} open
+          xywh {43 414 200 25} down_box BORDER_BOX labeltype NO_LABEL
+          code0 {\#include "ViewSelector.h"}
+          class ViewSelector
+        } {}
+        Fl_Text_Display textView1 {
+          xywh {41 493 395 35} color 49 labeltype NO_LABEL textsize 10
+          code0 {\#include "TextView.h"}
+          class TextView
+        }
+        Fl_Group paramValue1 {
+          label MultiParam1
+          callback {mainWindow->OnParameterSelection(o);} open
+          xywh {43 453 175 25} box BORDER_BOX labeltype NO_LABEL align 4
+          code0 {\#include "ParameterSelector.h"}
+          class ParameterSelector
+        } {}
+        Fl_Group cmdSelector1 {
+          callback {imageView1->DoKeyboardEvent((int)v);
+
+// If views are sync'ed, then we must redraw
+// the other one too (for now, do it always)
+imageView2->redraw();} open
+          xywh {41 542 400 25} box DOWN_BOX labeltype NO_LABEL
+          code0 {\#include "CommandSelector.h"}
+          class CommandSelector
+        } {}
+      }
+      Fl_Button btnPlay {
+        label {@>}
+        callback {//mainWindow->StartParsing(true);
+
+
+// If parsing (in play mode) is active, try to stop it. 
+// Wait 30 seconds and return if it didn't stop
+if (mainWindow->IsParsing())
+{
+	if (mainWindow->StopParsing(30))
+		o->value(0);
+}
+else
+{
+	mainWindow->StartParsing();
+	o->value(1);
+}}
+        xywh {203 27 50 25} shortcut 0x40031
+      }
+      Fl_Group ctrlPanel2 {
+        label {Display 2} open
+        xywh {505 81 435 504} box PLASTIC_UP_BOX
+        code0 {\#include "VideoControlPanel.h"}
+        class VideoControlPanel
+      } {
+        Fl_Box imageView2 {
+          label {Image View 2}
+          xywh {505 81 435 322} box BORDER_BOX
+          code0 {\#include "ImageView.h"}
+          class ImageView
+        }
+        Fl_Choice viewSelector2 {
+          callback {mainWindow->OnViewSelection(o);} open
+          xywh {528 411 225 25} down_box BORDER_BOX labeltype NO_LABEL
+          code0 {\#include "ViewSelector.h"}
+          class ViewSelector
+        } {}
+        Fl_Text_Display textView2 {
+          xywh {530 496 395 35} color 49 labeltype NO_LABEL textsize 10
+          code0 {\#include "TextView.h"}
+          class TextView
+        }
+        Fl_Group paramValue2 {
+          label MultiParam2
+          callback {mainWindow->OnParameterSelection(o);} open
+          xywh {530 451 165 25} box BORDER_BOX labeltype NO_LABEL align 4
+          code0 {\#include "ParameterSelector.h"}
+          class ParameterSelector
+        } {}
+        Fl_Group cmdSelector2 {
+          callback {imageView2->DoKeyboardEvent((int)v);
+
+// If views are sync'ed, then we must redraw
+// the other one too (for now, do it always)
+imageView1->redraw();} open
+          xywh {530 542 395 25} box DOWN_BOX labeltype NO_LABEL
+          code0 {\#include "CommandSelector.h"}
+          class CommandSelector
+        } {}
+      }
+      Fl_Menu_Bar mainMenuBar {open
+        xywh {0 0 1025 25}
+      } {
+        Submenu {} {
+          label File open
+          xywh {0 0 63 20}
+        } {
+          MenuItem {} {
+            label {Open...}
+            callback {Fl_File_Chooser fc(".", vpl::VideoFileExtensions(), 
+	Fl_File_Chooser::SINGLE, "Open input video");
+
+std::string strDir = vul_file::dirname(
+	mainWindow->GetVideoFilename());
+	
+//std::cout << strDir << std::endl;
+
+if (!strDir.empty())
+	fc.directory(strDir.c_str());	
+
+fc.preview(0);
+fc.show();
+
+while (fc.visible())
+	Fl::wait();
+	
+if (fc.count() > 0)
+{
+	mainWindow->LoadVideo(fc.value(0));
+}}
+            xywh {0 0 30 20} shortcut 0x4006f
+            code0 {\#include <FL/Fl_File_Chooser.H>}
+            code1 {\#include <vul/vul_file.h>}
+            code2 {\#include <VideoRepresentation/VideoTypes.h>}
+          }
+          MenuItem {} {
+            label {Preferences...}
+            callback {PreferencesDlg dlg(mainWindow);
+dlg.show();}
+            xywh {0 0 30 20} shortcut 0x40070
+          }
+        }
+        Submenu {} {
+          label View open
+          xywh {0 0 62 20}
+        } {
+          MenuItem {} {
+            label {Increase window size}
+            callback {double zl = mainWindow->GetZoomLevel();
+
+mainWindow->SetZoomLevel(zl + 0.25);}
+            xywh {0 0 30 20} shortcut 0xff55
+          }
+          MenuItem {} {
+            label {Decrease window size}
+            callback {double zl = mainWindow->GetZoomLevel();
+
+mainWindow->SetZoomLevel(zl - 0.25);}
+            xywh {0 0 30 20} shortcut 0xff56
+          }
+          MenuItem {} {
+            label {Next frame}
+            callback {mainWindow->RequestRelativeFrame(
+	VideoParserWindow::ONE_FRAME_FORWARD);}
+            xywh {0 0 30 20} shortcut 0x6e
+          }
+          MenuItem {} {
+            label {Previous frame}
+            callback {mainWindow->RequestRelativeFrame(
+	VideoParserWindow::ONE_FRAME_BACKWARD);}
+            xywh {0 0 30 20} shortcut 0x4ff51
+          }
+          MenuItem {} {
+            label {Fast forward}
+            callback {mainWindow->RequestRelativeFrame(
+	VideoParserWindow::ONE_SECOND_FORWARD);}
+            xywh {0 0 30 20} shortcut 0x4006e
+          }
+          MenuItem {} {
+            label {Fast rewind}
+            callback {mainWindow->RequestRelativeFrame(
+	VideoParserWindow::ONE_SECOND_BACKWARD);}
+            xywh {0 0 30 20} shortcut 0x5ff51
+          }
+          MenuItem {} {
+            label {First frame}
+            callback {mainWindow->RequestRelativeFrame(
+	VideoParserWindow::FIRST_FRAME);}
+            xywh {0 0 30 20} shortcut 0xff50
+          }
+        }
+        Submenu {} {
+          label Results open
+          xywh {0 0 62 20}
+        } {
+          MenuItem {} {
+            label {Precision and Recall}
+            callback {Plotter p;
+
+char* args[1] = {"Hello world"};
+
+p.Create(1, args);}
+            xywh {0 0 30 20}
+            code0 {\#include "Plotter.h"}
+          }
+        }
+      }
+      Fl_Button btnPause {
+        label {@||}
+        callback {if (mainWindow->IsStopping()) // || !mainWindow->IsParsing())
+{
+	o->value(0);
+}
+else
+{
+	mainWindow->PauseParsing();
+	o->value(o->value() ? 0:1);
+}}
+        xywh {256 27 50 25} shortcut 0x40033
+      }
+      Fl_Group usrArgMonitor {
+        label {User arguments}
+        callback {//UserArgumentsQuickView* p = dynamic_cast<UserArgumentsQuickView*>(o);
+//p->Initialize();
+
+// Re-initialize the Video Parser
+mainWindow->Initialize();} open
+        xywh {315 27 914 25} box UP_BOX labeltype NO_LABEL
+        code0 {class UserArgumentsQuickView;}
+        class UserArgumentsQuickView
+      } {}
+      Fl_Choice modeSelector {
+        callback {mainWindow->OnModeSelection(o);} open
+        tooltip {Processing mode} xywh {5 28 195 25} down_box BORDER_BOX labeltype NO_LABEL
+        code0 {\#include "ModeSelector.h"}
+        class ModeSelector
+      } {}
+    }
+  }
+  Function {show(int argc, char** argv)} {open
+  } {
+    code {// Show VideoParserWindow
+ctrlPanel1->SetWidgets(imageView1, viewSelector1, 
+	paramValue1, textView1, cmdSelector1);
+	
+ctrlPanel2->SetWidgets(imageView2, viewSelector2, 
+	paramValue2, textView2, cmdSelector2);
+
+mainWindow->SetPanels(ctrlPanel1, ctrlPanel2);
+
+mainWindow->SetModeSelector(modeSelector);
+
+mainWindow->SetMenuBar(mainMenuBar);
+
+mainWindow->SetUserArgumentMonitor(usrArgMonitor);
+
+mainWindow->Initialize();
+
+mainWindow->position(20,30);
+
+mainWindow->show(argc, argv);
+
+mainWindow->LoadVideo();} {}
+  }
+} 
+
+class PreferencesDlg {} {
+  Function {PreferencesDlg(VideoParserWindow* pVideoParserWnd)} {open
+  } {
+    Fl_Window optionWindow {
+      label {User Arguments} open
+      xywh {459 68 682 645} type Double hide resizable
+      code0 {\#define ROOT_RADIO "&Input"} non_modal
+    } {
+      Fl_Input filename {
+        label {Input:}
+        callback {m_editor->LoadFile(o->value());}
+        xywh {58 24 500 23}
+      }
+      Fl_Return_Button {} {
+        label {&Close}
+        callback {// Close window
+if (m_editor->IsModified())
+{
+	int c = fl_choice("Input file '%s' has changed", 
+		"Cancel", "Save and close", "Don't save", 
+		m_editor->GetFilename().c_str());
+		
+	if (c == 0)
+		return;			
+	else if (c == 1)
+		SaveCurrentFile();				
+}
+
+//ReadOutValues();
+
+optionWindow->hide();}
+        xywh {569 58 95 25} shortcut 0x40063
+      }
+      Fl_Text_Editor m_editor {
+        callback {if (m_showGroup->Selection() == 0 && !o->IsModified())
+{
+	o->SetModified(true);
+	m_editingGroup->label("Editing (modified)");
+}}
+        xywh {20 145 645 485} when 1 textfont 4 resizable
+        code0 {\#include "UserArgumentsEditor.h"}
+        class UserArgumentsEditor
+      }
+      Fl_Button {} {
+        label {&Browse...}
+        callback {std::string fname = ChooseFilename(false);
+
+if (!fname.empty())
+	UpdateInputFile(fname.c_str());}
+        xywh {569 23 95 25} shortcut 0x40062
+      }
+      Fl_Group m_showGroup {
+        label Show
+        callback {DBG_PRINT1("someting changed")} open
+        xywh {20 85 315 45} box THIN_DOWN_BOX align 5 when 1
+        code0 {\#include "UserArgumentsShowGroup.h"}
+        class UserArgumentsShowGroup
+      } {
+        Fl_Round_Button {} {
+          label {&Input}
+          callback {((UserArgumentsShowGroup*) o->parent())->Update(0);}
+          xywh {32 97 25 23} type Radio down_box ROUND_DOWN_BOX shortcut 0x40069 value 1 when 6
+        }
+        Fl_Round_Button {} {
+          label {&All}
+          callback {((UserArgumentsShowGroup*) o->parent())->Update(1);}
+          xywh {97 97 25 23} type Radio down_box ROUND_DOWN_BOX shortcut 0x40061 when 6
+        }
+        Fl_Round_Button {} {
+          label {&Usage Info}
+          callback {((UserArgumentsShowGroup*) o->parent())->Update(2);}
+          xywh {147 96 25 24} type Radio down_box ROUND_DOWN_BOX shortcut 0x40075
+        }
+        Fl_Round_Button {} {
+          label {&Options}
+          callback {((UserArgumentsShowGroup*) o->parent())->Update(3);}
+          xywh {247 96 25 24} type Radio down_box ROUND_DOWN_BOX shortcut 0x4006f
+        }
+      }
+      Fl_Group m_editingGroup {
+        label Editing open
+        xywh {352 85 205 45} box THIN_DOWN_BOX align 5
+      } {
+        Fl_Button {} {
+          label {&Save}
+          callback {SaveCurrentFile();}
+          xywh {365 95 82 26} shortcut 0x40073
+        }
+        Fl_Button {} {
+          label {Save As...}
+          callback {// Ensure that the active buffer corresponds to the input tab
+m_showGroup->SelectRadioButton(ROOT_RADIO);
+m_showGroup->Update(0);
+
+// Let the user choose a new file name
+std::string fname = ChooseFilename(true);
+	
+// If there is a file selected...
+if (!fname.empty() && m_editor->SaveBufferToFile(fname.c_str()))
+{
+	int c = fl_choice("File saved!", "Reload old file", 
+		"Load new file", NULL);
+					
+	UpdateInputFile((c == 1) ? fname.c_str() 
+		: m_editor->GetFilename().c_str());		
+}}
+          xywh {460 95 82 26}
+        }
+      }
+    }
+    code {// PreferencesDlg Constructor
+m_pVideoParserWnd = pVideoParserWnd;
+m_editor->SetUserArguments(&g_userArgs);
+m_showGroup->SetEditor(m_editor);} {}
+  }
+  Function {show()} {open
+  } {
+    code {// PreferencesDlg Show
+
+// Load current user arguments into the editor 
+m_editor->LoadFile();
+
+// Display the input file name
+filename->value(m_editor->GetFilename().c_str());
+
+//ReadInValues();
+
+optionWindow->show();
+
+while (optionWindow->shown()) 
+	Fl::wait();} {}
+  }
+  Function {UpdateInputFile(const char* szFilename)} {open return_type void
+  } {
+    code {// Update user arguments
+if (g_userArgs.ReadParameters(szFilename) && m_editor->LoadFile())
+{
+	// Display new filename
+	filename->value(m_editor->GetFilename().c_str());
+	
+	// The editor's buffer will now contain the input text, so
+	// update the radiocbutton selection accordingly
+	m_showGroup->SelectRadioButton(ROOT_RADIO);
+	
+	// Specify that the text is not modified by ensuring
+	// that the label of the editing group says only 'Editing'
+	m_editor->SetModified(false);
+	m_editingGroup->label("Editing");
+	
+	// Re-initialize the Video Parser
+	m_pVideoParserWnd->Initialize();
+}} {}
+  }
+  Function {ChooseFilename(bool bAllowCreate)} {open return_type {std::string}
+  } {
+    code {// Choose a file name
+int type = bAllowCreate ? Fl_File_Chooser::CREATE : Fl_File_Chooser::SINGLE;
+
+// Let the user hoose a new file name
+Fl_File_Chooser fc(".", "Text Files (*.txt)", type, "Save As...");
+
+// Get the directory portion of the current file name
+std::string strDir = vul_file::dirname(m_editor->GetFilename());
+	
+// If there a directory, select it as the root directory
+if (!strDir.empty())
+	fc.directory(strDir.c_str());
+	
+// Set the initial file name
+fc.value(m_editor->GetFilename().c_str());
+
+fc.preview(0); // no file preview
+fc.show();     // show file chooser
+
+while (fc.visible())
+	Fl::wait();
+	
+std::string fname;
+
+// If there is at least one file selected
+if (fc.count() > 0)
+	fname = fc.value();
+
+return fname;} {}
+  }
+  Function {SaveCurrentFile()} {open return_type bool
+  } {
+    code {// Save the current input file
+
+// Ensure that the active buffer corresponds to the input tab
+m_showGroup->SelectRadioButton(ROOT_RADIO);
+m_showGroup->Update(0);
+
+// If file is saved, update the input file
+if (!m_editor->SaveBufferToFile())
+	return false;
+	
+UpdateInputFile(m_editor->GetFilename().c_str());
+
+return true;} {}
+  }
+  Function {ReadInValues()} {open
+  } {
+    code {// Read values to display} {}
+  }
+  Function {ReadOutValues()} {open
+  } {
+    code {// Write down the current values
+
+/*VideoParserWindow::ParsingParams params;
+
+params.strFilename = filename->value();
+params.strOutputDir = outputDir->value();
+params.nFirstFrame = (int)firstFrame->value();
+params.nLastFrame = (int)lastFrame->value();
+params.bSaveResults = (saveResults->value() != 0);
+
+bool bMustReload = m_pVideoParserWnd->GetVideoFilename() != params.strFilename;
+m_pVideoParserWnd->SetParams(params);
+if (bMustReload) m_pVideoParserWnd->LoadVideo();*/} {}
+  }
+  decl {VideoParserWindow* m_pVideoParserWnd;} {}
+} 
