@@ -163,7 +163,7 @@ bool ImageProcessor::OnGUIEvent(const UserEventInfo& uei)
 
 	if (uei.id == EVENT_MOUSE_PUSH)
 	{
-		UIBoundingBox bbox(x, x, y, y);
+		UIBoundingBox bbox(x, x, y, y, false); // coords are not regularized
 
 		GetROISequence().push_back(bbox);
 	}

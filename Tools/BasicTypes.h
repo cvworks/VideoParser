@@ -159,7 +159,7 @@ template <typename T> struct BoundingBox
 	/*!
 		Note: the coordinates are regularized so that min is always mi and max is always max.
 	*/
-	BoundingBox(const T& xn, const T& xx, const T& yn, const T& yx, bool regularizeCoords = true)
+	BoundingBox(const T& xn, const T& xx, const T& yn, const T& yx, bool regularizeCoords)
 		: xmin(xn), xmax(xx), ymin(yn), ymax(yx)
 	{ 
 		if (regularizeCoords)

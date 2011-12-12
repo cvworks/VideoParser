@@ -2,7 +2,9 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <RootDir>$(SolutionDir)..</RootDir>
-    <LibRoot>$(SolutionDir)..\..\..\Libraries</LibRoot>
+    <LibRoot>$(RootDir)\..\Libraries</LibRoot>
+    <BuildDir>$(RootDir)\..\Builds</BuildDir>
+    <ExperimentsDir>$(RootDir)\..\Experiments</ExperimentsDir>
     <OpenCVVersion>231</OpenCVVersion>
     <OpenCVConfiguration>$(Configuration)</OpenCVConfiguration>
     <OpenCVDir>$(LibRoot)\OpenCV2.3.1</OpenCVDir>
@@ -30,8 +32,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir>$(SolutionDir)..\..\..\Builds\$(SolutionName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\..\..\Builds\$(SolutionName)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(BuildDir)\$(SolutionName)\$(Configuration)\</OutDir>
+    <IntDir>$(BuildDir)\$(SolutionName)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -54,6 +56,12 @@
     </BuildMacro>
     <BuildMacro Include="LibRoot">
       <Value>$(LibRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BuildDir">
+      <Value>$(BuildDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ExperimentsDir">
+      <Value>$(ExperimentsDir)</Value>
     </BuildMacro>
     <BuildMacro Include="OpenCVVersion">
       <Value>$(OpenCVVersion)</Value>
