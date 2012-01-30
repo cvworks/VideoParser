@@ -112,9 +112,16 @@ public:
 		m_imageHeight = rhs.m_imageHeight;
 	}
 
-	SpatialPyramid(unsigned ni, unsigned nj, unsigned levels)
+	/*!
+		Constructs a pyramid with "levels" levels for representing
+		the data of an image of size ni * nj. The top level will
+		have "numCellAtTop" cell along the rows and along the columns.
+		Lower level will have a factor of two number of rows and columns
+		from their previous level.
+	*/
+	SpatialPyramid(unsigned ni, unsigned nj, unsigned levels, unsigned topDelta)
 	{
-		init(ni, nj, levels);
+		init(ni, nj, levels, topDelta);
 	}
 	
 	void operator=(const SpatialPyramid& rhs)
@@ -127,11 +134,19 @@ public:
 		m_imageHeight = rhs.m_imageHeight;
 	}
 
-	void init(unsigned ni, unsigned nj, unsigned levels)
+	/*!
+		Constructs a pyramid with "levels" levels for representing
+		the data of an image of size ni * nj. The top level will
+		have "topDelta" cell along the rows and along the columns.
+		Lower level will have a factor of two number of rows and columns
+		from their previous level.
+	*/
+	void init(unsigned ni, unsigned nj, unsigned levels, unsigned topDelta)
 	{
 		ASSERT(empty());
 		ASSERT(m_labelCounters.empty());
 		ASSERT(ni > 0 && nj > 0 && levels > 0);
+		ASSERT(topDelta >= 1);
 
 		m_imageWidth = ni;
 		m_imageHeight = nj;
@@ -141,14 +156,81 @@ public:
 		m_labelCounters.resize(levels); // nested arrays are init to empty
 
 		// Set the number of elements in each level of the pyramid
-		unsigned delta = 1;
+		unsigned delta = topDelta;
 
 		for (auto it = begin(); it != end(); ++it)
 		{
 			it->resize(delta, delta);
 			delta *= 2;
 		}
-	};
+	}
+
+	/*!
+		Initializes the pyramid as the merge of the given pair of 
+		pyramids.
+	*/
+	void initFromMerge(const SpatialPyramid& sp0, const SpatialPyramid& sp1)
+	{
+		ASSERT(!sp0.empty() && !sp1.empty());
+
+		ASSERT(sp0.imageWidth() == sp1.imageWidth() && 
+			   sp0.imageHeight() == sp1.imageHeight() &&
+			   sp0.size() == sp1.size() &&
+			   sp0.topDelta() == sp1.topDelta());
+
+		init(sp0.imageWidth(), sp0.imageHeight(), sp0.size(), sp0.topDelta());
+
+		int l0, l1;
+
+		for (unsigned k = 0; k < size(); k++)
+		{
+			const SpatialPyramid::SpatialLevel& img0 = sp0.get(k);
+			const SpatialPyramid::SpatialLevel& img1 = sp1.get(k);
+			SpatialPyramid::SpatialLevel& img2 = get(k);
+
+			SpatialStats::LABEL lbl;
+
+			for (unsigned i = 0; i < img2.ni(); i++)
+			{
+				for (unsigned j = 0; j < img2.nj(); j++)
+				{
+					l0 = img0(i, j).label;
+					l1 = img1(i, j).label;
+
+					if ((l0 <= SpatialStats::SOMETIMES && l1 >= SpatialStats::SOMETIMES) ||
+						(l0 >= SpatialStats::SOMETIMES && l1 <= SpatialStats::SOMETIMES))
+					{
+						lbl = SpatialStats::SOMETIMES;
+					}
+					else if (l0 == SpatialStats::ALWAYS && l1 == SpatialStats::ALWAYS)
+					{
+						lbl = SpatialStats::ALWAYS;
+					}
+					else if (l0 == SpatialStats::NEVER && l1 == SpatialStats::NEVER)
+					{
+						lbl = SpatialStats::NEVER;
+					}
+					else if (l0 < SpatialStats::SOMETIMES && l1 < SpatialStats::SOMETIMES)
+					{
+						lbl = SpatialStats::VERY_LIKELY;
+					}
+					else if (l0 > SpatialStats::SOMETIMES && l1 > SpatialStats::SOMETIMES)
+					{
+						lbl = SpatialStats::VERY_UNLIKELY;
+					}
+					else
+					{
+						ASSERT(false);
+						lbl = SpatialStats::SOMETIMES;
+					}
+
+					img2(i, j).label = lbl;
+
+					incrementLabelCounter(k, lbl);
+				}
+			}
+		}
+	}
 
 	unsigned imageWidth() const
 	{
@@ -158,6 +240,13 @@ public:
 	unsigned imageHeight() const
 	{
 		return m_imageHeight;
+	}
+
+	unsigned topDelta() const
+	{
+		ASSERT(front().ni() == front().nj());
+
+		return front().ni();
 	}
 
 	unsigned ni(unsigned level) const
@@ -294,72 +383,6 @@ public:
 	unsigned bottomLabelCount(unsigned label) const
 	{
 		return (label < m_labelCounters.back().size()) ? m_labelCounters.back()[label] : 0;
-	}
-
-	/*!
-		Initializes the pyramid as the merge of the given pair of 
-		pyramids.
-	*/
-	void initFromMerge(const SpatialPyramid& sp0, const SpatialPyramid& sp1)
-	{
-		ASSERT(!sp0.empty() && !sp1.empty());
-
-		ASSERT(sp0.imageWidth() == sp1.imageWidth() && 
-			   sp0.imageHeight() == sp1.imageHeight() &&
-			   sp0.size() == sp1.size());
-
-		init(sp0.imageWidth(), sp0.imageHeight(), sp0.size());
-
-		int l0, l1;
-
-		for (unsigned k = 0; k < size(); k++)
-		{
-			const SpatialPyramid::SpatialLevel& img0 = sp0.get(k);
-			const SpatialPyramid::SpatialLevel& img1 = sp1.get(k);
-			SpatialPyramid::SpatialLevel& img2 = get(k);
-
-			SpatialStats::LABEL lbl;
-
-			for (unsigned i = 0; i < img2.ni(); i++)
-			{
-				for (unsigned j = 0; j < img2.nj(); j++)
-				{
-					l0 = img0(i, j).label;
-					l1 = img1(i, j).label;
-
-					if ((l0 <= SpatialStats::SOMETIMES && l1 >= SpatialStats::SOMETIMES) ||
-						(l0 >= SpatialStats::SOMETIMES && l1 <= SpatialStats::SOMETIMES))
-					{
-						lbl = SpatialStats::SOMETIMES;
-					}
-					else if (l0 == SpatialStats::ALWAYS && l1 == SpatialStats::ALWAYS)
-					{
-						lbl = SpatialStats::ALWAYS;
-					}
-					else if (l0 == SpatialStats::NEVER && l1 == SpatialStats::NEVER)
-					{
-						lbl = SpatialStats::NEVER;
-					}
-					else if (l0 < SpatialStats::SOMETIMES && l1 < SpatialStats::SOMETIMES)
-					{
-						lbl = SpatialStats::VERY_LIKELY;
-					}
-					else if (l0 > SpatialStats::SOMETIMES && l1 > SpatialStats::SOMETIMES)
-					{
-						lbl = SpatialStats::VERY_UNLIKELY;
-					}
-					else
-					{
-						ASSERT(false);
-						lbl = SpatialStats::SOMETIMES;
-					}
-
-					img2(i, j).label = lbl;
-
-					incrementLabelCounter(k, lbl);
-				}
-			}
-		}
 	}
 
 	/*void add(const MotionEvent& me)
@@ -638,12 +661,12 @@ class DayTimeTable : public SimpleMatrix<DayTimeStats>
 
 public:
 	void init(unsigned ni_day, unsigned nj_time, unsigned ni_img, unsigned nj_img, 
-		unsigned spatialPyramidLevels)
+		unsigned spatialPyramidLevels, unsigned topDelta)
 	{
 		ParentClass::resize(ni_day, nj_time);
 
 		for (auto it = begin(); it != end(); ++it)
-			it->spatialPyramid.init(ni_img, nj_img, spatialPyramidLevels);
+			it->spatialPyramid.init(ni_img, nj_img, spatialPyramidLevels, topDelta);
 	}
 
 	/*!
@@ -890,15 +913,15 @@ public:
 
 	DayTimeMultiscaleTable(const EventCalendar& eventCalendar, 
 		const IrregularScale& dayScale, const RegularScale& timeScale,
-		unsigned ni_img, unsigned nj_img, unsigned spatialPyramidLevels) 
+		unsigned ni_img, unsigned nj_img, unsigned spatialPyramidLevels, unsigned topDelta) 
 	{
 		init(eventCalendar, dayScale, timeScale, ni_img, nj_img, 
-			spatialPyramidLevels);
+			spatialPyramidLevels, topDelta);
 	}
 
 	void init(const EventCalendar& eventCalendar, 
 		const IrregularScale& dayScale, const RegularScale& timeScale, 
-		unsigned ni_img, unsigned nj_img, unsigned spatialPyramidLevels)
+		unsigned ni_img, unsigned nj_img, unsigned spatialPyramidLevels, unsigned topDelta)
 	{
 		ASSERT(m_levels.empty());
 
@@ -921,7 +944,7 @@ public:
 			for (unsigned ts = 0; ts < m_levels.nj(); ts++)
 			{
 				m_levels(ds, ts).init(dayScale.maxj(ds) + 1, nj, ni_img, nj_img, 
-					spatialPyramidLevels);
+					spatialPyramidLevels, topDelta);
 			}
 		}
 

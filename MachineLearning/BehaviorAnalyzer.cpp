@@ -252,13 +252,17 @@ void BehaviorAnalyzer::Run()
 	}
 
 	// Set a 7-day X 2-scale matrix of indices
-	IrregularScale dayScale(7, 2, 0); // important: init all to zero
+	// Map each day to its corresponding day index at each scale
+	//IrregularScale dayScale(7, 2, 0); // important: init all to zero
+	IrregularScale dayScale(7, 1, 0); // important: init all to zero
 
 	for (unsigned i = 0; i < 7; i++)
 		dayScale(i, 0) = i;
 
-	dayScale(0, 1) = 1;
+	/*dayScale(0, 1) = 1;
 	dayScale(6, 1) = 1;
+	// other indices are set to zero above
+	*/
 
 	RegularScale timeScale;
 
@@ -269,7 +273,10 @@ void BehaviorAnalyzer::Run()
 	*/
 
 	m_tempPyr.init(m_eventCalendar, dayScale, timeScale,
-		m_sessionInfo.frame_width, m_sessionInfo.frame_height, 6);
+		m_sessionInfo.frame_width, m_sessionInfo.frame_height, 6, 1);
+
+	/*m_tempPyr.init(m_eventCalendar, dayScale, timeScale,
+		m_sessionInfo.frame_width, m_sessionInfo.frame_height, 1, 8);*/
 
 	m_tempPyr.processData(m_params.minProbLikelyEvents, m_params.maxProbUnlikelyEvents);
 
