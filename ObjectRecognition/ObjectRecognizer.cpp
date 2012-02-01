@@ -55,9 +55,7 @@ void ObjectRecognizer::Initialize(graph::node v)
 
 	m_pObjectLearner = FindParentComponent(ObjectLearner);
 	m_pShapeParser = FindParentComponent(ShapeParser);
-	ShowMsg("making shapematcher");
 	m_pShapeMatcher = FindParentComponent(ShapeMatcher);
-	ShowMsg("shapeamtcher made");
 
 	std::list<UserCommandInfo> cmds0;
 
@@ -100,6 +98,163 @@ void ObjectRecognizer::Run()
 
 	ShowStatus("Recognizing objects...");
 
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////
+	// Okay.  First, get all the models that belong to the same class as the query model (excluding the query itself).
+
+
+	if (false)
+	{
+		SPGMatch gmatch;
+		//TrainingObjectData query_tod;
+		m_rankings.resize(m_pShapeParser->NumShapes());
+		const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
+
+		const unsigned numModelViews = modelHierarchy.ModelViewCount();
+
+		QueryRanking &qr = m_rankings[0]; // assuming only one shape in each frame...
+
+		// get all of the parses of the query shape.
+		qr.queryParses = m_pShapeParser->GetShapeParses(0);
+		std::cout << "number of parses = " << qr.queryParses.size() << std::endl;
+
+		qr.matches.resize(numModelViews); // one match for all of the +1000 model views.
+		std::cout << "number of model views = " << qr.matches.size() << std::endl;
+
+		const unsigned numQueryParses = qr.queryParses.size();
+		std::cout << "numqueryparses = " << numQueryParses << std::endl;
+
+
+		// load the query info.
+		//m_pObjectLearner->GetTrainingObjectData(&query_tod);
+
+		std::vector<unsigned int> models_of_this_class;
+		std::vector<std::string> classes; 
+
+		// For all model shapes in the model database		
+		for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
+		{
+			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+			std::string class_name = modelHierarchy.getModelViewClass(model);
+
+			// if we haven't already seen this class, add it to our object class vector
+			if (std::find(classes.begin(), classes.end(), class_name) == classes.end())
+			{
+				classes.push_back(class_name);
+			}
+		}
+
+		// list all of the gathered object classes.
+		std::cout << "CLASSES " << std::endl << "-----------------------" << std::endl;
+		for (unsigned i = 0; i < classes.size(); i++)
+		{
+			std::cout << classes[i] << std::endl;
+		}
+
+		for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
+		{
+			// if it's the same class...
+			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+			std::string class_name = classes[3]; // just for testing... [TODO]
+			
+			if (modelHierarchy.getModelViewClass(model) == class_name && std::find(models_of_this_class.begin(), models_of_this_class.end(), gmatch.modelViewIdx) == models_of_this_class.end())
+			{
+				models_of_this_class.push_back(gmatch.modelViewIdx);
+				std::cout << "pushing back " << gmatch.modelViewIdx << std::endl;
+			}
+		}
+		
+		// go through all the model's 'i' in this class.
+		std::cout << "All of these should be the same class..." << std::endl;
+		for (int i = 0; i < models_of_this_class.size(); i++)
+		{
+			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(models_of_this_class[i]);
+			std::cout << "Good: " << modelHierarchy.ToString(model) << std::endl;
+		}
+
+		std::cout << "-------------------------" << std::endl;
+
+		std::cout << "ok i'm here. and will go through this many queries: " << models_of_this_class.size() << std::endl;
+		// loop over all models in this class. 'i' is the query model.
+		for (int i = 0; i < models_of_this_class.size(); i++)
+		{
+			std::cout << "model " << i << " is the query now...-----------------------------------------------------------------------" << std::endl;
+			// go over each parse of the query.
+			std::cout << " I have this many parses to go through: " << modelHierarchy.ShapeParseCount(models_of_this_class[i]) << std::endl;
+			for (int shape_parse = 0; shape_parse < modelHierarchy.ShapeParseCount(models_of_this_class[i]); shape_parse++)
+			{
+				std::cout << "I am parse " << shape_parse << " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" << std::endl;
+				const ShapeParseGraph &G_q = modelHierarchy.GetShapeParse(models_of_this_class[i], shape_parse);
+
+				// j is the model we are checking the query against.
+				for (int j = 0; j < models_of_this_class.size(); j++)
+				{
+					std::cout << "Checking against model " << j << std::endl;
+					// if i and j are the same model, skip.
+					if (i == j) {continue;}
+
+					// go over each shape parse of model 'j'
+					//std::cout << "This model has " << modelHierarchy.ShapeParseCount(models_of_this_class[j]) << " parses" << std::endl;
+					for (int j_shape_parse = 0; j_shape_parse < modelHierarchy.ShapeParseCount(models_of_this_class[j]); j_shape_parse++)
+					{
+						//std::cout << "model parse: " << j_shape_parse << std::endl;
+						gmatch.queryParseIdx = shape_parse;
+						gmatch.modelViewIdx = j;
+						gmatch.modelParseIdx = j_shape_parse;
+
+						// match query 'i' with shape parse 'shape_parse' to query 'j' with shape parse 'j_shape_parse'
+						const ShapeParseGraph &G_m = modelHierarchy.GetShapeParse(models_of_this_class[j], j_shape_parse); 
+						std::cout << " model graph has this many nodes: " << G_m.number_of_nodes() << std::endl;
+						double score = m_pShapeMatcher->Match(G_q, G_m);
+						m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap);
+						//std::cout << "The score here is " << score << std::endl;
+						//std::cout << "The model graph has  " << G_m.number_of_nodes() << " nodes and  " << G_m.number_of_edges() << " edges" << std::endl;
+						
+					//	std::cout << "The query graph has  " << G_q.number_of_nodes() << " nodes and  " << G_q.number_of_edges() << " edges" << std::endl;
+						
+						gmatch.value = score;
+						NodeMatchMap mapping = gmatch.nodeMap;
+
+						
+						graph::node u,v;
+						//SPGPtr query_spg = m_rankings[0].queryParses[gmatch.queryParseIdx];
+						
+						std::cout << "Now look at the mapping from that score... There were " << mapping.size() << " nodes. " << std::endl;
+						forall_nodes(u, G_q)
+						{
+							v = mapping[u].mappedNode;
+							std::cout << "srcNodeIdx = " << mapping[u].srcNodeIdx << std::endl; // these need to be node matches...
+							std::cout << "tgtNodeIdx" << mapping[u].tgtNodeIdx << std::endl;
+							std::cout << "nodeAttDist" << mapping[u].nodeAttDist << std::endl;
+						}
+						/*
+						forall_nodes(u, *query_spg)
+						{
+							v = mapping[u].mappedNode;
+							/*std::cout << "srcNodeIdx = " << mapping[u].srcNodeIdx << std::endl; // these need to be node matches...
+							std::cout << "tgtNodeIdx" << mapping[u].tgtNodeIdx << std::endl;
+							std::cout << "nodeAttDist" << mapping[u].nodeAttDist << std::endl;*/
+							
+						//}
+					}
+					
+				}
+			}
+		}
+
+
+
+
+		std::cout << "-------------------------" << std::endl;
+	}
+
+
+	std::cout << "crash here" << std::endl;
+	///////////////////////////////////////////////////////////////////////////
+
 	// Get the training info of the query shape if available only
 	// if we have to exclude the query object from the model DB
 	TrainingObjectData query_tod;
@@ -131,7 +286,8 @@ void ObjectRecognizer::Run()
 	
 	//DBG_RESET_TIMER(timer)
 
-	// For all query shapes in the ShapeParser
+	// For all query shapes in the ShapeParser.
+	// usually one, since we only have one query at a time.
 	for (unsigned s_q = 0; s_q < numQueryShapes; ++s_q)
 	{
 		std::cout << "numqueryshapes = " << numQueryShapes << std::endl;
@@ -173,6 +329,7 @@ void ObjectRecognizer::Run()
 					//			<< modelHierarchy.ToString(mv));
 
 					// See if the current object view belongs to the query object
+					// this is only the exact same instance (the same image).  Not the same 'class'
 					if (modelHierarchy.HasParent(mv, query_tod.className, query_tod.objId))
 					{
 						// The query object is the same than the model object
@@ -208,13 +365,16 @@ void ObjectRecognizer::Run()
 				// ranking of models per queries
 
 				// For all parses of the model shapes
+				// in this scenario, we've selected one model (one instance shape) and we are looking at all of its SPGs
 				for (gmatch.modelParseIdx = 0; gmatch.modelParseIdx < numModelParses; 
 					++gmatch.modelParseIdx)
 				{
 					const ShapeParseGraph& G_m = modelHierarchy.GetShapeParse(
 						gmatch.modelViewIdx, gmatch.modelParseIdx);
 
+					// this is just matching the SPG of the parsing of two instances...
 					gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
+					//std::cout << "matching score = " << gmatch.value << std::endl;
 
 					if (m_params.onlySumModelNodeMatches)
 						gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
@@ -228,8 +388,8 @@ void ObjectRecognizer::Run()
 								  << ", model parse " << gmatch.modelParseIdx << ") " 
 						          << "[match id " << dbg_match_counter << "]");
 
-						DBG_PRINT_ELAPSED_TIME(timer, "Matched 1000 SPGs")
-						DBG_RESET_TIMER(timer)
+						//DBG_PRINT_ELAPSED_TIME(timer, "Matched 1000 SPGs")
+						//DBG_RESET_TIMER(timer)
 					}*/
 
 					dbg_match_counter++;

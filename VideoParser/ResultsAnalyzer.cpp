@@ -210,7 +210,6 @@ void ResultsAnalyzer::SaveRecognitionResults()
 			<< q_idx << "_matches = ";
 
 		numMatches = rankings[q_idx].matches.size();
-
 		// Save only top 20 matches
 		if (numMatches > 20)
 			numMatches = 20;
@@ -225,7 +224,7 @@ void ResultsAnalyzer::SaveRecognitionResults()
 		for (unsigned m_idx = 0; m_idx < numMatches; ++m_idx)
 		{
 			const SPGMatch& match = rankings[q_idx].matches[m_idx];
-
+			
 			m_resultsFile << "(" << match.queryParseIdx << ","
 				<< match.modelViewIdx << "," << match.modelParseIdx << ","
 				<< match.value << ") ";
@@ -243,9 +242,14 @@ void ResultsAnalyzer::SaveRecognitionResults()
 				if (modelHierarchy.HasAncestor(mv, tod.className))
 				{
 					numRelevant++;
+					m_resultsFile << " and it's a match! ";
 
 					//if (tod.viewId2 == mv.viewId2 && tod.viewId3 == mv.viewId3)
 					//	numRelevantView++;
+				}
+				else
+				{
+					m_resultsFile << " it's not a match.. ";
 				}
 
 				// Store the number of relevant "documents" seen up to

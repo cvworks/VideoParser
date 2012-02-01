@@ -42,8 +42,13 @@ double Blossom5BGMatcher::SolveMinCost(const Matrix& costMat)
 	std::vector<double> weights(m_numNodes1 * m_numNodes2);
 
 	for (i = 0; i < costMat.rows(); i++)
+	{
 		for (j = 0; j < costMat.cols(); j++)
+		{
+			ASSERT(costMat(i, j) >= 0);
 			m_pMatcher->AddEdge(i, m_numNodes1 + j, costMat(i, j));
+		}
+	}
 
 
 	m_pMatcher->Solve();
@@ -58,6 +63,8 @@ double Blossom5BGMatcher::SolveMinCost(const Matrix& costMat)
 				cost += costMat(i, j);
 		}
 	}
+
+	ASSERT(cost >= 0);
 
 	return cost;
 }

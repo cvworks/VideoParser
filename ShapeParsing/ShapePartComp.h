@@ -103,11 +103,14 @@ public:
 		if (u == nil)
 		{
 			ASSERT(v != nil);
+			ASSERT(m_pModelGraph->inf(v).nilMatchCost >= 0);
 
 			return m_pModelGraph->inf(v).nilMatchCost;
 		}
 		else if (v == nil)
 		{
+			ASSERT(m_pQueryGraph->inf(u).nilMatchCost >= 0);
+
 			return m_pQueryGraph->inf(u).nilMatchCost;
 		}
 		else
@@ -117,7 +120,11 @@ public:
 
 			InitSDC(sp_q, sp_m);
 
-			return m_pSDC->Match(*sp_q.ptrDescriptor, *sp_m.ptrDescriptor);
+			double dist = m_pSDC->Match(*sp_q.ptrDescriptor, *sp_m.ptrDescriptor);
+
+			ASSERT(dist >= 0);
+
+			return dist;
 		}
 	}
 };

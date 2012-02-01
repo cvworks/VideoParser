@@ -131,6 +131,8 @@ void ShapeContextComp::ComputeCostMatrix(const ShapeContext& sc1,
 	const unsigned N2 = sc2.NumPoints();
 	const unsigned NBINS = sc1.NumBins();
 
+	ASSERT(costMat.rows() >= N1 && costMat.cols() >= N2);
+
 	DBG_DECLARE_TIMER(timer)
 
 	for (i = 0; i < N1; ++i)
@@ -146,12 +148,17 @@ void ShapeContextComp::ComputeCostMatrix(const ShapeContext& sc1,
 				const double& b1 = sc1(i, k);
 				const double& b2 = sc2(j, k);
 
+				ASSERT(b1 >= 0);
+				ASSERT(b2 >= 0);
+
 				diff = b1 - b2;
 
 				cost += (diff * diff) / (b1 + b2 + vnl_math::eps);
 			}
 
 			cost *= 0.5;
+
+			ASSERT(cost >= 0);
 		}
 	}
 
@@ -205,7 +212,7 @@ void ShapeContextComp::MatchSCFast(const ShapeContext& model,
 	m_costMat.set_size(nptsd, nptsd);
 
 	// Set the fixed cost of matching dummy nodes in the matrix
-	if (model.NumBins() != query.NumBins())
+	//if (model.NumPoints() != query.NumPoints())
 		m_costMat.fill(Params().unmatchCost);
 
 	// Compute pairwise cost between all shape contexts
@@ -220,7 +227,33 @@ void ShapeContextComp::MatchSCFast(const ShapeContext& model,
 	m_pMatcher->Init(nptsd, nptsd);
 
 	// Run the min cost assignemt algorithm
-	m_matchCost = m_pMatcher->SolveMinCost(m_costMat);
+	/*
+	std::cout << "Before: " << std::endl;
+	for (int row = 0; row < m_costMat.rows(); row++)
+	{
+		std::cout << "Row " << row << ": ";
+		for (int col = 0; col < m_costMat.cols(); col++)
+		{
+			std::cout << m_costMat(row, col) << ", ";
+		}
+		std::cout << std::endl << std::endl;
+	}
+	std::cout << std::endl;
+	*/
+	m_matchCost = m_pMatcher->SolveMinCost(m_costMat); 
+	/*
+	std::cout << "After: " << std::endl;
+	for (int row = 0; row < m_costMat.rows(); row++)
+	{
+		std::cout << "Row " << row << ": ";
+		for (int col = 0; col < m_costMat.cols(); col++)
+		{
+			std::cout << m_costMat(row, col) << ", ";
+		}
+		std::cout << std::endl << std::endl;
+	}
+	std::cout << std::endl;
+	*/
 }
 
 /*!

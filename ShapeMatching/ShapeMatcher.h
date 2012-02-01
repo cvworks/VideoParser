@@ -49,6 +49,8 @@ public:
 		m_pGraphMatcher = NULL;
 	}
 
+	~ShapeMatcher();
+
 	/*const Matrix& Distances() const
 	{
 		return m_distances;

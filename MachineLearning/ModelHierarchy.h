@@ -156,6 +156,13 @@ public:
 		return count;
 	}
 
+	std::string getModelViewClass(const ModelView &mv) const
+	{
+		unsigned parent_id = mv.viewInfo.storParentMetadataId;
+		const ModelObject &parent = m_modelObjects[parent_id];
+		return parent.classInfo.name;
+	}
+
 	std::string ToString(const ModelView& mv) const
 	{
 		std::ostringstream oss;

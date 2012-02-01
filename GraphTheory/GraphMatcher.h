@@ -103,17 +103,21 @@ protected:
 		if (v1 == nil)
 		{
 			ASSERT(v2 != nil);
+			ASSERT(m_nodeCost2[v2] >= 0);
 
 			return m_nodeCost2[v2];
 		}
 		else if (v2 == nil)
 		{
 			ASSERT(v1 != nil);
+			ASSERT(m_nodeCost1[v1] >= 0);
 
 			return m_nodeCost1[v1];
 		}
 		else
 		{
+			ASSERT(m_nodeSimMat[m_pG1->index(v1)][m_pG2->index(v2)] >= 0);
+
 			return m_nodeSimMat[m_pG1->index(v1)][m_pG2->index(v2)];
 		}
 	}
@@ -145,6 +149,7 @@ public:
 	{
 		//DBG_DECLARE_TIMER(timer)
 
+		//ASSERT(g1);
 		//DBG_RESET_TIMER(timer)
 		Init(g1, g2);
 		//DBG_PRINT_ELAPSED_TIME(timer, "Init matcher")

@@ -34,13 +34,18 @@ void ShapeMatcher::ReadParamsFromUserArguments()
 		0, &m_params.matchingAlgorithm);
 }
 
+ShapeMatcher::~ShapeMatcher()
+{
+	delete m_pGraphMatcher;
+	//m_pGraphMatcher = NULL;
+}
+
 /*!
 	Clears the current graph matcher object.
 */
 void ShapeMatcher::Clear()
 {
-	delete m_pGraphMatcher;
-	m_pGraphMatcher = NULL;
+	// called every time a new video is loaded (or something like that)
 }
 
 void ShapeMatcher::Initialize(graph::node v)
@@ -52,6 +57,8 @@ void ShapeMatcher::Initialize(graph::node v)
 
 	ASSERT(!m_pGraphMatcher);
 	m_pGraphMatcher = new ExactTreeMatcher;
+	ASSERT(m_pGraphMatcher);
+	std::cout << "initializing shapematcher..." << std::endl;
 }
 
 void ShapeMatcher::Run()
@@ -67,6 +74,8 @@ void ShapeMatcher::Run()
 		ShowMissingDependencyError(ShapeParser);
 		return;
 	}
+
+	//ASSERT(m_pGraphMatcher);
 
 	// Only recognize object if we are performing the recognition task
 	//if (TaskName() != "Recognition")
@@ -124,6 +133,9 @@ std::vector<unsigned> ShapeMatcher::ComputeDatabaseDistances(Matrix& m,
 double ShapeMatcher::Match(const ShapeParseGraph& g1, 
 	const ShapeParseGraph& g2) const
 {
+
+	//ASSERT(m_pGraphMatcher);
+
 	// Let the node similarity measurer know the graphs
 	// that contain the nodes to compare
 	const_cast<ShapePartComp&>(m_spsm).SetGraphs(g1, g2);
