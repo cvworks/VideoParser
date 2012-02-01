@@ -55,7 +55,9 @@ void ObjectRecognizer::Initialize(graph::node v)
 
 	m_pObjectLearner = FindParentComponent(ObjectLearner);
 	m_pShapeParser = FindParentComponent(ShapeParser);
+	ShowMsg("making shapematcher");
 	m_pShapeMatcher = FindParentComponent(ShapeMatcher);
+	ShowMsg("shapeamtcher made");
 
 	std::list<UserCommandInfo> cmds0;
 
@@ -132,6 +134,7 @@ void ObjectRecognizer::Run()
 	// For all query shapes in the ShapeParser
 	for (unsigned s_q = 0; s_q < numQueryShapes; ++s_q)
 	{
+		std::cout << "numqueryshapes = " << numQueryShapes << std::endl;
 		QueryRanking& qr = m_rankings[s_q];
 
 		// Get the parses of the query shape
@@ -287,7 +290,10 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 	unsigned m_idx = (unsigned)dii.params.at(1);
 
 	if (q_idx >= m_rankings.size() || m_idx >= m_rankings[q_idx].matches.size())
+	{
+		std::cout << "returning..." << std::endl;
 		return;
+	}
 
 	const SPGMatch& match = m_rankings[q_idx].matches[m_idx];
 
