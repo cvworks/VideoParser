@@ -808,7 +808,7 @@ public:
 				{
 					j1 -= nj();
 					i1++;
-				}
+				} 
 
 				if (i1 >= ni()) // treat days as circular list
 					i1 -= ni();
