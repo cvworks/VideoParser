@@ -10,7 +10,7 @@
     <OpenCVDir>$(LibRoot)\OpenCV2.3.1</OpenCVDir>
     <OpenCVBuild>$(OpenCVDir)\vs2010</OpenCVBuild>
     <OpenCVIncSnap>$(OpenCVDir)/.;$(OpenCVDir)/include;$(OpenCVDir)/include/opencv;$(OpenCVDir)/modules/core/include;$(OpenCVDir)/modules/flann/include;$(OpenCVDir)/modules/imgproc/include;$(OpenCVDir)/modules/video/include;$(OpenCVDir)/modules/highgui/include;$(OpenCVDir)/modules/ml/include;$(OpenCVDir)/modules/calib3d/include;$(OpenCVDir)/modules/features2d/include;$(OpenCVDir)/modules/objdetect/include;$(OpenCVDir)/modules/legacy/include;$(OpenCVDir)/modules/contrib/include;</OpenCVIncSnap>
-    <OpenCVIncDist>$(OpenCVDir)\build\include</OpenCVIncDist>
+    <OpenCVIncDist>$(OpenCVBuild)\include</OpenCVIncDist>
     <OpenCVInc>$(OpenCVIncDist)</OpenCVInc>
     <OpenCVLib>$(OpenCVBuild)\lib\$(OpenCVConfiguration);$(OpenCVDir)\3rdparty\lib\$(OpenCVConfiguration)</OpenCVLib>
     <OpenCVBin>$(OpenCVBuild)\bin\$(OpenCVConfiguration)</OpenCVBin>
@@ -20,8 +20,8 @@
     <VXLLib>$(VXLBin)\lib\$(Configuration)</VXLLib>
     <FLTKLib>$(FLTKDir)\lib</FLTKLib>
     <BoostDir>$(LibRoot)\boost_1_48_0</BoostDir>
-    <BoostInc>$(BoostDir)\boost</BoostInc>
-    <BoostLib>$(BoostDir)\stage\lib</BoostLib>
+    <BoostInc>$(BoostDir)</BoostInc>
+    <BoostLib>$(BoostDir)\libs</BoostLib>
     <LEMONDir>$(LibRoot)\lemon-1.2.3</LEMONDir>
     <LEMONInc>$(LEMONDir);$(LEMONDir)\vs2010</LEMONInc>
     <LEMONLib>$(LEMONDir)\vs2010\lemon\$(Configuration)</LEMONLib>
@@ -34,6 +34,7 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir>$(BuildDir)\$(SolutionName)\$(Configuration)\</OutDir>
     <IntDir>$(BuildDir)\$(SolutionName)\$(ProjectName)\$(Configuration)\</IntDir>
+    <IncludePath>C:\Projects\Libraries\boost_1_48_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

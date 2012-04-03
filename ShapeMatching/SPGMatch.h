@@ -56,6 +56,7 @@ struct SPGMatch
 
 	void operator=(const SPGMatch&& rhs)
 	{
+		//std::cout << "=" << std::endl;
 		SetBasicInfo(rhs);
 
 		nodeMap = std::move(rhs.nodeMap);
@@ -78,6 +79,11 @@ struct SPGMatch
 		queryParseIdx = rhs.queryParseIdx;
 	}
 
+	void weightValue(double weight)
+	{
+		value *= 1/weight; // is this a good weighting scheme? probably not...
+	}
+
 	//! Used to sort similarity values (ascending)
 	bool operator>(const SPGMatch& rhs) const
 	{
@@ -89,6 +95,7 @@ struct SPGMatch
 	//! Used to sort cost values (descending)
 	bool operator<(const SPGMatch& rhs) const
 	{
+		//std::cout << "lt" << std::endl;
 		ASSERT(ValueNotSet() == COST_NOT_SET);
 		
 		return value < rhs.value;

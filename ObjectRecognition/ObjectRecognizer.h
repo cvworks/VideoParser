@@ -7,6 +7,8 @@
 #include <Tools/VisSysComponent.h>
 #include <Tools/STLUtils.h>
 #include <ShapeMatching/SPGMatch.h>
+#include <fstream>
+#include <iostream>
 
 namespace vpl {
 
@@ -37,6 +39,20 @@ struct QueryRanking
 	}
 };
 
+struct WeightKey
+{
+	int model, parse, part;
+	
+	WeightKey(int a, int b, int c) : model(a), parse(b), part(c) {}
+	
+	bool operator < (const WeightKey &rhs) const
+	{
+		return model < rhs.model || (model == rhs.model && parse < rhs.parse) || (model == rhs.model && parse == rhs.parse && part < rhs.part);
+	}
+};
+
+typedef std::map<WeightKey, int> Lookup_Table;
+
 /*!
 	@brief Wrapper for a generic object recognition algorithm
 */
@@ -54,6 +70,19 @@ class ObjectRecognizer : public VisSysComponent
 	};
 
 	Params m_params;
+
+private:
+	
+	void findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 
+						std::vector<int> model_id, std::vector<int> model_parse_id,std::vector<int> model_part_id, 
+						std::vector<double> matching_distance, 
+						int &clique_size, double &score);
+
+	bool nodeInGraph(AttributedGraph<std::pair<std::string, std::vector<int> >, double> &g,
+					std::vector<graph::node> nodes, std::string query_string);
+
+	graph::node getNodeByString(AttributedGraph<std::pair<std::string, std::vector<int> >, double> &g,
+					std::vector<graph::node> nodes, std::string query_string);
 
 protected:
 	std::shared_ptr<const ObjectLearner> m_pObjectLearner;

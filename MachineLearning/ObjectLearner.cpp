@@ -108,7 +108,6 @@ void ObjectLearner::Run()
 		ShowMissingDependencyError(ShapeParser);
 		return;
 	}
-
 	// The first thing to do is to open the model database
 	// even if not learning new objects, since dependent components
 	// might ask for it (eg, the ObjectRecognizer)

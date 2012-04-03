@@ -17,6 +17,7 @@ using namespace vpl;
 
 extern UserArguments g_userArgs;
 
+
 /*!
 	Reads the parameters provided by the user. 
 
@@ -226,8 +227,7 @@ void ResultsAnalyzer::SaveRecognitionResults()
 			const SPGMatch& match = rankings[q_idx].matches[m_idx];
 			
 			m_resultsFile << "(" << match.queryParseIdx << ","
-				<< match.modelViewIdx << "," << match.modelParseIdx << ","
-				<< match.value << ") ";
+				<< match.modelViewIdx << "," << match.modelParseIdx << ",";
 
 			// Compute precision and recall data. Here we assume that 
 			// there is only one query per frame and that we know what
@@ -242,14 +242,14 @@ void ResultsAnalyzer::SaveRecognitionResults()
 				if (modelHierarchy.HasAncestor(mv, tod.className))
 				{
 					numRelevant++;
-					m_resultsFile << " and it's a match! ";
+					m_resultsFile << "1)";
 
 					//if (tod.viewId2 == mv.viewId2 && tod.viewId3 == mv.viewId3)
 					//	numRelevantView++;
 				}
 				else
 				{
-					m_resultsFile << " it's not a match.. ";
+					m_resultsFile << "0)";
 				}
 
 				// Store the number of relevant "documents" seen up to
@@ -273,6 +273,9 @@ void ResultsAnalyzer::SaveRecognitionResults()
 				// For each model in the sorted match list of the i'th query
 				for (unsigned j = 0; j < prVals[i].size(); ++j)
 				{
+					//std::cout << "prVals[i].size() = " << prVals[i].size() << std::endl;
+					//std::cout << "numrelevantindb = " << numRelevantInDB << std::endl;
+					//std::cout << "prvals[i][j] = " << prVals[i][j] << std::endl;
 					// save as (recall, precision) values
 					m_resultsFile << "(" << prVals[i][j] / numRelevantInDB << ","
 						<< prVals[i][j] / double(j + 1) << ") ";

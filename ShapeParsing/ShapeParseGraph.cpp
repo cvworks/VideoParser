@@ -29,6 +29,7 @@ void ShapePart::Serialize(OutputStream& os) const
 		
 	if (ptrDescriptor)
 		ptrDescriptor->Serialize(os);
+
 }
 
 void ShapePart::Deserialize(InputStream& is) 
@@ -43,6 +44,7 @@ void ShapePart::Deserialize(InputStream& is)
 
 	if (ptrDescriptor)
 		ptrDescriptor->Deserialize(is);
+
 }
 
 /*!

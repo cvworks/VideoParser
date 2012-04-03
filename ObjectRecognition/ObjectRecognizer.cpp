@@ -2,6 +2,10 @@
  * All Rights Reserved
  * Author: Diego Macrini
  *-----------------------------------------------------------------------*/
+#include <boost/graph/graphviz.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/dynamic_bitset.hpp>
+
 #include <RootHeader.h>
 #include "ObjectRecognizer.h"
 #include <MachineLearning/ObjectLearner.h>
@@ -11,9 +15,37 @@
 #include <Tools/NamedColor.h>
 #include <VideoParserGUI/DrawingUtils.h>
 
+
+
+
+
 using namespace vpl;
+using namespace std;
 
 extern UserArguments g_userArgs;
+
+
+bool USE_LEARNED_WEIGHTS = false; // use clique-based weightings.  expects weights.txt in the Experiments folder.
+bool LEARN_WEIGHTS = false; // program will crash after learning weights (since memory becomes all mismanaged).  So, once done learning, set this back to false and run.
+
+struct Vertex
+{
+	string name;
+	int model_id;
+	int parse_id;
+	int part_id;
+};
+
+struct Edge
+{
+	double score;
+};
+
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, Vertex, Edge> boost_graph;
+typedef boost_graph::vertex_descriptor VertexID;
+typedef boost_graph::edge_descriptor EdgeID;
+typedef pair<int, int> Pair;
+
 
 /*!
 	Reads the parameters provided by the user. 
@@ -49,7 +81,7 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 		false, &m_params.onlySumModelNodeMatches);
 }
 
-void ObjectRecognizer::Initialize(graph::node v)
+void ObjectRecognizer::Initialize(vpl::graph::node v)
 {
 	VisSysComponent::Initialize(v);
 
@@ -67,6 +99,323 @@ void ObjectRecognizer::Initialize(graph::node v)
 		'w', &m_params.overlayWarpQuery));
 
 	RegisterUserSwitchCommands(0, cmds0);	
+}
+
+std::pair<VertexID, bool> getNodeByString2(boost_graph &g, string s)
+{
+	boost::graph_traits<boost_graph>::vertex_iterator vi, vi_end, next;
+	boost::tie(vi, vi_end) = boost::vertices(g);
+	for (next = vi; vi != vi_end; vi = next)
+	{
+		++next;
+		if (g[*vi].name == s)
+		{
+			std::pair<VertexID, bool> ret(*vi, true);
+			return ret;
+		}
+	}
+
+	// not found
+	std::pair<VertexID, bool> ret(VertexID(), false);
+	return ret;
+}
+
+void printGraph(boost_graph &g, std::vector<EdgeID> &edges, std::string filename)
+{
+	std::ofstream out;
+	out.open(filename);
+
+	out << "digraph clique_graph {" << std::endl;
+	out << "rankdir=LR;" << std::endl << "node [shape = circle];" << std::endl;
+
+	for (int i = 0; i < edges.size(); i++)
+	{
+		stringstream ss;
+		ss << g[edges[i]].score;
+
+		out <<  g[edges[i].m_source].name << " -> " <<  g[edges[i].m_target].name << " [ label = \"" << ss.str() << "\" ];" << std::endl;
+	}
+	out << "}" << std::endl;
+	out.close();
+}
+
+bool isClique(const boost_graph &g, const std::vector<VertexID> &nodes, const std::vector<EdgeID> &edges, double &score)
+{
+	for (unsigned i = 0; i < nodes.size(); i++)
+	{
+		for (unsigned j = 0; j < nodes.size(); j++)
+		{
+			if (i == j) { continue; }
+			if (!boost::edge(nodes[i], nodes[j], g).second) { return false;}
+			else
+			{
+				score += g[boost::edge(nodes[i], nodes[j], g).first].score;
+			}
+		}
+	}
+	return true;
+}
+
+void increment(boost::dynamic_bitset<> &bitset)
+{	
+	for (int loop = 0; loop < bitset.size(); ++loop)
+	{
+		if ((bitset[loop] ^= 0x1) == 0x1)
+		{
+			break;
+		}
+	}
+}
+
+void randomize(boost::dynamic_bitset<> &bitset)
+{
+	for (int loop = 0; loop < bitset.size(); ++loop)
+	{
+		double rand_num = (double)rand()/RAND_MAX;
+
+		if (rand_num < 0.1)
+		{
+			bitset[loop] = true;
+		}
+		else
+		{
+			bitset[loop] = false;
+		}
+	}
+}
+
+void decrement(boost::dynamic_bitset<> &bitset)
+{
+	for (int loop = 0; loop < bitset.size(); ++loop)
+	{
+		if ((bitset[loop] ^= 0x1) == 0x0)
+		{
+			break;
+		}
+	}
+}
+
+unsigned int cliqueHelper3(const boost_graph &g, const std::vector<VertexID> &nodes, const std::vector<EdgeID> &edges, double &score)
+{
+	static boost::dynamic_bitset<> empty;
+	empty.resize(nodes.size());
+
+	int largest_clique = 1;
+	boost::dynamic_bitset<> set(nodes.size());
+	
+	for (unsigned i = 0; i < nodes.size(); ++i)
+	{
+		set[i] = true;
+	}
+
+	int i = 0;
+	while ((largest_clique <= 1 || i < 50000) && i < 100000)
+	{
+		// build the next potential clique.
+		// every bit that is a 1 in set means that that node is in the clique.
+		std::vector<VertexID> clique;
+		randomize(set);
+		set[0] = true; // the first bit is the query node.  must always be on.
+
+		for (int loop = 0; loop < nodes.size(); ++loop)
+		{
+			if (set[loop])
+			{
+				clique.push_back(nodes[loop]);
+			}
+		}
+
+		// if this is a clique..
+		double maybe_score = 0;
+		if ((clique.size() > largest_clique) && isClique(g, clique, edges, maybe_score))
+		{
+			largest_clique = clique.size();
+			score = maybe_score;
+			std::cout << "Largest clique is " << largest_clique << std::endl;
+		}
+		//decrement(set);
+		//increment(set);
+		i++;
+	}
+
+	return largest_clique;
+}
+
+void ObjectRecognizer::findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 
+						std::vector<int> model_id, std::vector<int> model_parse_id, std::vector<int> model_part_id, 
+						std::vector<double> matching_distance, int &clique_size, double &score)
+{
+	boost_graph g;
+	SPGMatch gmatch;
+	std::vector<VertexID> nodes;
+	std::vector<EdgeID> edges;
+	srand((unsigned) time(NULL));
+
+	// set up query graph
+	///////////////////////////////////////////
+	const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
+	const ShapeParseGraph &G_q = modelHierarchy.GetShapeParse(query_model_id, query_parse_id);
+	int model_view = 0;
+	int model_parse = 0;
+
+	std::stringstream ss;
+	ss << "model_" << query_model_id << "_parse_" << query_parse_id << "_part_" << query_shape_part;
+
+
+	VertexID query_vid = boost::add_vertex(g);
+	nodes.push_back(query_vid);
+	g[query_vid].name = ss.str();
+	g[query_vid].model_id = query_model_id;
+	g[query_vid].parse_id = query_parse_id;
+	g[query_vid].part_id = query_shape_part;
+
+	
+	ss.str("");
+
+	// add all the models that the query matched.
+	///////////////////////////////////////////
+	for (unsigned i = 0; i < model_id.size(); ++i)
+	{
+		ss << "model_" << model_id[i] << "_parse_" << model_parse_id[i] << "_part_" << model_part_id[i];
+
+		VertexID vid = boost::add_vertex(g);
+		g[vid].name = ss.str();
+		g[vid].model_id = model_id[i];
+		g[vid].parse_id = model_parse_id[i];
+		g[vid].part_id = model_part_id[i];
+		nodes.push_back(vid);
+
+		EdgeID eid;
+		bool ok;
+		boost::tie(eid, ok) = boost::add_edge(nodes[0], nodes[nodes.size() - 1], g);
+		if (ok)
+		{
+			edges.push_back(eid);
+			g[eid].score = matching_distance[i];
+		}
+
+		ss.str("");
+	}
+
+	//printGraph(g, edges, "only_query.dot");
+
+	// build rest of graph
+	///////////////////////////////////////////
+	for (unsigned i = 0; i < model_id.size(); ++i)
+	{
+		// set query to model 'i'
+		const ShapeParseGraph &query_spg = modelHierarchy.GetShapeParse(model_id[i], model_parse_id[i]);
+		gmatch.queryParseIdx = model_parse_id[i];
+
+		// loop over other models
+		for (unsigned j = 0; j < model_id.size(); j++)
+		{
+			if (i == j) { continue; }
+
+			//set model spg
+			const ShapeParseGraph &model_spg = modelHierarchy.GetShapeParse(model_id[j], model_parse_id[j]);
+			gmatch.modelViewIdx = model_id[j];
+			gmatch.modelParseIdx = model_parse_id[j];
+
+			// match
+			double match_score = m_pShapeMatcher->Match(query_spg, model_spg);
+			m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap);
+
+			// if this new query, at its given part id, matches a part already in the graph, add the edge. otherwise, ignore.
+			NodeMatchMap mapping = gmatch.nodeMap;
+			graph::node u, v;
+
+			forall_nodes(u, query_spg)
+			{
+				if (mapping[u].srcNodeIdx == model_part_id[i])
+				{
+					ss << "model_" << model_id[j] << "_parse_" << model_parse_id[j] << "_part_" << mapping[u].tgtNodeIdx;
+
+					std::pair<VertexID, bool> node_in_graph = getNodeByString2(g, ss.str());
+					if (node_in_graph.second)
+					{
+						std::stringstream ss2;
+						ss2 << "model_" << model_id[i] << "_parse_" << model_parse_id[i] << "_part_" << model_part_id[i];
+						std::pair<VertexID, bool> node_in_graph2 = getNodeByString2(g, ss2.str());
+						ss2.str("");
+
+
+						EdgeID eid;
+						bool ok;
+						boost::tie(eid, ok) = boost::add_edge(node_in_graph2.first, node_in_graph.first, g);
+						if (ok)
+						{
+							edges.push_back(eid);
+							g[eid].score = mapping[u].nodeAttDist;
+						}
+					}
+					else
+					{
+					//	std::cout << "didn't find the node." << std::endl;
+					}
+					ss.str("");
+				}
+			}
+		}
+
+		// now test this model 'i' against the original query (since it is not in the vector model_id)
+		const ShapeParseGraph &model_spg = modelHierarchy.GetShapeParse(query_model_id, query_parse_id);
+		gmatch.modelViewIdx = query_model_id;
+		gmatch.modelParseIdx = query_parse_id;
+
+		double match_score = m_pShapeMatcher->Match(query_spg, model_spg);
+		m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap);
+
+		NodeMatchMap mapping = gmatch.nodeMap;
+		graph::node u, v;
+
+		forall_nodes(u, query_spg)
+		{
+			if (mapping[u].srcNodeIdx == model_part_id[i])
+			{
+				ss << "model_" << query_model_id << "_parse_" << query_parse_id << "_part_" << mapping[u].tgtNodeIdx; 
+				std::pair<VertexID, bool> node_in_graph = getNodeByString2(g, ss.str());
+				if (node_in_graph.second)
+				{
+					std::stringstream ss2;
+					ss2 << "model_" << model_id[i] << "_parse_" << model_parse_id[i] << "_part_" << model_part_id[i];
+					
+					std::pair<VertexID, bool> node_in_graph2 = getNodeByString2(g, ss2.str());
+					ss2.str("");
+
+					EdgeID eid;
+					bool ok;
+					boost::tie(eid, ok) = boost::add_edge(node_in_graph2.first, node_in_graph.first, g);
+					if (ok)
+					{
+						edges.push_back(eid);
+						g[eid].score = mapping[u].nodeAttDist; 
+					}
+				}
+				ss.str("");
+			}
+		}
+		std::stringstream ssfile;
+		ssfile << "model_" << i << ".dot";
+		//printGraph(g, edges, ssfile.str());
+		//std::cout << std::endl;
+	}
+
+	// print to graphviz
+	////////////////////////////////////
+	
+	//printGraph(g, edges, "final.dot");
+
+	// calculate max-clique based on this graph
+	// must contain original query
+	///////////////////////////////////////////
+	std::cout << "starting clique stuff" << std::endl;
+	std::cout << "Total models: " << model_id.size() << std::endl;
+	std::cout << "Number of nodes: " << nodes.size() << std::endl;
+
+	clique_size = cliqueHelper3(g, nodes, edges, score);
+	std::cout << "The clique size was " << clique_size  << std::endl;
+	//score = clique_size;
 }
 
 void ObjectRecognizer::Run()
@@ -103,13 +452,12 @@ void ObjectRecognizer::Run()
 
 
 	////////////////////////////////////////////////////////////////////////////
-	// Okay.  First, get all the models that belong to the same class as the query model (excluding the query itself).
+	// do clique-based shape matching.  this is the training part.
 
 
-	if (false)
+	if (LEARN_WEIGHTS)
 	{
 		SPGMatch gmatch;
-		//TrainingObjectData query_tod;
 		m_rankings.resize(m_pShapeParser->NumShapes());
 		const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
 
@@ -129,9 +477,6 @@ void ObjectRecognizer::Run()
 
 
 		// load the query info.
-		//m_pObjectLearner->GetTrainingObjectData(&query_tod);
-
-		std::vector<unsigned int> models_of_this_class;
 		std::vector<std::string> classes; 
 
 		// For all model shapes in the model database		
@@ -154,103 +499,110 @@ void ObjectRecognizer::Run()
 			std::cout << classes[i] << std::endl;
 		}
 
-		for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
+		// open file for writing
+		ofstream file;
+		file.open("weights.txt");
+		for (int class_num = 0; class_num < classes.size(); ++class_num) // on second machine, put this from classes.size()/4 to classes.size()/2 and then do from /2 to *3/4 and to classes.size()
 		{
-			// if it's the same class...
-			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
-			std::string class_name = classes[3]; // just for testing... [TODO]
 			
-			if (modelHierarchy.getModelViewClass(model) == class_name && std::find(models_of_this_class.begin(), models_of_this_class.end(), gmatch.modelViewIdx) == models_of_this_class.end())
+			std::vector<unsigned int> models_of_this_class;
+			// get all the models of this class.
+			for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
 			{
-				models_of_this_class.push_back(gmatch.modelViewIdx);
-				std::cout << "pushing back " << gmatch.modelViewIdx << std::endl;
-			}
-		}
-		
-		// go through all the model's 'i' in this class.
-		std::cout << "All of these should be the same class..." << std::endl;
-		for (int i = 0; i < models_of_this_class.size(); i++)
-		{
-			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(models_of_this_class[i]);
-			std::cout << "Good: " << modelHierarchy.ToString(model) << std::endl;
-		}
-
-		std::cout << "-------------------------" << std::endl;
-
-		std::cout << "ok i'm here. and will go through this many queries: " << models_of_this_class.size() << std::endl;
-		// loop over all models in this class. 'i' is the query model.
-		for (int i = 0; i < models_of_this_class.size(); i++)
-		{
-			std::cout << "model " << i << " is the query now...-----------------------------------------------------------------------" << std::endl;
-			// go over each parse of the query.
-			std::cout << " I have this many parses to go through: " << modelHierarchy.ShapeParseCount(models_of_this_class[i]) << std::endl;
-			for (int shape_parse = 0; shape_parse < modelHierarchy.ShapeParseCount(models_of_this_class[i]); shape_parse++)
-			{
-				std::cout << "I am parse " << shape_parse << " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" << std::endl;
-				const ShapeParseGraph &G_q = modelHierarchy.GetShapeParse(models_of_this_class[i], shape_parse);
-
-				// j is the model we are checking the query against.
-				for (int j = 0; j < models_of_this_class.size(); j++)
+				const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+				std::string class_name = classes[class_num]; 
+			
+				if (modelHierarchy.getModelViewClass(model) == class_name && std::find(models_of_this_class.begin(), models_of_this_class.end(), gmatch.modelViewIdx) == models_of_this_class.end())
 				{
-					std::cout << "Checking against model " << j << std::endl;
-					// if i and j are the same model, skip.
-					if (i == j) {continue;}
+					models_of_this_class.push_back(gmatch.modelViewIdx);
+					std::cout << "pushing back " << gmatch.modelViewIdx << std::endl;
+				}
+			}
+		
+			// go through all the model's 'i' in this class.
+			std::cout << "All of these should be the same class..." << std::endl;
+			for (int i = 0; i < models_of_this_class.size(); i++)
+			{
+				const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(models_of_this_class[i]);
+				std::cout << "Good: " << modelHierarchy.ToString(model) << std::endl;
+			}
 
-					// go over each shape parse of model 'j'
-					//std::cout << "This model has " << modelHierarchy.ShapeParseCount(models_of_this_class[j]) << " parses" << std::endl;
-					for (int j_shape_parse = 0; j_shape_parse < modelHierarchy.ShapeParseCount(models_of_this_class[j]); j_shape_parse++)
+			std::cout << "-------------------------" << std::endl;
+		
+
+			unsigned model_count = models_of_this_class.size();
+			// loop over all models in this class. 'i' is the query model.
+			for (int i = 0; i < model_count; i++)
+			{
+				// go over each parse of the query.
+				unsigned i_parse_count = modelHierarchy.ShapeParseCount(models_of_this_class[i]);
+				for (int shape_parse = 0; shape_parse < i_parse_count; shape_parse++)
+				{
+					std::vector<int> model_id;
+					std::vector<int> model_parse_id;
+					std::vector<int> model_part_id;
+					std::vector<double> matching_distance;
+
+					const ShapeParseGraph &G_q = modelHierarchy.GetShapeParse(models_of_this_class[i], shape_parse);
+					int part_count = G_q.number_of_nodes();
+
+					// for each part in the parse
+					for (unsigned part_number = 0; part_number < part_count; part_number++)
 					{
-						//std::cout << "model parse: " << j_shape_parse << std::endl;
-						gmatch.queryParseIdx = shape_parse;
-						gmatch.modelViewIdx = j;
-						gmatch.modelParseIdx = j_shape_parse;
-
-						// match query 'i' with shape parse 'shape_parse' to query 'j' with shape parse 'j_shape_parse'
-						const ShapeParseGraph &G_m = modelHierarchy.GetShapeParse(models_of_this_class[j], j_shape_parse); 
-						std::cout << " model graph has this many nodes: " << G_m.number_of_nodes() << std::endl;
-						double score = m_pShapeMatcher->Match(G_q, G_m);
-						m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap);
-						//std::cout << "The score here is " << score << std::endl;
-						//std::cout << "The model graph has  " << G_m.number_of_nodes() << " nodes and  " << G_m.number_of_edges() << " edges" << std::endl;
-						
-					//	std::cout << "The query graph has  " << G_q.number_of_nodes() << " nodes and  " << G_q.number_of_edges() << " edges" << std::endl;
-						
-						gmatch.value = score;
-						NodeMatchMap mapping = gmatch.nodeMap;
-
-						
-						graph::node u,v;
-						//SPGPtr query_spg = m_rankings[0].queryParses[gmatch.queryParseIdx];
-						
-						std::cout << "Now look at the mapping from that score... There were " << mapping.size() << " nodes. " << std::endl;
-						forall_nodes(u, G_q)
+						// match that part against all parses of all other intra-class models
+						// j is the model we are checking the query against.
+						for (int j = 0; j < model_count; j++)
 						{
-							v = mapping[u].mappedNode;
-							std::cout << "srcNodeIdx = " << mapping[u].srcNodeIdx << std::endl; // these need to be node matches...
-							std::cout << "tgtNodeIdx" << mapping[u].tgtNodeIdx << std::endl;
-							std::cout << "nodeAttDist" << mapping[u].nodeAttDist << std::endl;
-						}
-						/*
-						forall_nodes(u, *query_spg)
-						{
-							v = mapping[u].mappedNode;
-							/*std::cout << "srcNodeIdx = " << mapping[u].srcNodeIdx << std::endl; // these need to be node matches...
-							std::cout << "tgtNodeIdx" << mapping[u].tgtNodeIdx << std::endl;
-							std::cout << "nodeAttDist" << mapping[u].nodeAttDist << std::endl;*/
-							
-						//}
-					}
+							// if i and j are the same model, skip.
+							if (i == j) {continue;}
+
+							// go over each shape parse of model 'j'
+							unsigned j_parse_count = modelHierarchy.ShapeParseCount(models_of_this_class[j]);
+							//if (j_parse_count > 2) {j_parse_count = 2;}
+							for (int j_shape_parse = 0; j_shape_parse < j_parse_count; j_shape_parse++)
+							{
+								gmatch.queryParseIdx = shape_parse;
+								gmatch.modelViewIdx = models_of_this_class[j]; // should this be j, or models_of_this_class[j]?
+								gmatch.modelParseIdx = j_shape_parse;
+
+								// match query 'i' with shape parse 'shape_parse' to query 'j' with shape parse 'j_shape_parse'
+								const ShapeParseGraph &G_m = modelHierarchy.GetShapeParse(models_of_this_class[j], j_shape_parse); 
+								double score = m_pShapeMatcher->Match(G_q, G_m);
+								m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap);
+
+								gmatch.value = score;
+								NodeMatchMap mapping = gmatch.nodeMap;
+								graph::node u,v;
+
+								// loop over all nodes u in the query shape parse...
+								forall_nodes(u, G_q)
+								{
+									if (mapping[u].srcNodeIdx == part_number)
+									{
+										model_id.push_back(models_of_this_class[j]);
+										model_parse_id.push_back(j_shape_parse);
+										model_part_id.push_back(mapping[u].tgtNodeIdx);
+										matching_distance.push_back(mapping[u].nodeAttDist);
+									}
+								}
+							}
 					
+						}
+						int clique_size = 0;
+						double clique_score = 0;
+						findMaxClique(models_of_this_class[i], shape_parse, part_number, model_id, model_parse_id, model_part_id, matching_distance, clique_size, clique_score);
+						std::cout << "Clique size: " << clique_size << std::endl;
+						std::cout << "Score: " << clique_score << " for part " << models_of_this_class[i] << "_" << shape_parse << "_" << part_number << std::endl;
+						file << models_of_this_class[i] << "_" << shape_parse << "_" << part_number << " - " << clique_size << " - " << clique_score << "\n";
+					}
 				}
 			}
 		}
-
-
-
-
+		file.close();
 		std::cout << "-------------------------" << std::endl;
 	}
 
+	
 
 	std::cout << "crash here" << std::endl;
 	///////////////////////////////////////////////////////////////////////////
@@ -269,6 +621,25 @@ void ObjectRecognizer::Run()
 		StreamStatus("Matching query " << query_tod.ToString());
 	}
 
+	// load weights
+	////////////////////////////////////////////////////////
+	static Lookup_Table lookup_table;
+	
+	if (lookup_table.size() <= 0)
+	{
+		std::ifstream stream;
+		stream.open("weights.txt");
+	
+		int model, parse, part;
+		char ignore_char;
+		int value;
+		while (stream >> model >> ignore_char >> parse >> ignore_char >> part >> ignore_char >> value)
+		{
+			lookup_table[WeightKey(model, parse, part)] = value;
+		}
+		std::cout << "weights loaded." << std::endl;
+	}
+
 	SPGMatch gmatch;
 	unsigned dbg_match_counter = 0;
 
@@ -276,6 +647,7 @@ void ObjectRecognizer::Run()
 
 	const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
 	const unsigned numModelViews = modelHierarchy.ModelViewCount();
+	unsigned query_id = 0;
 
 	Timer matchingTimer;
 
@@ -290,7 +662,6 @@ void ObjectRecognizer::Run()
 	// usually one, since we only have one query at a time.
 	for (unsigned s_q = 0; s_q < numQueryShapes; ++s_q)
 	{
-		std::cout << "numqueryshapes = " << numQueryShapes << std::endl;
 		QueryRanking& qr = m_rankings[s_q];
 
 		// Get the parses of the query shape
@@ -315,6 +686,7 @@ void ObjectRecognizer::Run()
 		{
 			const ShapeParseGraph& G_q = *qr.queryParses[gmatch.queryParseIdx];
 
+
 			// For all model shapes in the model database
 			for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; 
 				++gmatch.modelViewIdx)
@@ -332,6 +704,7 @@ void ObjectRecognizer::Run()
 					// this is only the exact same instance (the same image).  Not the same 'class'
 					if (modelHierarchy.HasParent(mv, query_tod.className, query_tod.objId))
 					{
+						query_id = gmatch.modelViewIdx;
 						// The query object is the same than the model object
 						if (m_params.excludeQueryObjectFromDB)
 						{
@@ -365,16 +738,14 @@ void ObjectRecognizer::Run()
 				// ranking of models per queries
 
 				// For all parses of the model shapes
-				// in this scenario, we've selected one model (one instance shape) and we are looking at all of its SPGs
+				// in this scenario, we've selected one view (one instance shape) and we are looking at all of its SPGs
 				for (gmatch.modelParseIdx = 0; gmatch.modelParseIdx < numModelParses; 
 					++gmatch.modelParseIdx)
 				{
 					const ShapeParseGraph& G_m = modelHierarchy.GetShapeParse(
 						gmatch.modelViewIdx, gmatch.modelParseIdx);
 
-					// this is just matching the SPG of the parsing of two instances...
 					gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
-					//std::cout << "matching score = " << gmatch.value << std::endl;
 
 					if (m_params.onlySumModelNodeMatches)
 						gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
@@ -408,6 +779,148 @@ void ObjectRecognizer::Run()
 
 		// Sort the matches of the current query shape
 		// @todo mark comparison place
+		// but first, re-weight matches.
+		
+		unsigned model_id = 0;
+		std::vector<SPGMatch>::iterator matching = qr.matches.begin();
+		for (matching; matching != qr.matches.end(); ++matching)
+		{
+			// skip matching against self.
+			if (query_id == model_id || (*matching).modelParseIdx > 1000)
+			{
+				model_id++;
+				continue;
+			}
+			
+
+			if (USE_LEARNED_WEIGHTS)
+			{
+				double weight = 0.0;
+				const ShapeParseGraph &model_graph = modelHierarchy.GetShapeParse((*matching).modelViewIdx, (*matching).modelParseIdx);
+				const ShapeParseGraph &query_graph = *qr.queryParses[(*matching).queryParseIdx];
+
+				double score = m_pShapeMatcher->Match(query_graph, model_graph);
+				m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap); 
+
+				// check which parts (if any) went unmatched, and punish accordingly.
+				// 1. gather list of model and query graph parts.
+				const int query_part_count = query_graph.number_of_nodes();
+				std::vector<double> query_part_scores;
+				for (unsigned i = 0; i < query_part_count; ++i)
+				{
+					query_part_scores.push_back(-1);
+				}
+			
+				const int model_part_count = model_graph.number_of_nodes();
+				std::vector<double> model_part_scores;
+				for (unsigned i = 0; i < model_part_count; ++i)
+				{
+					model_part_scores.push_back(-1);
+				}
+
+				// 2. gather the mean score
+				// 3. punish unmatched parts proportional to the mean score for matched parts.
+				double new_value = 0.0;
+				unsigned num_vals = 0;
+				for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
+				{
+					new_value += (*matching).nodeMap.at(i).nodeAttDist;
+				}
+
+				for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
+				{
+					Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, (*matching).nodeMap.at(i).tgtNodeIdx));
+					if (it2 != lookup_table.end())
+					{
+						//if ((*it2).second > 5)
+						{
+							weight = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+							//(*matching).value += weight;
+							//new_value += (*matching).nodeMap.at(i).nodeAttDist;//weight;
+
+							//new_value += ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+							model_part_scores[(*matching).nodeMap.at(i).tgtNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+							query_part_scores[(*matching).nodeMap.at(i).srcNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+							num_vals++;
+							//(*it).value *= 0.85;
+							//(*matching).value += ((1/(*it2).second) * 0.05);
+						}
+					}
+					else
+					{
+						// unmatched.  won't find that in the weight-set.
+						//new_value += (*matching).nodeMap.at(i).nodeAttDist;
+					}
+					//num_vals++;
+				}
+			
+			
+				double mean_weight = new_value/num_vals;
+				// now add weights for all unmatched nodes.
+				for (unsigned i = 0; i < model_part_scores.size(); ++i)
+				{
+					if (model_part_scores[i] == -1)
+					{
+						double part_clique_size = 0.0;
+						Lookup_Table::const_iterator part_it = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, i));
+						part_clique_size = (*part_it).second;
+
+						//(*matching).value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
+						//new_value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
+						model_part_scores[i] = 1/part_clique_size;
+						//(*matching).value += part_clique_size * 0.85;
+					}
+				}
+			
+				for (unsigned i = 0; i < query_part_scores.size(); ++i)
+				{
+					if (query_part_scores[i] == -1)
+					{
+						//(*matching).value += mean_weight;
+						//new_value += (*matching).nodeMap.at(i).nodeAttDist;
+						//new_value += mean_weight;
+						query_part_scores[i] = 1/mean_weight;
+					}
+				}
+			
+				//(*matching).value = new_value;
+				//std::cout << (*matching).value << std::endl;
+					/////////////////////////////////////
+
+
+				/*
+				NodeMatchMap mapping = gmatch.nodeMap;
+				graph::node u,v;
+				// loop over all nodes u in the query shape parse...
+				forall_nodes(u, query_graph)
+				{
+					Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*it).modelViewIdx, (*it).modelParseIdx, mapping[u].tgtNodeIdx));
+					if (it2 != lookup_table.end())
+					{
+						//std::cout << "found, adding to the weight. " << std::endl;
+						weight += (double)(*it2).second;
+						// try something else...
+						if ((*it2).second > 5)
+						{
+							(*it).value *= 0.85;
+						}
+					}
+					else
+					{
+						// unmatched.  won't find that in the weight-set.
+					}
+				}
+				// now average the weight...
+				//std::cout << "weight pre-division: " << weight << std::endl;
+				weight /= query_graph.number_of_nodes();
+				//std::cout << "weight after division: " << weight << std::endl;
+				//(*it).weightValue(weight);		
+				*/
+			
+				model_id++;
+			}
+		}
+
 		std::sort(qr.matches.begin(), qr.matches.end(), std::less<SPGMatch>());
 
 		qr.matchingTime = matchingTimer.ElapsedTime();
@@ -450,8 +963,7 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 	unsigned m_idx = (unsigned)dii.params.at(1);
 
 	if (q_idx >= m_rankings.size() || m_idx >= m_rankings[q_idx].matches.size())
-	{
-		std::cout << "returning..." << std::endl;
+	{ 
 		return;
 	}
 
@@ -574,17 +1086,6 @@ void ObjectRecognizer::GetDisplayInfo(const DisplayInfoIn& dii, DisplayInfoOut& 
 				oss << ", ";
 		}
 
-		/*for (unsigned i = 0; i < match.m2qMap.size(); ++i)
-		{
-			oss << i << " -> ";
-			
-			if (match.m2qMap[i] == UINT_MAX)
-				oss << "U";
-			else
-				oss << match.m2qMap[i] << " = " << match.weights[i];
-			
-			oss << ", ";
-		}*/
 	}
 
 	dio.message = oss.str();
