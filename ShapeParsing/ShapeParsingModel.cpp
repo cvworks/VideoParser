@@ -486,7 +486,7 @@ void ShapeParsingModel::ComputeShapeParses()
 		bpg.NewEdge(n2n[source(e)], n2n[target(e)]);
 	}
 
-	auto pMsg = bpg.FindMostProbableConfigurations(m_maxNumParses);
+	auto pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
 
 	/*std::vector<std::string> varNames(m_variables.size());
 	Num2StrConverter sc(NUM_TO_STRING_BUFFER_SIZE);
@@ -507,6 +507,42 @@ void ShapeParsingModel::ComputeShapeParses()
 	auto candidates = pMsg->GetCandidates(0);
 
 	//std::vector<EdgeMap<bool>> configs(candidates.size());
+
+	///
+    // reweight
+
+    double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
+    for (unsigned i = 0; i < candidates.size(); ++i)
+    {
+        auto cand = candidates[i];
+        int num_cuts = 0;
+        for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
+        {
+            if (it->value)
+                num_cuts++;
+        }
+
+        if (num_cuts > 3)
+        {
+            candidates[i].pr *= (alpha*0.9);
+        }
+        else if (num_cuts == 0)
+        {
+            candidates[i].pr *= alpha;
+
+        }
+
+    }
+    // truncate to m_maxNumParses
+    ///
+
+       std::sort(candidates.begin(), candidates.end(),
+               std::greater<ProcessedProbability>());
+
+       if (candidates.size() > m_maxNumParses)
+       {
+			candidates.resize(m_maxNumParses);
+	   }
 
 	m_parses.resize(candidates.size());
 

@@ -501,7 +501,7 @@ void ObjectRecognizer::Run()
 
 		// open file for writing
 		ofstream file;
-		file.open("weights.txt");
+		//file.open("weights.txt");
 		for (int class_num = 0; class_num < classes.size(); ++class_num) // on second machine, put this from classes.size()/4 to classes.size()/2 and then do from /2 to *3/4 and to classes.size()
 		{
 			
@@ -795,13 +795,16 @@ void ObjectRecognizer::Run()
 
 			if (USE_LEARNED_WEIGHTS)
 			{
+				//cout << "pre anything" << endl;
 				double weight = 0.0;
 				const ShapeParseGraph &model_graph = modelHierarchy.GetShapeParse((*matching).modelViewIdx, (*matching).modelParseIdx);
 				const ShapeParseGraph &query_graph = *qr.queryParses[(*matching).queryParseIdx];
 
+				//cout << "got graphs" << endl;
 				double score = m_pShapeMatcher->Match(query_graph, model_graph);
 				m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap); 
 
+				//cout << "matched" << endl;
 				// check which parts (if any) went unmatched, and punish accordingly.
 				// 1. gather list of model and query graph parts.
 				const int query_part_count = query_graph.number_of_nodes();
@@ -812,6 +815,8 @@ void ObjectRecognizer::Run()
 				}
 			
 				const int model_part_count = model_graph.number_of_nodes();
+				(*matching).value += (0.5 * model_part_count);
+				/*
 				std::vector<double> model_part_scores;
 				for (unsigned i = 0; i < model_part_count; ++i)
 				{
@@ -830,7 +835,7 @@ void ObjectRecognizer::Run()
 				for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
 				{
 					Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, (*matching).nodeMap.at(i).tgtNodeIdx));
-					if (it2 != lookup_table.end())
+					if (true)//it2 != lookup_table.end())
 					{
 						//if ((*it2).second > 5)
 						{
@@ -883,9 +888,9 @@ void ObjectRecognizer::Run()
 					}
 				}
 			
-				//(*matching).value = new_value;
+				//(*matching).value += 0.5 * model_part_count;
 				//std::cout << (*matching).value << std::endl;
-					/////////////////////////////////////
+					/////////////////////////////////////*/
 
 
 				/*
@@ -915,10 +920,12 @@ void ObjectRecognizer::Run()
 				weight /= query_graph.number_of_nodes();
 				//std::cout << "weight after division: " << weight << std::endl;
 				//(*it).weightValue(weight);		
-				*/
+				*/   
 			
 				model_id++;
+				//cout << "modelid++ " << model_id << endl;
 			}
+			//cout << "blah" << endl;
 		}
 
 		std::sort(qr.matches.begin(), qr.matches.end(), std::less<SPGMatch>());
