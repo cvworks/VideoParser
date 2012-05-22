@@ -677,6 +677,11 @@ public:
 		GetDisplayInfo(dii, dio);
 		UnlockDrawingMutex();
 	}
+
+	fnum_t GetFrameNumber() const
+	{
+		return ContainerGraph()->GetFrameNumber();
+	}
 };
 
 } // namespace vpl

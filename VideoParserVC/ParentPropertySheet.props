@@ -8,12 +8,13 @@
     <OpenCVVersion>231</OpenCVVersion>
     <OpenCVConfiguration>$(Configuration)</OpenCVConfiguration>
     <OpenCVDir>$(LibRoot)\OpenCV2.3.1</OpenCVDir>
-    <OpenCVBuild>$(OpenCVDir)\vs2010</OpenCVBuild>
+    <OpenCVBuild>$(OpenCVDir)\build</OpenCVBuild>
+    <OpenCVBinAndLib>$(OpenCVBuild)\x86\vc10</OpenCVBinAndLib>
     <OpenCVIncSnap>$(OpenCVDir)/.;$(OpenCVDir)/include;$(OpenCVDir)/include/opencv;$(OpenCVDir)/modules/core/include;$(OpenCVDir)/modules/flann/include;$(OpenCVDir)/modules/imgproc/include;$(OpenCVDir)/modules/video/include;$(OpenCVDir)/modules/highgui/include;$(OpenCVDir)/modules/ml/include;$(OpenCVDir)/modules/calib3d/include;$(OpenCVDir)/modules/features2d/include;$(OpenCVDir)/modules/objdetect/include;$(OpenCVDir)/modules/legacy/include;$(OpenCVDir)/modules/contrib/include;</OpenCVIncSnap>
     <OpenCVIncDist>$(OpenCVBuild)\include</OpenCVIncDist>
     <OpenCVInc>$(OpenCVIncDist)</OpenCVInc>
-    <OpenCVLib>$(OpenCVBuild)\lib\$(OpenCVConfiguration);$(OpenCVDir)\3rdparty\lib\$(OpenCVConfiguration)</OpenCVLib>
-    <OpenCVBin>$(OpenCVBuild)\bin\$(OpenCVConfiguration)</OpenCVBin>
+    <OpenCVLib>$(OpenCVBinAndLib)\lib;$(OpenCVDir)\3rdparty\lib\$(OpenCVConfiguration);$(OpenCVBuild)\common\tbb\ia32\vc10</OpenCVLib>
+    <OpenCVBin>$(OpenCVBinAndLib)\bin</OpenCVBin>
     <FLTKDir>$(LibRoot)\fltk-1.1.10</FLTKDir>
     <VXLInc>$(LibRoot)\vxl-1.14.0</VXLInc>
     <VXLBin>$(VXLInc)\bin</VXLBin>
@@ -75,6 +76,9 @@
     </BuildMacro>
     <BuildMacro Include="OpenCVBuild">
       <Value>$(OpenCVBuild)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCVBinAndLib">
+      <Value>$(OpenCVBinAndLib)</Value>
     </BuildMacro>
     <BuildMacro Include="OpenCVIncSnap">
       <Value>$(OpenCVIncSnap)</Value>

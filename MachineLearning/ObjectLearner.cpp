@@ -118,6 +118,7 @@ void ObjectLearner::Run()
 	// new models or not. This is used to analyze experimental results.
 	m_frameMetadata = m_pImgProcessor->FrameMetadata();
 
+	int foo = 1;
 	if (!m_frameMetadata.empty())
 	{
 		// Save the object metadata. ie, the first field of the metadata (prefix, number)

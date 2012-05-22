@@ -17,6 +17,7 @@ using namespace vpl;
 extern UserArguments g_userArgs;
 
 ShapeParser::Params ShapeParser::s_params;
+const bool DOING_TRECVID_RECOGNITION_WORK = true;
 
 /*! 
 	[static] Reads the subset of user arguments associated 
@@ -96,10 +97,6 @@ void ShapeParser::Run()
 
 	ShowStatus("Parsing...");
 
-	//ShapeContextComp::Test();
-	//ShapeParsingModel().ComputeShapeParses();
-	//return;
-
 	// Erase previous shapes
 	m_shapes.clear();
 
@@ -132,6 +129,7 @@ void ShapeParser::Run()
 
 		// @TODO This is temporary: select only largest region that is not
 		// defined by the full image boundary
+		int region_count = 0;
 		for (auto it = regions.begin(); it != regions.end(); ++it)
 		{
 			if (it->bbox.xmin == 0 && it->bbox.ymin == 0)
@@ -142,57 +140,125 @@ void ShapeParser::Run()
 				maxPerim = it->boundaryPts.Size();
 				selRegIt = it;
 			}
+			region_count++;
 		}
 
-		for (auto it = regions.begin(); it != regions.end(); ++it)
+		static int frame_count = 0;
+		frame_count++;
+
+		//////////////////////////////
+		if (DOING_TRECVID_RECOGNITION_WORK)
 		{
-			if (it->bbox.xmin == 0 && it->bbox.ymin == 0)
-				continue;
-
-			if (it != selRegIt)
-				continue;
-
-			// Create a new shape info object, but don't add it yet
-			ptrShapeInfo.reset(new ShapeInformation); // it self destroys if not used
-
-			ShowStatus("Computing skeleton...");
-
-			try {
-				hasSkeleton = ptrShapeInfo->Create(it->boundaryPts, m_skeletonizationParams);
-			}
-			catch (...)
+			if (frame_count % 5 == 0)
 			{
-				hasSkeleton = false;
-			}
+				std::set<int> salient_region_ids = m_pRegAnalyzer->getSalientRegions();
+				for (auto it = salient_region_ids.begin(); it != salient_region_ids.end(); ++it)
+				{
+					std::cout << "Salient reigon number: " << (*it) << " ------------------------------" << std::endl;
+					Region r = regions.region(0, (*it));
 
-			// See if the shape info can be created
-			if (hasSkeleton)
-			{
-				ptrShapeInfo->SetMetaAttributes(width, height, it->bbox);
+					// Create a new shape info object, but don't add it yet
+					ptrShapeInfo.reset(new ShapeInformation); // it self destroys if not used
 
-				ShowStatus("Computing shape parsing model...");
+					ShowStatus("Computing skeleton...");
 
-				m_shapes.push_back(ShapeParsingModel());
+					try 
+					{
+						hasSkeleton = ptrShapeInfo->Create(r.boundaryPts, m_skeletonizationParams);
+					}
+					catch (...)
+					{
+						hasSkeleton = false;
+					}
 
-				// Create a shape parsing model with the shape cut graph
-				m_shapes.back().Create(ptrShapeInfo, MaxNumParses());
+					// See if the shape info can be created
+					if (hasSkeleton)
+					{
+						ptrShapeInfo->SetMetaAttributes(width, height, r.bbox);
 
-				ShowStatus("Computing shape parse graphs...");
+						ShowStatus("Computing shape parsing model...");
+
+						m_shapes.push_back(ShapeParsingModel());
+
+						// Create a shape parsing model with the shape cut graph
+						m_shapes.back().Create(ptrShapeInfo, MaxNumParses());
+
+						ShowStatus("Computing shape parse graphs...");
 				
-				// Find the K most probable shape parses
-				m_shapes.back().ComputeShapeParses();
+						// Find the K most probable shape parses
+						m_shapes.back().ComputeShapeParses();
 
-				ShowStatus("Shape parsing is done!");
+						ShowStatus("Shape parsing is done!");
+					}
+					else
+					{
+						auto frameMetadata = m_pImgProcessor->FrameMetadata();
+
+						ASSERT(!frameMetadata.empty());
+
+						StreamError("Cannot create shape representation for object (" <<
+							frameMetadata.front().first << ", " <<
+							frameMetadata.front().second << ")");
+					}
+
+				}
 			}
-			else
+
+		}
+		/////////////////////////////
+		else
+		{
+			for (auto it = regions.begin(); it != regions.end(); ++it)
 			{
-				auto frameMetadata = m_pImgProcessor->FrameMetadata();
+				if (it->bbox.xmin == 0 && it->bbox.ymin == 0)
+					continue;
 
-				ASSERT(!frameMetadata.empty());
+				if (it != selRegIt)
+					continue;
 
-				StreamError("Cannot create shape representation for object (" <<
-					frameMetadata.front().first << ", " <<
-					frameMetadata.front().second << ")");
+				// Create a new shape info object, but don't add it yet
+				ptrShapeInfo.reset(new ShapeInformation); // it self destroys if not used
+
+				ShowStatus("Computing skeleton...");
+
+				try 
+				{
+					hasSkeleton = ptrShapeInfo->Create(it->boundaryPts, m_skeletonizationParams);
+				}
+				catch (...)
+				{
+					hasSkeleton = false;
+				}
+
+				// See if the shape info can be created
+				if (hasSkeleton)
+				{
+					ptrShapeInfo->SetMetaAttributes(width, height, it->bbox);
+
+					ShowStatus("Computing shape parsing model...");
+
+					m_shapes.push_back(ShapeParsingModel());
+
+					// Create a shape parsing model with the shape cut graph
+					m_shapes.back().Create(ptrShapeInfo, MaxNumParses());
+
+					ShowStatus("Computing shape parse graphs...");
+				
+					// Find the K most probable shape parses
+					m_shapes.back().ComputeShapeParses();
+
+					ShowStatus("Shape parsing is done!");
+				}
+				else
+				{
+					auto frameMetadata = m_pImgProcessor->FrameMetadata();
+
+					ASSERT(!frameMetadata.empty());
+
+					StreamError("Cannot create shape representation for object (" <<
+						frameMetadata.front().first << ", " <<
+						frameMetadata.front().second << ")");
+				}
 			}
 		}
 	}

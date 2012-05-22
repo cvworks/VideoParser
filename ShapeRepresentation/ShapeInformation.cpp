@@ -58,7 +58,7 @@ void ShapeInformation::Draw() const
 
 		for (unsigned int i = 0; i < numPts; i++)
 		{
-			if (cla[i].isCorner)
+			if (cla[i].isCorner)// && m_corners.IsConcaveCorner(i)) // && m_corners.IsConcaveCorner(i)
 			{
 				m_pBoundary->getPoint(i, &bndryPt);
 

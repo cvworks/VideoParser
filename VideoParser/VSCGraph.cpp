@@ -317,6 +317,7 @@ void VSCGraph::MultithreadComponentRun()
 */
 void VSCGraph::ProcessNewFrame(const InputImageInfo& imgInfo)
 {
+	std::cout << "Processing frame " << imgInfo.frameNumber << std::endl;
 	// Store the current frame data
 	m_inImgInfo = imgInfo;
 

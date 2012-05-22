@@ -17,12 +17,11 @@
 
 unsigned int g_maxFPWidth; //!< Maximum column width for printing fields/properties
 
-using namespace vpl;
 
 /*! 
 	Prints the usage message of each field and property.
 */
-void UserArguments::ShowArgumentUsage(std::ostream& os) const
+void vpl::UserArguments::ShowArgumentUsage(std::ostream& os) const
 {
 	UsageInfoList uil;
 	UsageInfoList::const_iterator it;
@@ -42,7 +41,7 @@ void UserArguments::ShowArgumentUsage(std::ostream& os) const
 /*! 
 	Gets a list of field, properties and their usage info.
 */
-void UserArguments::GetUsageList(UsageInfoList& uil) const
+void vpl::UserArguments::GetUsageList(UsageInfoList& uil) const
 {
 	FieldUsageMap::const_iterator fieldIt;
 	PropertyUsageMap::const_iterator propIt;
@@ -90,7 +89,7 @@ void UserArguments::GetUsageList(UsageInfoList& uil) const
 	Gets the default values of all fields and properties 
 	as a single string.
 */
-std::string UserArguments::GetAllDefaultValues() const
+std::string vpl::UserArguments::GetAllDefaultValues() const
 {
 	UsageInfoList uil;
 	UsageInfoList::const_iterator it;
@@ -143,7 +142,7 @@ std::string UserArguments::GetAllDefaultValues() const
 	Gets the possible values of all fields and properties 
 	as a single string.
 */
-std::string UserArguments::GetAllValueOptions() const
+std::string vpl::UserArguments::GetAllValueOptions() const
 {
 	UsageInfoList uil;
 	UsageInfoList::const_iterator it;
@@ -181,7 +180,7 @@ std::string UserArguments::GetAllValueOptions() const
 	@param maximum version number that should be considered valid (zero if no check 
 	is desired)
 */
-int UserArguments::ReadVersionNumber(int maxVersion) const
+int vpl::UserArguments::ReadVersionNumber(int maxVersion) const
 {
 	// Next, make sure that the 'version' field is provided
 	int version = -1;

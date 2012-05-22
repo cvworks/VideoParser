@@ -1,11 +1,17 @@
 /**------------------------------------------------------------------------
  * All Rights Reserved
- * Author: Diego Macrini
+ * Author: Diego Macrini, Chris Whiten
  *-----------------------------------------------------------------------*/
 #pragma once
 
+//#include <boost/geometry.hpp>
 #include <Tools/VisSysComponent.h>
 #include "RegionPyramid.h"
+#include <set>
+
+
+//#include <boost/geometry/geometries/point_xy.hpp>
+//#include <boost/geometry/geometries/polygon.hpp>
 
 namespace vpl {
 
@@ -65,9 +71,11 @@ protected:
 
 	RegionArray FindRegions(IntImg inputImg, int num_regions,
 		RGBImg coleredSegImg);
+
 	
 public:	
 	virtual void Initialize(graph::node v);
+	std::set<int> getSalientRegions() const;
 
 	virtual void ReadParamsFromUserArguments();
 
@@ -156,6 +164,8 @@ public:
 		dio.specs.draggableContent = false;
 		dio.specs.zoomableContent = false;
 	}
+
+	bool pointInRegion(int x, int y, DiscreteXYArray &pts) const;
 
 	virtual std::string ClassName() const
 	{

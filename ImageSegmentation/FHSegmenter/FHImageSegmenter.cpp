@@ -20,16 +20,15 @@
 #include <Tools/UserArguments.h>
 #include <Tools/UserEvents.h>
 
-using namespace vpl;
 
-extern UserArguments g_userArgs;
+extern vpl::UserArguments g_userArgs;
 
-void FHImageSegmenter::ReadParamsFromUserArguments()
+void vpl::FHImageSegmenter::ReadParamsFromUserArguments()
 {
 	ImageSegmenter::ReadParamsFromUserArguments();
 }
 
-void FHImageSegmenter::Initialize(graph::node v)
+void vpl::FHImageSegmenter::Initialize(graph::node v)
 {
 	ImageSegmenter::Initialize(v);
 
@@ -58,7 +57,7 @@ void FHImageSegmenter::Initialize(graph::node v)
 	g_userArgs.AddSerializableFieldKey(Name());
 }
 
-void FHImageSegmenter::Segment(const RGBImg inputImg) 
+void vpl::FHImageSegmenter::Segment(const RGBImg inputImg) 
 {
 	for (unsigned int i = 0; i < m_segImgs.size(); i++)
 	{
@@ -80,7 +79,7 @@ void FHImageSegmenter::Segment(const RGBImg inputImg)
 * min_size: minimum component size (enforced by post-processing stage).
 * num_ccs: number of connected components in the segmentation.
 */
-IntImg FHImageSegmenter::segment_image(const RGBImg srcImg, float sigma, 
+IntImg vpl::FHImageSegmenter::segment_image(const RGBImg srcImg, float sigma, 
 	float c, int min_size, int* num_ccs) 
 {
 	const int width = srcImg.ni();
@@ -94,8 +93,6 @@ IntImg FHImageSegmenter::segment_image(const RGBImg srcImg, float sigma,
 	if (sigma != 0)
 	{
 		RGBImg rgbImg(srcImg);
-		//vil_convert_cast(srcImg, rgbImg); // get rid of const
-
 		CvMatView srcMat(rgbImg), tgtMat(newImg);
 		
 		cv::GaussianBlur(srcMat, tgtMat, cv::Size(5,5), (sigma < 0) ? 0 : sigma);
@@ -168,7 +165,7 @@ IntImg FHImageSegmenter::segment_image(const RGBImg srcImg, float sigma,
 	return outImg;
 }
 
-int FHImageSegmenter::CreateGraph(FHGraphSegmenter::Edges& edges, 
+int vpl::FHImageSegmenter::CreateGraph(FHGraphSegmenter::Edges& edges, 
 	RGBImg img, double sigma) const
 {
 	ASSERT(img.ni() * img.nj() <= edges.size())
@@ -222,7 +219,7 @@ int FHImageSegmenter::CreateGraph(FHGraphSegmenter::Edges& edges,
 
 	@return zero if the even was not dealt with and 1 otherwise.
 */
-bool FHImageSegmenter::OnGUIEvent(const UserEventInfo& uei)
+bool vpl::FHImageSegmenter::OnGUIEvent(const UserEventInfo& uei)
 {
 	static LabColor prevCol(100,0,0);
 

@@ -6,11 +6,11 @@
 #include "VisSysComponent.h"
 #include <Tools/UserArguments.h>
 
-using namespace vpl;
+//using namespace vpl;
 
-extern UserArguments g_userArgs;
+extern vpl::UserArguments g_userArgs;
 
-void VisSysComponent::ReadParamsFromUserArguments()
+void vpl::VisSysComponent::ReadParamsFromUserArguments()
 {
 	g_userArgs.ReadArg(Name(), "verbose", 
 		"Print extra processing info", false, &m_verbose);
@@ -27,7 +27,7 @@ void VisSysComponent::ReadParamsFromUserArguments()
 	regarless of its actual type. That it, if it's not
 	an RGB image, it is converted to one.
 */
-RGBImg VisSysComponent::GetRGBOutputImage(const DisplayInfoIn& dii) const
+RGBImg vpl::VisSysComponent::GetRGBOutputImage(const DisplayInfoIn& dii) const
 {
 	DisplayInfoOut dio;
 
@@ -47,7 +47,7 @@ RGBImg VisSysComponent::GetRGBOutputImage(const DisplayInfoIn& dii) const
 /*!
 	Appends all the images that must be saved at the back of the given list
 */
-void VisSysComponent::GetOutputImagesToSave(std::list<RGBImg>* pOutImgs) const
+void vpl::VisSysComponent::GetOutputImagesToSave(std::list<RGBImg>* pOutImgs) const
 {
 	std::list<OutputImageParam>::const_iterator it;
 	DisplayInfoIn dii;

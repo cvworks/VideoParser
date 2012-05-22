@@ -139,6 +139,7 @@ public:
 	}
 
 	SPGPtr CreateShapeParseGraph(const EdgeMap<bool>& activeCuts) const;
+	SPGPtr CreateSinglePartSPG() const;
 
 	void Draw(unsigned parseId) const;
 

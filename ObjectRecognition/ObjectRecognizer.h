@@ -1,14 +1,16 @@
 /**------------------------------------------------------------------------
  * All Rights Reserved
- * Author: Diego Macrini
+ * Author: Diego Macrini, Chris Whiten
  *-----------------------------------------------------------------------*/
 #pragma once
 
 #include <Tools/VisSysComponent.h>
 #include <Tools/STLUtils.h>
 #include <ShapeMatching/SPGMatch.h>
+#include <MachineLearning/ObjectLearner.h>
 #include <fstream>
 #include <iostream>
+#include <boost/tuple/tuple_comparison.hpp>
 
 namespace vpl {
 
@@ -67,12 +69,16 @@ class ObjectRecognizer : public VisSysComponent
 		bool readParsingParamsFromDB;
 		bool onlySumModelNodeMatches;
 		bool overlayWarpQuery;
+		bool test_against_shape_contexts;
 	};
 
 	Params m_params;
 
 private:
 	
+	void learnWeights();
+	void loadWeights(Lookup_Table &lt);
+	void testShapeContext(SPGMatch &gmatch, const ModelHierarchy &modelHierarchy);
 	void findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 
 						std::vector<int> model_id, std::vector<int> model_parse_id,std::vector<int> model_part_id, 
 						std::vector<double> matching_distance, 
@@ -83,6 +89,9 @@ private:
 
 	graph::node getNodeByString(AttributedGraph<std::pair<std::string, std::vector<int> >, double> &g,
 					std::vector<graph::node> nodes, std::string query_string);
+
+	// this is for evaluation purposes against shape context.
+	SPGPtr CreateSinglePartSPG(const ShapeInfoPtr &sip);
 
 protected:
 	std::shared_ptr<const ObjectLearner> m_pObjectLearner;

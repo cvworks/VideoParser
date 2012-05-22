@@ -89,6 +89,7 @@ void ImageProcessor::Run()
 	const VSCGraph* pG = static_cast<const VSCGraph*>(ContainerGraph());
 
 	const InputImageInfo& iii = pG->GetInputImageInfo();
+	std::cout << "Frame number: " << iii.frameNumber << std::endl;
 
 	m_imgBuffer.push_front(iii);
 

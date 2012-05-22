@@ -132,6 +132,7 @@ public:
 
 	const ModelView& GetModelView(unsigned viewIdx) const
 	{
+		//std::cout << " Size of model database: " << m_modelViews.size() << std::endl;
 		return m_modelViews[viewIdx];
 	}
 

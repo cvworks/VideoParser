@@ -397,6 +397,19 @@ SCG::EndpointArray SCG::GetSortedActiveEndpoints(
 	return epts;
 }
 
+SPGPtr SCG::CreateSinglePartSPG() const
+{
+	SPGPtr ptrSPG(new ShapeParseGraph(m_ptrShapeInfo));
+
+	graph::node part_node = ptrSPG->new_node(ShapePart());
+	IntList &part_boundary = ptrSPG->attribute(part_node).boundarySegments;
+
+	part_boundary.push_back(0);
+	part_boundary.push_back(ShapeBoundarySize() - 1);
+
+	ptrSPG->FinalizeConstruction();
+	return ptrSPG;
+}
 /*!
 	Creates an SPG given the active cuts associated with the parse.
 */

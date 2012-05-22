@@ -87,6 +87,7 @@ void RegionAnalyzer::Run()
 	}*/
 
 	m_inputImgs.resize(m_pImgSegmenter->NumSegmentations());
+	
 
 	for (unsigned i = 0; i < m_pImgSegmenter->NumSegmentations(); i++)
 	{
@@ -271,25 +272,79 @@ RGBImg RegionAnalyzer::CreateSalientRegionImage(int segmentIdx, int regionIdx) c
 
 	salImg.fill(bgdCol);
 
-	const RegionArray& ra = m_regionPyr.level(segmentIdx);
-
-	IntImg inputImg = m_inputImgs[segmentIdx];
-
-	for (c.y = 0; c.y < inputImg.nj(); ++c.y)
+	if (0)
 	{
-		for (c.x = 0; c.x < inputImg.ni(); ++c.x)
+		const RegionArray& ra = m_regionPyr.level(segmentIdx);
+
+		IntImg inputImg = m_inputImgs[segmentIdx];
+
+		for (c.y = 0; c.y < inputImg.nj(); ++c.y)
 		{
-			if (regionIdx >= 0 && regionIdx != inputImg(c.x, c.y))
-				continue;
+			for (c.x = 0; c.x < inputImg.ni(); ++c.x)
+			{
+				if (regionIdx >= 0 && regionIdx != inputImg(c.x, c.y))
+					continue;
 
-			const Region& r = ra[inputImg(c.x, c.y)];
+				const Region& r = ra[inputImg(c.x, c.y)];
 
-			if (r.voteCount > 0 && r.voteCount / r.numPts >= 0.5)
-				salImg(c.x, c.y) = colImg(c.x, c.y);
+				if (r.voteCount > 0 && r.voteCount / r.numPts >= 0.5)
+					salImg(c.x, c.y) = colImg(c.x, c.y);
+			}
+		}
+	}
+
+
+	IntImg region_img = m_pImgSegmenter->Regions(0);
+	// ok... here it is basically just echoing back the foreground...
+	int pixels_checked = 0;
+	for (unsigned i = 0; i < salImg.ni(); ++i) // x
+	{
+		for (unsigned j = 0; j < salImg.nj(); ++j) // y
+		{
+			
+			if ((int)m_foregroundImg(i, j) == 255)
+			{
+				salImg(i, j) = voteCol;
+			}
 		}
 	}
 
 	return salImg;
+}
+
+std::set<int> RegionAnalyzer::getSalientRegions() const
+{
+	std::set<int> salient_regions;
+	IntImg region_img = m_pImgSegmenter->Regions(0);
+	for (unsigned i = 0; i < m_inputImgs.front().ni(); ++i) // x
+	{
+		for (unsigned j = 0; j < m_inputImgs.front().nj(); ++j) // y
+		{
+			
+			if ((int)m_foregroundImg(i, j) == 255)
+			{
+				salient_regions.insert(region_img(i, j));
+			}
+		}
+	}
+	return salient_regions;
+}
+
+bool RegionAnalyzer::pointInRegion(int x, int y, DiscreteXYArray &pts) const
+{
+	//typedef boost::geometry::model::d2::point_xy<int> point_type;
+	//typedef boost::geometry::model::polygon<point_type> polygon_type;
+
+	/*polygon_type poly;
+	for (unsigned i = 0; i < pts.Size(); ++i)
+	{
+		point_type pt(pts.xa[i], pts.ya[i]);
+		boost::geometry::append(poly, pt);
+	}
+
+	point_type pt(x, y);*/
+	return true;
+	//return boost::geometry::within(pt, poly);
 }
 
 /*!
@@ -300,6 +355,16 @@ RGBImg RegionAnalyzer::CreateSalientRegionImage(int segmentIdx, int regionIdx) c
 */
 void RegionAnalyzer::Draw(const DisplayInfoIn& dii) const
 {
+	PointList pts;
+	for (unsigned i = 20; i < 40; ++i)
+	{
+		for (unsigned j = 20; j < 40; ++j)
+		{
+			pts.push_back(Point(i, j));
+		}
+	}
+	DrawFilledPolygon(pts);
+#if 0
 	if (m_regionPyr.empty())
 		return;
 
@@ -365,6 +430,7 @@ void RegionAnalyzer::Draw(const DisplayInfoIn& dii) const
 				break;
 		}
 	}*/
+#endif
 }
 
 /*!

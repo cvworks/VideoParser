@@ -620,7 +620,6 @@ void BackgroundFeatureSubtractor::GetDisplayInfo(const DisplayInfoIn& dii, Displ
 	unsigned roiIdx = (unsigned) dii.params[0];
 
 	std::ostringstream oss;
-
 	oss << "Good features matched: " << m_stats.matchedGoodFeaturesRatio * 100 << "% ("
 			<< m_stats.numGoodFeaturesMatched << " out of " << m_goodKeypoints.size() << ")\n"
 			<< "Unmatched query features: " << m_stats.unmatchedQueryFeaturesRatio * 100 << "% ("

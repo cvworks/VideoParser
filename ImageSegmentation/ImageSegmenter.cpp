@@ -11,14 +11,12 @@
 
 #define POW_25_7 6103515625
 
-using namespace vpl;
-
-extern UserArguments g_userArgs;
+extern vpl::UserArguments g_userArgs;
 
 //! Static array of colors used to display ALL segmentations
-std::vector<RGBColor> ImageSegmenter::s_colors;
+std::vector<RGBColor> vpl::ImageSegmenter::s_colors;
 
-void ImageSegmenter::ReadParamsFromUserArguments()
+void vpl::ImageSegmenter::ReadParamsFromUserArguments()
 {
 	VisSysComponent::ReadParamsFromUserArguments();
 
@@ -35,7 +33,7 @@ void ImageSegmenter::ReadParamsFromUserArguments()
 		1.0, &m_colorSpaceParams.hueWeightFactor);
 }
 
-void ImageSegmenter::Initialize(graph::node v)
+void vpl::ImageSegmenter::Initialize(graph::node v)
 {
 	VisSysComponent::Initialize(v);
 
@@ -59,7 +57,7 @@ void ImageSegmenter::Initialize(graph::node v)
 // W. Wu, E. N. Dalal, submitted to Color Research and Application, 
 // January 2004.
 // available at http://www.ece.rochester.edu/~/gsharma/ciede2000/ 
-double ImageSegmenter::ColorDiff(const LabColor& Labstd, const LabColor& Labsample) const
+double vpl::ImageSegmenter::ColorDiff(const LabColor& Labstd, const LabColor& Labsample) const
 {
 	double Lstd = (double) Labstd.R();
 	double astd = (double) Labstd.G();

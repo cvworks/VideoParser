@@ -367,7 +367,7 @@ void VideoProcessor::ProcessFrame()
 
 	// Parse the video frame
 	m_pComponents->ProcessNewFrame(m_imgInfo);
-
+	ShowStatus2("\Finished processing frame", FrameNumber(), "...");
 	// See if we have to save parse data
 	if (m_params.cacheParseData)
 		m_videoDataBinder.SaveFrameData(FrameNumber());

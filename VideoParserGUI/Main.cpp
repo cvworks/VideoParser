@@ -14,7 +14,6 @@
 
 #include <io.h>
 
-using namespace vpl;
 
 //#define VPL_SUCCESSFUL_RUN  0
 //#define VPL_NOTHING_DONE    1
@@ -106,7 +105,7 @@ int main(int argc, char **argv)
 	if (paramFile.empty())
 	{
 		std::string workDir = 
-		DirWalker::ConcatPathElements(GetDocumentsFolder(), "VideoParser");
+		vpl::DirWalker::ConcatPathElements(GetDocumentsFolder(), "VideoParser");
 
 		paramFile = "params.txt";
 
@@ -114,7 +113,7 @@ int main(int argc, char **argv)
 		// default directory does not exist. That might not be a problem
 		// if there is an actual params.txt in the current working dir.
 		//if (::SetCurrentDirectoryA(workDir.c_str()) == FALSE)
-		if (!DirWalker::ChangeCurrentDirectory(workDir.c_str()))
+		if (!vpl::DirWalker::ChangeCurrentDirectory(workDir.c_str()))
 		{
 			StreamMsg("The default working folder " << workDir 
 				<< " does not exist. Looking for " << paramFile
@@ -341,7 +340,7 @@ bool ReadSavedUserArguments(std::string databaseFilename)
 
 	vpl::SimpleDatabase db;
 
-	if (!DirWalker::CheckFileExist(databaseFilename.c_str()))
+	if (!vpl::DirWalker::CheckFileExist(databaseFilename.c_str()))
 	{
 		StreamError("Database file '" << databaseFilename << "' does not exist");
 		return false;

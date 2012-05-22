@@ -72,6 +72,8 @@ void FSMBackgroundSubtractor::GetDisplayInfo(const DisplayInfoIn& dii, DisplayIn
 {	
 	ASSERT(dii.outputIdx >= 0 && dii.outputIdx < 3);
 		
+	std::cout << "-----------------------asdfadfafd----------------------------" << std::endl;
+	std::cout << dii.displayId << ", "  << std::endl;
 	if (dii.outputIdx == 0) 
 	{
 		dio.imageType = BYTE_IMAGE;
