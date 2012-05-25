@@ -17,7 +17,7 @@ using namespace vpl;
 extern UserArguments g_userArgs;
 
 ShapeParser::Params ShapeParser::s_params;
-const bool DOING_TRECVID_RECOGNITION_WORK = true;
+const bool DOING_TRECVID_RECOGNITION_WORK = false;
 
 /*! 
 	[static] Reads the subset of user arguments associated 
