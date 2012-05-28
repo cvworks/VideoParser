@@ -27,7 +27,7 @@ extern UserArguments g_userArgs;
 
 bool USE_LEARNED_WEIGHTS = false; // use clique-based weightings.  expects weights.txt in the Experiments folder.
 bool LEARN_WEIGHTS = false; // program will crash after learning weights (since memory becomes all mismanaged).  So, once done learning, set this back to false and run.
-bool TEST_DRAWING_CORNERS = true; // visualization tests for convex corners.  Will eventually do experiments to determine how robust these corners are across video sequences.
+bool TEST_DRAWING_CORNERS = false; // visualization tests for convex corners.  Will eventually do experiments to determine how robust these corners are across video sequences.
 
 struct Vertex
 {
@@ -81,7 +81,9 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 		"Sum only the matching distance of model nodes?", 
 		false, &m_params.onlySumModelNodeMatches);
 
-	g_userArgs.ReadBoolArg("ObjectRecognizer", "test_against_shape_contexts", "Evaluate this approach against standard shape contexts", false, &m_params.test_against_shape_contexts);
+	g_userArgs.ReadBoolArg("ObjectRecognizer", "test_against_shape_contexts", 
+		"Evaluate this approach against standard shape contexts", 
+		false, &m_params.test_against_shape_contexts);
 
 }
 
@@ -628,10 +630,14 @@ void ObjectRecognizer::testShapeContext(SPGMatch &gmatch, const ModelHierarchy &
 		std::string model_class = (modelHierarchy.getModelViewClass(modelHierarchy.GetModelView(matchings[min_index].get<1>())));
 	
 		bool is_match = (query_class == model_class);
+		boost::tuple<int, int, double, int> MAP_match(matchings[min_index].get<0>(), matchings[min_index].get<1>(), current_min_score, (int)is_match);
 		
 		std::cout << "Is a match: " << is_match << std::endl;
 		std::cout << query_class << std::endl;
 		std::cout << model_class << std::endl;
+
+		shape_context_MAP_match = MAP_match;
+		shape_context_MAP_matches.push_back(MAP_match);
 	}
 }
 
@@ -1035,7 +1041,7 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 
 			if (modelHierarchy.ModelViewCount() > m_pShapeParser->GetFrameNumber())
 			{
-				ShapeInfoPtr sip = modelHierarchy.GetModelView(m_pShapeParser->GetFrameNumber()).ptrShapeContour;
+				ShapeInfoPtr sip = modelHierarchy.GetModelView((unsigned int)m_pShapeParser->GetFrameNumber()).ptrShapeContour;
 				std::cout << "Got contour." << std::endl;
 				sip->Draw();
 			}

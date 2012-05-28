@@ -71,8 +71,12 @@ void ShapeParseGraph::ReadParamsFromUserArguments()
 		"Absolute or percentage value to define the subsampling rate", 
 		25u, &s_params.boundarySubsamplingValue);
 
+	g_userArgs.ReadArg("ShapeParseGraph", "corner_alpha", 
+		"Number of points to sample on the boundary for shape context, before adding corners", 
+		25u, &s_params.corner_alpha);
+
 	g_userArgs.ReadArg("ShapeParseGraph", "boundarySubsamplingType", 
-		Tokenize("none absolute percentage"), "Whether the 'value' given is absolute"
+		Tokenize("none absolute percentage corner_count"), "Whether the 'value' given is absolute"
 		" or a percentage", 1, (int*)&s_params.boundarySubsamplingType);
 
 	g_userArgs.ReadArg("ShapeParseGraph", "boundarySubsamplingScope", 
@@ -198,6 +202,7 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 
 			if (s_params.boundarySubsamplingScope == WHOLE_SHAPE)
 			{
+
 				// If the value is relative, convert it to ABSOLUTE type
 				if (s_params.boundarySubsamplingType == PERCENTAGE_SAMPLING)
 					numSamples = unsigned(numSamples * bndrySegs.Length() / 100);
@@ -208,12 +213,36 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 					numSamples * bndrySegs.Length() / totalLength);
 				
 			}
+			else if (s_params.boundarySubsamplingType == CORNER_COUNT_SAMPLING)
+			{
+				// get the number of corners for this shape part.
+				IntList &part_boundary_indices = sp.boundarySegments;
+				const BoundaryCornerList &corners = m_ptrShapeInfo->m_corners.ConcaveCorners();
+				unsigned corner_count = 0;
+
+				for (auto it = corners.begin(); it != corners.end(); ++it)
+				{
+					for (auto pt = part_boundary_indices.begin(); pt != part_boundary_indices.end(); ++pt)
+					{
+						if ((*it).interval.Includes((*pt)))
+						{
+							corner_count++;
+							break;
+						}
+					}
+				}
+				numSamples = 4 * corner_count + s_params.corner_alpha;
+				//std::cout << "number of samples for this part: " << numSamples << std::endl;
+			}
+
 			// It's SHAPE_PART scope. The case of ABSOLUTE type needs no work
 			// so we only handle the case of PERCENTAGE type
 			else if (s_params.boundarySubsamplingType == PERCENTAGE_SAMPLING)
 			{
 				numSamples = unsigned(numSamples * bndrySegs.Length() / 100);
 			}
+
+			
 
 			// Subsample the points
 			bndrySegs.SubsampleExact(numSamples, &pts, &tangents);

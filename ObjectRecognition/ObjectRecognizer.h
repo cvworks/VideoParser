@@ -101,6 +101,8 @@ protected:
 	std::vector<QueryRanking> m_rankings;
 
 public:	
+	boost::tuple<int, int, double, int> shape_context_MAP_match;
+	std::vector<boost::tuple<int, int, double, int> > shape_context_MAP_matches;
 	const std::vector<QueryRanking>& GetRankings() const
 	{
 		return m_rankings;
@@ -153,6 +155,7 @@ public:
 
 		return "error";
 	}
+
 };
 
 } // namespace vpl

@@ -32,6 +32,7 @@ protected:
 	std::shared_ptr<const ObjectRecognizer> m_pObjectRecognizer;
 
 	std::fstream m_resultsFile;
+	std::fstream m_shapeContextFile;
 
 	bool m_hasOpenedFile;
 	bool m_hasOpenedDataBlock;
@@ -39,6 +40,7 @@ protected:
 
 	void OpenResultsFile();
 	void SaveRecognitionResults();
+	void SaveShapeContextRecognitionResults();
 
 public:	
 	virtual void Clear()

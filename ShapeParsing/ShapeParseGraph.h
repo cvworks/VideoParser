@@ -12,6 +12,8 @@
 #include <Tools/STLUtils.h>
 #include <Tools/Serialization.h>
 
+#include <ShapeRepresentation/FluxSkeleton/include/ContourCurve.h>
+
 namespace vpl {
 
 typedef std::shared_ptr<ShapeDescriptor> ShapeDescriptorPtr;
@@ -71,7 +73,7 @@ typedef AttributedGraph<ShapePart, ShapePartAttachment> SPGBaseClass;
 */
 class ShapeParseGraph : public SPGBaseClass
 {
-	enum SAMPLING_TYPE  {NO_SAMPLING, ABSOLUTE_SAMPLING, PERCENTAGE_SAMPLING};
+	enum SAMPLING_TYPE  {NO_SAMPLING, ABSOLUTE_SAMPLING, PERCENTAGE_SAMPLING, CORNER_COUNT_SAMPLING};
 	enum SAMPLING_SCOPE {WHOLE_SHAPE, SHAPE_PART};
 	enum NIL_MATCH_SCHEME {NIl_MATCH_VALUE, NIL_MATCH_PART_COMP};
 
@@ -91,6 +93,7 @@ public:
 		bool showShapeInfo;
 		NIL_MATCH_SCHEME nodeNilMatchScheme;
 		double nodeNilMatchValue;
+		unsigned corner_alpha;
 	};
 
 protected:

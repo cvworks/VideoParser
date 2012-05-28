@@ -89,6 +89,8 @@ void ResultsAnalyzer::OpenResultsFile()
 	m_resultsFile.open(m_params.strResultsFilename.c_str(), 
 		std::ios::out | std::ios_base::app);
 
+	m_shapeContextFile.open("shapecontext_results.txt", std::ios::out | std::ios_base::app);
+
 	//std::ios::out | std::ios_base::ate | ~std::ios_base::trunc | std::ios::app
 
 	if (m_resultsFile.fail())
@@ -174,10 +176,35 @@ void ResultsAnalyzer::Run()
 	}
 
 	m_resultsFile.flush();
+	m_shapeContextFile.flush();
+}
+
+// SaveShapeContextRecognitionResults()
+// Save (in a very simple format) the results of performing object recognition with single-part SPGs (or just shape contexts)
+// We use this as a benchmark to evaluate the performance of more elaborate SPG parameterizations.
+void ResultsAnalyzer::SaveShapeContextRecognitionResults()
+{
+	//std::vector<boost::tuple<int, int, double, int> > matches = m_pObjectRecognizer->shape_context_MAP_matches;
+	boost::tuple<int, int, double, int> match = m_pObjectRecognizer->shape_context_MAP_match;
+
+	m_shapeContextFile << "(" << match.get<0>() << ", " << match.get<1>() << ", " << 
+			match.get<2>() << ", " << match.get<3>() << ")" << std::endl;
+
+	//for (auto it = matches.begin(); it != matches.end(); ++it
+	/*for (auto it = (matches.end()--)--; it != matches.end(); ++it) // testing... just print the most recent one...
+	{
+		std::cout << "doin it. ----------------------" << std::endl;
+		m_shapeContextFile << "(" << (*it).get<0>() << ", " << (*it).get<1>() << ", " << 
+			(*it).get<2>() << ", " << (*it).get<3>() << ")" << std::endl;
+	}*/
+
 }
 
 void ResultsAnalyzer::SaveRecognitionResults()
 {
+	// separately, save the shape context results for future comparisons.
+	SaveShapeContextRecognitionResults();
+
 	const std::vector<QueryRanking>& rankings = m_pObjectRecognizer->GetRankings();
 	const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
 
