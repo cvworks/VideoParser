@@ -242,8 +242,6 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 				numSamples = unsigned(numSamples * bndrySegs.Length() / 100);
 			}
 
-			
-
 			// Subsample the points
 			bndrySegs.SubsampleExact(numSamples, &pts, &tangents);
 		}
