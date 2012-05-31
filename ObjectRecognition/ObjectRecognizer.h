@@ -70,6 +70,7 @@ class ObjectRecognizer : public VisSysComponent
 		bool onlySumModelNodeMatches;
 		bool overlayWarpQuery;
 		bool test_against_shape_contexts;
+		bool use_importance_weights;
 	};
 
 	Params m_params;

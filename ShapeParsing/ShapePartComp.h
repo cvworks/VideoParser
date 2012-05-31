@@ -104,7 +104,7 @@ public:
 		{
 			ASSERT(v != nil);
 			ASSERT(m_pModelGraph->inf(v).nilMatchCost >= 0);
-
+			//(*(m_pModelGraph->inf(u).ptrDescriptor)).
 			return m_pModelGraph->inf(v).nilMatchCost;
 		}
 		else if (v == nil)

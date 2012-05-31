@@ -188,8 +188,9 @@ public:
 	}*/
 
 	//! Creates a shape context for the boundary 'pts'
-	virtual void Create(const PointArray& pts, const DoubleArray& tangents)
+	virtual void Create(const PointArray& pts, const DoubleArray& tangents, unsigned boundaryLength)
 	{
+		m_boundaryLength = boundaryLength;
 		m_dataPts.set_size(2, pts.size());
 
 		for (unsigned i = 0; i < pts.size(); ++i)

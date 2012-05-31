@@ -23,6 +23,7 @@ class ShapeParser : public VisSysComponent
 	struct Params
 	{
 		unsigned maxNumParses;
+		bool only_parse_salient_regions_for_trecvid;
 	};
 
 	static Params s_params;

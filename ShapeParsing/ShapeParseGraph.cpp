@@ -119,6 +119,11 @@ void ShapeParseGraph::GetSwitchCommands(std::list<UserCommandInfo>& cmds)
 		'i', &s_params.showShapeInfo));
 }
 
+unsigned int ShapeParseGraph::getNumberOfBoundaryPoints() const
+{
+	return m_ptrShapeInfo->BoundarySize();
+}
+
 /*!
 	Creates a shape descriptor for each part using N evenly-spaced samples 
 	from the part's boundary.
@@ -130,6 +135,7 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 	IntList::const_iterator it0, it1;
 	sg::BoundaryInterval bi;
 	node v;
+
 
 	// Set the size of the shape boundary only once
 	bi.SetBoundarySize(shapeBndry.size());
@@ -232,6 +238,7 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 					}
 				}
 				numSamples = 4 * corner_count + s_params.corner_alpha;
+				//sp.nilMatchCost
 				//std::cout << "number of samples for this part: " << numSamples << std::endl;
 			}
 
@@ -255,7 +262,7 @@ void ShapeParseGraph::ComputeShapeDescriptors()
 
 		// Create a shape descriptor using the sampled points
 		if (sp.ptrDescriptor)
-			sp.ptrDescriptor->Create(pts, tangents);
+			sp.ptrDescriptor->Create(pts, tangents, (unsigned int)bndrySegs.Length());
 
 		// Set the cost of leaving the part unmacthed. ie, the 
 		// cost of matching the part against a "nil" part.

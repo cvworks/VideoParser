@@ -28,17 +28,29 @@ typedef std::shared_ptr<ShapeDescriptor> ShapeDescPtr;
 */
 class ShapeDescriptor
 {
+protected:
+	unsigned m_boundaryLength;
+	 
 public:
+	//! Constructor of a generic shape descriptor 
+	ShapeDescriptor()
+	{
+		m_boundaryLength = 0;
+	}
+
 	//! The necessary virtual destructor
 	virtual ~ShapeDescriptor()
 	{
+		
 	}
 
 	//! Reads static parameters for the creation of the shape descriptor
 	virtual void ReadClassParameters() const = 0;
 
 	//! Creates a shape descriptor
-	virtual void Create(const PointArray& pts, const DoubleArray& tangents) = 0;
+	virtual void Create(const PointArray& pts, const DoubleArray& tangents, unsigned boundaryLength)
+	{
+	}
 
 	/*! 
 		Returns the cost or similarity value that corresponds to
@@ -51,9 +63,13 @@ public:
 		return 0;
 	}
 	
-	virtual void Serialize(OutputStream& os) const = 0;
+	virtual void Serialize(OutputStream& os) const
+	{
+	}
 
-	virtual void Deserialize(InputStream& is) = 0;
+	virtual void Deserialize(InputStream& is)
+	{
+	}
 
 	//! Draws some visualization of the shape descriptor
 	virtual void Draw(const RGBColor& color) const
@@ -61,16 +77,27 @@ public:
 		// It's an optional function. By default, do nothing.
 	}
 
+	// get the number of points on the boundary.
+	// strangly enough, the sum of this for all parts in shape is
+	// not equal to the number of points on the shape's whole
+	// boundary.  It's very close though.  Investigate.
+	// Example of this being set: 
+	// ShapeParseGraph::ComputeShapeDescriptors()
+	virtual unsigned int GetBoundaryLength() const
+	{
+		return m_boundaryLength;
+	}
+
 	//! Populates the point array with all N data points
 	virtual void GetPoints(PointArray* pPts) const
 	{
 		pPts->clear();
 	}
-
+	
 	/*!
-		Creates a new shape descriptor that is the result of transforming
-		this descriptor using 'params'. If the transformation is not
-		possible, a NULL pointer is returned.
+	Creates a new shape descriptor that is the result of transforming
+	this descriptor using 'params'. If the transformation is not
+	possible, a NULL pointer is returned.
 	*/
 	virtual ShapeDescPtr Transform(const PointTransform& params) const
 	{

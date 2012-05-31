@@ -15,10 +15,6 @@
 #include <Tools/NamedColor.h>
 #include <VideoParserGUI/DrawingUtils.h>
 
-
-
-
-
 using namespace vpl;
 using namespace std;
 
@@ -84,6 +80,10 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 	g_userArgs.ReadBoolArg("ObjectRecognizer", "test_against_shape_contexts", 
 		"Evaluate this approach against standard shape contexts", 
 		false, &m_params.test_against_shape_contexts);
+
+	g_userArgs.ReadBoolArg("ObjectRecognizer", "use_importance_weights", 
+		"Use weights that measure the importance of a shape part", 
+		false, &m_params.use_importance_weights);
 
 }
 
@@ -603,10 +603,31 @@ void ObjectRecognizer::testShapeContext(SPGMatch &gmatch, const ModelHierarchy &
 			if (gmatch.modelViewIdx != (unsigned int)m_pShapeParser->GetFrameNumber())
 			{
 				SPGPtr &model_shape_context_spg = CreateSinglePartSPG(modelHierarchy.GetModelView(gmatch.modelViewIdx).ptrShapeContour);
-				SPGPtr &query_shape_context_spg = CreateSinglePartSPG(modelHierarchy.GetModelView(m_pShapeParser->GetFrameNumber()).ptrShapeContour);
+				SPGPtr &query_shape_context_spg = CreateSinglePartSPG(modelHierarchy.GetModelView((unsigned int)m_pShapeParser->GetFrameNumber()).ptrShapeContour);
 
 				double score = m_pShapeMatcher->Match(*query_shape_context_spg, *model_shape_context_spg);
 				
+				//////////////////
+
+				graph::node u = model_shape_context_spg->first_node();
+				while (true)
+				{
+					if (u == NULL)
+						break;
+
+					// gather the size of the boundary in this shape part vs in the whole shape.
+					// will be useful for evaluating the relative size of this part, 
+					// and weighting accordingly.
+					PointArray *pts = new PointArray();
+					std::cout << "shape part size: " << model_shape_context_spg->inf(u).boundarySegments.size() << std::endl;
+					model_shape_context_spg->inf(u).ptrDescriptor->GetPoints(pts);
+					std::cout << "num points: " << model_shape_context_spg->inf(u).ptrDescriptor->GetBoundaryLength() << std::endl;;
+					std::cout << "total shape boundary size: " << model_shape_context_spg->getNumberOfBoundaryPoints() << std::endl;
+
+					u = model_shape_context_spg->succ_node(u);
+				}
+
+				/////////////
 				boost::tuple<int, int, double> match((int)m_pShapeParser->GetFrameNumber(), gmatch.modelViewIdx, score);
 				matchings.push_back(match);
 			}
@@ -643,7 +664,7 @@ void ObjectRecognizer::testShapeContext(SPGMatch &gmatch, const ModelHierarchy &
 
 void ObjectRecognizer::loadWeights(Lookup_Table &lt)
 {
-	if (lt.size() <= 0)
+	if (lt.size() <= 0 && m_params.use_importance_weights)
 	{
 		std::ifstream stream;
 		stream.open("weights.txt");
@@ -810,6 +831,31 @@ void ObjectRecognizer::Run()
 						gmatch.modelViewIdx, gmatch.modelParseIdx);
 
 					gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
+					//const ShapeParseGraph test = modelHierarchy.GetShapeParse(gmatch.modelViewIdx, gmatch.modelParseIdx);
+					/*NodeMatchMap mapping = gmatch.nodeMap;
+					
+					graph::node u = G_m.first_node();
+					while (true)
+					{
+						if (u == NULL)
+							break;
+
+						// do stuff.
+						PointArray *pts = new PointArray();
+						std::cout << "shape part size: " << G_m.inf(u).boundarySegments.size() << std::endl;
+						G_m.inf(u).ptrDescriptor->GetPoints(pts);
+						std::cout << "point array size: " << pts->size() << std::endl;
+						std::cout << "total shape boundary size: " << G_m.getNumberOfBoundaryPoints() << std::endl;
+
+						u = G_m.succ_node(u);
+					}*/
+
+
+								//PointArray *pts = new PointArray();
+			//std::cout << "shape part size: " << m_pModelGraph->inf(u).boundarySegments.size() << std::endl;
+			//m_pModelGraph->inf(u).ptrDescriptor->GetPoints(pts);
+			//std::cout << "point array size: " << pts->size() << std::endl;
+			//std::cout << "total shape boundary size: " << m_pModelGraph->getNumberOfBoundaryPoints() << std::endl;
 
 					if (m_params.onlySumModelNodeMatches)
 						gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();

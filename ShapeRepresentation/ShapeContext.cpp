@@ -345,6 +345,7 @@ void ShapeContext::PrintAll(vcl_ostream& os) const
 
 void ShapeContext::Serialize(OutputStream& os) const
 {
+	::Serialize(os, m_boundaryLength);
 	::Serialize(os, m_histogram);
 	::Serialize(os, m_meanRadius);
 
@@ -363,6 +364,7 @@ void ShapeContext::Serialize(OutputStream& os) const
 		
 void ShapeContext::Deserialize(InputStream& is)
 {
+	::Deserialize(is, m_boundaryLength);
 	::Deserialize(is, m_histogram);
 	::Deserialize(is, m_meanRadius);
 

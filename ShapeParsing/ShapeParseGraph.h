@@ -143,6 +143,8 @@ public:
 		ComputeShapeDescriptors();
 	}
 
+	unsigned int getNumberOfBoundaryPoints() const;
+
 	void Serialize(OutputStream& os) const
 	{
 		SPGBaseClass::Serialize(os);

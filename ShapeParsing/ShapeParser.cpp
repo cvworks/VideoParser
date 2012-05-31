@@ -37,6 +37,10 @@ void ShapeParser::ReadStaticParameters()
 	// Read the general parameters for parsing shapes
 	g_userArgs.ReadArg("ShapeParser", "maxNumParses", 
 		"Maximum number of parses per shape", 1u, &s_params.maxNumParses);
+
+	g_userArgs.ReadBoolArg("ShapeParser", "only_parse_salient_regions_for_trecvid", 
+		"Restrict shapes to parse to salient regions, for TRECVid competition.", 
+		false, &s_params.only_parse_salient_regions_for_trecvid);
 }
 
 /*!
@@ -147,7 +151,7 @@ void ShapeParser::Run()
 		frame_count++;
 
 		//////////////////////////////
-		if (DOING_TRECVID_RECOGNITION_WORK)
+		if (s_params.only_parse_salient_regions_for_trecvid)
 		{
 			if (frame_count % 5 == 0)
 			{
