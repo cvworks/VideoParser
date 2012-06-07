@@ -8,7 +8,7 @@
     <OpenCVVersion>231</OpenCVVersion>
     <OpenCVConfiguration>$(Configuration)</OpenCVConfiguration>
     <OpenCVDir>$(LibRoot)\OpenCV2.3.1</OpenCVDir>
-    <OpenCVBuild>$(OpenCVDir)\vs2010;$(OpenCVDir)\build</OpenCVBuild>
+    <OpenCVBuild>$(OpenCVDir)\build;$(OpenCVDir)\vs2010</OpenCVBuild>
     <OpenCVBinAndLib>$(OpenCVBuild)\x86\vc10</OpenCVBinAndLib>
     <OpenCVIncSnap>$(OpenCVDir)/.;$(OpenCVDir)/include;$(OpenCVDir)/include/opencv;$(OpenCVDir)/modules/core/include;$(OpenCVDir)/modules/flann/include;$(OpenCVDir)/modules/imgproc/include;$(OpenCVDir)/modules/video/include;$(OpenCVDir)/modules/highgui/include;$(OpenCVDir)/modules/ml/include;$(OpenCVDir)/modules/calib3d/include;$(OpenCVDir)/modules/features2d/include;$(OpenCVDir)/modules/objdetect/include;$(OpenCVDir)/modules/legacy/include;$(OpenCVDir)/modules/contrib/include;</OpenCVIncSnap>
     <OpenCVIncDist>$(OpenCVBuild)\include</OpenCVIncDist>

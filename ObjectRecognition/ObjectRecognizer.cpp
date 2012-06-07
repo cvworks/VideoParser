@@ -618,11 +618,9 @@ void ObjectRecognizer::testShapeContext(SPGMatch &gmatch, const ModelHierarchy &
 					// gather the size of the boundary in this shape part vs in the whole shape.
 					// will be useful for evaluating the relative size of this part, 
 					// and weighting accordingly.
-					PointArray *pts = new PointArray();
-					std::cout << "shape part size: " << model_shape_context_spg->inf(u).boundarySegments.size() << std::endl;
-					model_shape_context_spg->inf(u).ptrDescriptor->GetPoints(pts);
+					/*std::cout << "shape part size: " << model_shape_context_spg->inf(u).boundarySegments.size() << std::endl;
 					std::cout << "num points: " << model_shape_context_spg->inf(u).ptrDescriptor->GetBoundaryLength() << std::endl;;
-					std::cout << "total shape boundary size: " << model_shape_context_spg->getNumberOfBoundaryPoints() << std::endl;
+					std::cout << "total shape boundary size: " << model_shape_context_spg->getNumberOfBoundaryPoints() << std::endl;*/
 
 					u = model_shape_context_spg->succ_node(u);
 				}
@@ -830,6 +828,7 @@ void ObjectRecognizer::Run()
 					const ShapeParseGraph& G_m = modelHierarchy.GetShapeParse(
 						gmatch.modelViewIdx, gmatch.modelParseIdx);
 
+					
 					gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
 					//const ShapeParseGraph test = modelHierarchy.GetShapeParse(gmatch.modelViewIdx, gmatch.modelParseIdx);
 					/*NodeMatchMap mapping = gmatch.nodeMap;
@@ -858,7 +857,9 @@ void ObjectRecognizer::Run()
 			//std::cout << "total shape boundary size: " << m_pModelGraph->getNumberOfBoundaryPoints() << std::endl;
 
 					if (m_params.onlySumModelNodeMatches)
+					{
 						gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
+					}
 
 					/*if (dbg_match_counter > 0 &&
 						dbg_match_counter / 1000.0 == int(dbg_match_counter / 1000.0))

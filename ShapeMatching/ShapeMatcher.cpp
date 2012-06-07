@@ -139,7 +139,6 @@ double ShapeMatcher::Match(const ShapeParseGraph& g1,
 	// Let the node similarity measurer know the graphs
 	// that contain the nodes to compare
 	const_cast<ShapePartComp&>(m_spsm).SetGraphs(g1, g2);
-
 	return m_pGraphMatcher->Match(g1, g2, m_spsm);
 }
 

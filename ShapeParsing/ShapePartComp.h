@@ -100,18 +100,45 @@ public:
 	*/
 	double operator()(graph::node u, graph::node v)
 	{
+		const double UNMATCHED_IMPORTANCE_THRESHOLD = 0.2;
+		const double SIZE_DIFFERENCE_THRESHOLD = 0.5;
 		if (u == nil)
 		{
 			ASSERT(v != nil);
 			ASSERT(m_pModelGraph->inf(v).nilMatchCost >= 0);
-			//(*(m_pModelGraph->inf(u).ptrDescriptor)).
-			return m_pModelGraph->inf(v).nilMatchCost;
+
+			unsigned int shape_part_size = m_pModelGraph->inf(v).ptrDescriptor->GetBoundaryLength();
+			unsigned int shape_size = m_pModelGraph->getNumberOfBoundaryPoints();
+			double relative_part_size = (double)shape_part_size / (double)shape_size;
+
+			// if the part is large, we want to discourage it from being
+			// unmatched.  If it's small, perhaps it is unimportant.
+			if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
+			{
+				return m_pModelGraph->inf(v).nilMatchCost;
+			}
+			else
+			{
+				return m_pModelGraph->inf(v).nilMatchCost * (1 + relative_part_size);
+			}
 		}
 		else if (v == nil)
 		{
 			ASSERT(m_pQueryGraph->inf(u).nilMatchCost >= 0);
+			unsigned int shape_part_size = m_pQueryGraph->inf(u).ptrDescriptor->GetBoundaryLength();
+			unsigned int shape_size = m_pQueryGraph->getNumberOfBoundaryPoints();
+			double relative_part_size = (double)shape_part_size / (double)shape_size;
 
-			return m_pQueryGraph->inf(u).nilMatchCost;
+			// if the part is large, we want to discourage it from being
+			// unmatched.  If it's small, perhaps it is unimportant.
+			if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
+			{
+				return m_pModelGraph->inf(u).nilMatchCost;
+			}
+			else
+			{
+				return m_pModelGraph->inf(u).nilMatchCost * (1 + relative_part_size);
+			}
 		}
 		else
 		{
@@ -121,6 +148,27 @@ public:
 			InitSDC(sp_q, sp_m);
 
 			double dist = m_pSDC->Match(*sp_q.ptrDescriptor, *sp_m.ptrDescriptor);
+
+			// relative model size.
+			unsigned int shape_part_size = m_pModelGraph->inf(v).ptrDescriptor->GetBoundaryLength();
+			unsigned int shape_size = m_pModelGraph->getNumberOfBoundaryPoints();
+			double relative_model_part_size = (double)shape_part_size / (double)shape_size;
+
+			// relative query size.
+			shape_part_size = m_pQueryGraph->inf(u).ptrDescriptor->GetBoundaryLength();
+			shape_size = m_pQueryGraph->getNumberOfBoundaryPoints();
+			double relative_query_part_size = (double)shape_part_size / (double)shape_size;
+
+			// if the difference in relative size between the two parts is significant,
+			// we add that weight onto the distance to discourage such matchings.
+			double bigger_part_size = std::max(relative_query_part_size, relative_model_part_size);
+			double smaller_part_size = std::min(relative_query_part_size, relative_model_part_size);
+
+			if (bigger_part_size - smaller_part_size > SIZE_DIFFERENCE_THRESHOLD)
+			{
+				dist = dist * (1 + (bigger_part_size - smaller_part_size));
+			}
+
 
 			ASSERT(dist >= 0);
 
