@@ -100,8 +100,10 @@ public:
 	*/
 	double operator()(graph::node u, graph::node v)
 	{
-		const double UNMATCHED_IMPORTANCE_THRESHOLD = 0.2;
-		const double SIZE_DIFFERENCE_THRESHOLD = 0.5;
+		const double UNMATCHED_IMPORTANCE_THRESHOLD = 0.3;
+		const double LEAVE_UNMATCHED_FOR_FREE_THRESHOLD = 0.15;
+		const double SIZE_DIFFERENCE_THRESHOLD = 0.7;
+
 		if (u == nil)
 		{
 			ASSERT(v != nil);
@@ -113,7 +115,11 @@ public:
 
 			// if the part is large, we want to discourage it from being
 			// unmatched.  If it's small, perhaps it is unimportant.
-			if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
+			if (relative_part_size < LEAVE_UNMATCHED_FOR_FREE_THRESHOLD)
+			{
+				return 0;
+			}
+			else if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
 			{
 				return m_pModelGraph->inf(v).nilMatchCost;
 			}
@@ -131,7 +137,11 @@ public:
 
 			// if the part is large, we want to discourage it from being
 			// unmatched.  If it's small, perhaps it is unimportant.
-			if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
+			if (relative_part_size < LEAVE_UNMATCHED_FOR_FREE_THRESHOLD)
+			{
+				return 0;
+			}
+			else if (relative_part_size < UNMATCHED_IMPORTANCE_THRESHOLD)
 			{
 				return m_pModelGraph->inf(u).nilMatchCost;
 			}
@@ -166,12 +176,12 @@ public:
 
 			if (bigger_part_size - smaller_part_size > SIZE_DIFFERENCE_THRESHOLD)
 			{
+				//std::cout << "Passed relative size threshold.  Bigger/smaller pat sizes:" << std::endl;
+				//std::cout << bigger_part_size << ", " << smaller_part_size << std::endl;
 				dist = dist * (1 + (bigger_part_size - smaller_part_size));
 			}
 
-
 			ASSERT(dist >= 0);
-
 			return dist;
 		}
 	}

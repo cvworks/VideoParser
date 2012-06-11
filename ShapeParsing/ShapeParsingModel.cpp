@@ -510,6 +510,14 @@ void ShapeParsingModel::ComputeShapeParses()
 
 	///
     // reweight
+	// this reweighting punishes shape parses with a large number of cuts
+	// (more than 3), and punishes [less] parses with no cuts.
+	// basically, we favour shapes with a small number of natural cuts.
+	// but also allow for having no cuts, with slightly decreased probability,
+	// and are strongly against having a large number of cuts.
+	//
+	// we are against having a large number of cuts because this oversimplifies
+	// the shape, leading to small, simple, poorly discriminative features.
 
     double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
     for (unsigned i = 0; i < candidates.size(); ++i)

@@ -131,10 +131,15 @@ def graphRecognitionAccuracy(spg_results, spg_legends, sc_legends, shape_context
 	plt.show()
 			
 if __name__ == '__main__':
-	spg_matching_stems = ["recognition_results_whole_shape.txt", "recognition_results_whole_part.txt", "recognition_results_alpha15.txt"] # add to this list (and the spg_legends list) to graph multiple results against each other.
-	spg_legends = ["SPG match - Sampling relative to whole shape", "SPG match - Samling relative to shape part", "SPG match - Corner-relative sampling, alpha = 15"]
-	shape_context_stems = ["shapecontext_results_whole_shape.txt", "shapecontext_results_whole_part.txt", "shapecontext_results_alpha15.txt"]
-	shape_context_legends = ["Shape Contexts - Sampling relative to whole shape", "Shape Contexts - Samling relative to shape part", "Shape Contexts - Corner-relative sampling, alpha = 15"]
+	#spg_matching_stems = ["recognition_results_whole_shape.txt", "recognition_results_whole_part.txt", "recognition_results_alpha15.txt", "recognition_results_unmatched_cost_1_alpha15.txt" , "recognition_results_whole_unmatched_cost_1.txt"] # add to this list (and the spg_legends list) to graph multiple results against each other.
+	#spg_legends = ["SPG match - Sampling relative to whole shape", "SPG match - Samling relative to shape part", "SPG match - Corner-relative sampling, alpha = 15", "SPG match - Corner-relative sampling, alpha = 15, unmatched cost = 1", "SPG match - Whole shape sampling, unmatched cost = 1"]
+	#shape_context_stems = ["shapecontext_results_whole_shape.txt", "shapecontext_results_whole_part.txt", "shapecontext_results_alpha15.txt", "shapecontext_results_unmatched_cost_1_alpha15.txt", "shapecontext_results_whole_unmatched_cost_1.txt"]
+	#shape_context_legends = ["Shape Contexts - Sampling relative to whole shape", "Shape Contexts - Samling relative to shape part", "Shape Contexts - Corner-relative sampling, alpha = 15", "Shape Contexts - Corner-relative sampling, unmatched cost = 1", "Shape Contexts - Whole shape sampling, unmatched cost = 1"]
+	
+	spg_matching_stems = ["recognition_results_whole_shape.txt", "recognition_results_niladjustedforquery.txt", "recognition_results_unmatch5percent.txt", "recognition_results_importance25_free15.txt", "recognition_results_importancethreshold_point3_freethreshold_point15_k5.txt", "recognition_results.txt"] # add to this list (and the spg_legends list) to graph multiple results against each other.
+	spg_legends = ["SPG - Partwise Scale Invariant", "SPG - Weighted matches by relative size", "SPG - Leave parts smaller than 5% of the shape unmatched", "SPG - unmatched importance threshold 0.25, leave unmatched free threshold 0.15", "SPG - K = 5 (all above are k=3), importance threshold = 0.3, free threshold = 0.15", "SPG - K = 10, importance thresh = 0.3, free thresh = 0.15"]
+	shape_context_stems = ["shapecontext_results_whole_shape.txt"]
+	shape_context_legends = ["Shape Contexts"]
 	
 	# spg_results is of the form: spg_results[i] = results for file i.  
 	# spg_results[i][j] = results for the j'th frame in file i
