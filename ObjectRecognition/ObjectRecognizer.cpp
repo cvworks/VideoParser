@@ -476,6 +476,8 @@ void ObjectRecognizer::getAllModelIndicesOfGivenClass(std::vector<unsigned int> 
 		{
 			models.push_back(gmatch.modelViewIdx);
 		}
+		// [TODO] need some kind of function like this...
+		//m_pShapeParser->reparseShape(model, parameterization_goes_here);
 	}
 }
 
