@@ -71,13 +71,19 @@ class ObjectRecognizer : public VisSysComponent
 		bool overlayWarpQuery;
 		bool test_against_shape_contexts;
 		bool use_importance_weights;
+		bool learn_importance_weights;
+		bool learn_parsing_model;
 	};
 
 	Params m_params;
 
 private:
 	
+	void getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy);
+	void getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &modelHierarchy);
+
 	void learnWeights();
+	void learnParsingModel();
 	void loadWeights(Lookup_Table &lt);
 	void testShapeContext(SPGMatch &gmatch, const ModelHierarchy &modelHierarchy);
 	void findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 

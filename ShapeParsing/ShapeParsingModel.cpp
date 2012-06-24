@@ -486,6 +486,7 @@ void ShapeParsingModel::ComputeShapeParses()
 		bpg.NewEdge(n2n[source(e)], n2n[target(e)]);
 	}
 
+	// [TODO] look into setting this back to m_maxnumparses for some parameterizations...
 	auto pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
 
 	/*std::vector<std::string> varNames(m_variables.size());
@@ -508,6 +509,7 @@ void ShapeParsingModel::ComputeShapeParses()
 
 	//std::vector<EdgeMap<bool>> configs(candidates.size());
 
+	// [TODO] add different parameterizations here, and add a method to select them.
 	///
     // reweight
 	// this reweighting punishes shape parses with a large number of cuts

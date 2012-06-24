@@ -20,9 +20,6 @@ using namespace std;
 
 extern UserArguments g_userArgs;
 
-
-bool USE_LEARNED_WEIGHTS = false; // use clique-based weightings.  expects weights.txt in the Experiments folder.
-bool LEARN_WEIGHTS = false; // program will crash after learning weights (since memory becomes all mismanaged).  So, once done learning, set this back to false and run.
 bool TEST_DRAWING_CORNERS = false; // visualization tests for convex corners.  Will eventually do experiments to determine how robust these corners are across video sequences.
 
 struct Vertex
@@ -84,6 +81,14 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 	g_userArgs.ReadBoolArg("ObjectRecognizer", "use_importance_weights", 
 		"Use weights that measure the importance of a shape part", 
 		false, &m_params.use_importance_weights);
+	
+	g_userArgs.ReadBoolArg("ObjectRecognizer", "learn_importance_weights",
+		"Learn weights that measure the importance of a shape part",
+		false, &m_params.learn_importance_weights);
+
+	g_userArgs.ReadBoolArg("ObjectRecognizer", "learn_parsing_model", 
+		"Learn which model should be used to parse each model class",
+		false, &m_params.learn_parsing_model);
 
 }
 
@@ -439,9 +444,47 @@ SPGPtr ObjectRecognizer::CreateSinglePartSPG(const ShapeInfoPtr &sip)
 	ptrSPG->FinalizeConstruction();
 	return ptrSPG;
 }
+
+void ObjectRecognizer::getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy)
+{
+	SPGMatch gmatch;
+
+	// For all model shapes in the model database		
+	for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < modelHierarchy.ModelViewCount(); ++gmatch.modelViewIdx)
+	{
+		const ModelHierarchy::ModelView &model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+		std::string class_name = modelHierarchy.getModelViewClass(model);
+
+		// if we haven't already seen this class, add it to our object class vector
+		if (std::find(classes.begin(), classes.end(), class_name) == classes.end())
+		{
+			classes.push_back(class_name);
+		}
+	}
+}
+
+void ObjectRecognizer::getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &modelHierarchy)
+{
+	SPGMatch gmatch;
+
+	for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < modelHierarchy.ModelViewCount(); ++gmatch.modelViewIdx)
+	{
+		const ModelHierarchy::ModelView &model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+			
+		//if (modelHierarchy.getModelViewClass(model) == target_class && std::find(models_of_this_class.begin(), models_of_this_class.end(), gmatch.modelViewIdx) == models_of_this_class.end())
+		if (modelHierarchy.getModelViewClass(model) == target_class)
+		{
+			models.push_back(gmatch.modelViewIdx);
+		}
+	}
+}
+
+void ObjectRecognizer::learnParsingModel()
+{}
+
 void ObjectRecognizer::learnWeights()
 {
-	if (LEARN_WEIGHTS)
+	if (m_params.learn_importance_weights)
 	{
 		SPGMatch gmatch;
 		m_rankings.resize(m_pShapeParser->NumShapes());
@@ -463,58 +506,16 @@ void ObjectRecognizer::learnWeights()
 
 
 		// load the query info.
-		std::vector<std::string> classes; 
-
-		// For all model shapes in the model database		
-		for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
-		{
-			const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
-			std::string class_name = modelHierarchy.getModelViewClass(model);
-
-			// if we haven't already seen this class, add it to our object class vector
-			if (std::find(classes.begin(), classes.end(), class_name) == classes.end())
-			{
-				classes.push_back(class_name);
-			}
-		}
-
-		// list all of the gathered object classes.
-		std::cout << "CLASSES " << std::endl << "-----------------------" << std::endl;
-		for (unsigned i = 0; i < classes.size(); i++)
-		{
-			std::cout << classes[i] << std::endl;
-		}
+		std::vector<std::string> classes;
+		getAllClassesInDatabase(classes, modelHierarchy);
 
 		// open file for writing
 		ofstream file;
 		//file.open("weights.txt");
 		for (unsigned class_num = 0; class_num < classes.size(); ++class_num) // on second machine, put this from classes.size()/4 to classes.size()/2 and then do from /2 to *3/4 and to classes.size()
 		{
-			
 			std::vector<unsigned int> models_of_this_class;
-			// get all the models of this class.
-			for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
-			{
-				const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
-				std::string class_name = classes[class_num]; 
-			
-				if (modelHierarchy.getModelViewClass(model) == class_name && std::find(models_of_this_class.begin(), models_of_this_class.end(), gmatch.modelViewIdx) == models_of_this_class.end())
-				{
-					models_of_this_class.push_back(gmatch.modelViewIdx);
-					std::cout << "pushing back " << gmatch.modelViewIdx << std::endl;
-				}
-			}
-		
-			// go through all the model's 'i' in this class.
-			std::cout << "All of these should be the same class..." << std::endl;
-			for (unsigned i = 0; i < models_of_this_class.size(); i++)
-			{
-				const ModelHierarchy::ModelView& model = modelHierarchy.GetModelView(models_of_this_class[i]);
-				std::cout << "Good: " << modelHierarchy.ToString(model) << std::endl;
-			}
-
-			std::cout << "-------------------------" << std::endl;
-		
+			getAllModelIndicesOfGivenClass(models_of_this_class, classes[class_num], modelHierarchy);		
 
 			unsigned model_count = models_of_this_class.size();
 			// loop over all models in this class. 'i' is the query model.
@@ -707,6 +708,7 @@ void ObjectRecognizer::Run()
 
 	ShowStatus("Recognizing objects...");
 
+	learnParsingModel();
 	learnWeights();
 
 	// Get the training info of the query shape if available only
@@ -904,7 +906,7 @@ void ObjectRecognizer::Run()
 			}
 			
 
-			if (USE_LEARNED_WEIGHTS)
+			if (m_params.use_importance_weights)
 			{
 				double weight = 0.0;
 				const ShapeParseGraph &model_graph = modelHierarchy.GetShapeParse((*matching).modelViewIdx, (*matching).modelParseIdx);
