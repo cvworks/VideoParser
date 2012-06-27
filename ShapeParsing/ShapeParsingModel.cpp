@@ -463,11 +463,61 @@ void ShapeParsingModel::Create(ShapeInfoPtr ptrShapeInfo,
 
 void ShapeParsingModel::ComputeShapeParses()
 {
+#define TEST2
+#define FAVOUR_CUTS
+
 	NodeMap<node> n2n(*this);
 	BeliefPropagationGraph bpg;
 	ParsingPotential* pPot;
 
 	// Choose a potential based on the user arguments
+	// [TODO] need a new ParsingPotential constructor that takes in
+	// different parsing probabilities.  This way,
+	// we can dynamically choose the parsing probabilities.
+	//
+	// Alternatively, we can just set the parsing probabilities here,
+	// in s_params.priors, and re-run this ParsingPotential ftn.
+	// For example...
+
+#ifdef FAVOUR_CUTS
+	s_params.priors.clear();
+	TruthTable<2>::States state;
+	state[0] = 1;
+	state[1] = 1;
+	s_params.priors.AddStates(state, 0.51);
+	//s_params.priors[state] = 0.51;
+
+	state[0] = 1;
+	state[1] = 0;
+	s_params.priors.AddStates(state, 0.51);
+	//s_params.priors[state] = 0.51;
+#else
+	s_params.priors.clear();
+	TruthTable<2>::States state;
+	state[0] = 1;
+	state[1] = 1;
+	s_params.priors.AddStates(state, 0.49);
+	//s_params.priors[state] = 0.49;
+
+	state[0] = 1;
+	state[1] = 0;
+	s_params.priors.AddStates(state, 0.49);
+	//s_params.priors[state] = 0.49;
+#endif
+		
+#ifdef THIS_IS_NOT_DEFINED
+	
+	s_params.priors.clear();
+	TruthTable<2>::States state;
+	s_params.priors[state] = 0.51;
+	//states
+	/*
+	// this is wrong, but find some way to set the priors by states...
+	states[0] = IsShortestCutInAllCycles(cutEdge, roles);
+			states[1] = HasParallelCutInAnyCycle(cutEdge, roles);
+	s_params.priors.AddStates(some_state, 0.49);*/
+#endif
+
 	pPot = new ParsingPotential(this);
 
 	node v;
@@ -487,7 +537,11 @@ void ShapeParsingModel::ComputeShapeParses()
 	}
 
 	// [TODO] look into setting this back to m_maxnumparses for some parameterizations...
-	auto pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
+#if defined TEST1 || defined TEST2
+		auto pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
+#else
+		auto pMsg = bpg.FindMostProbableConfigurations(m_maxNumParses);
+#endif
 
 	/*std::vector<std::string> varNames(m_variables.size());
 	Num2StrConverter sc(NUM_TO_STRING_BUFFER_SIZE);
@@ -520,7 +574,7 @@ void ShapeParsingModel::ComputeShapeParses()
 	//
 	// we are against having a large number of cuts because this oversimplifies
 	// the shape, leading to small, simple, poorly discriminative features.
-
+#if defined  TEST1
     double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
     for (unsigned i = 0; i < candidates.size(); ++i)
     {
@@ -543,6 +597,29 @@ void ShapeParsingModel::ComputeShapeParses()
         }
 
     }
+#elif defined TEST2
+    double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
+    for (unsigned i = 0; i < candidates.size(); ++i)
+    {
+        auto cand = candidates[i];
+        int num_cuts = 0;
+        for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
+        {
+            if (it->value)
+                num_cuts++;
+        }
+
+        if (num_cuts <= 3)
+        {
+            candidates[i].pr *= (alpha*0.9);
+        }
+        else if (num_cuts == 0)
+        {
+            candidates[i].pr *= alpha;
+
+        }
+    }
+#endif
     // truncate to m_maxNumParses
     ///
 
@@ -572,4 +649,3 @@ void ShapeParsingModel::ComputeShapeParses()
 		m_parses[i] = m_ptrShapeCutGraph->CreateShapeParseGraph(emap);
 	}
 }
-

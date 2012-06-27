@@ -315,4 +315,3 @@ struct UserEventInfo : public DisplayInfoIn
 };
 
 } // vpl namespcace
-

@@ -1075,7 +1075,9 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 	}
 
 	const SPGMatch& match = m_rankings[q_idx].matches[m_idx];
-
+	std::cout << "q_idx: " << q_idx << std::endl;
+	std::cout << "m_idx: " << m_idx << std::endl;
+	std::cout << "---------------------" << std::endl << std::endl;
 	
 	// See if it's the query view window
 	if (dii.displayId == 0)
@@ -1099,6 +1101,9 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 		}
 		else
 		{
+			// for slider value slider_index...
+			//SPGPtr query_spg =
+			// m_rankings[q_idx].queryParses[slider_index];
 			SPGPtr query_spg = 
 			m_rankings[q_idx].queryParses[match.queryParseIdx];
 		
