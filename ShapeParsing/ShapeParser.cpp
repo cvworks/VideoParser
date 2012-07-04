@@ -83,6 +83,34 @@ void ShapeParser::Initialize(graph::node v)
 	RegisterUserSwitchCommands(3, cmds3);
 }
 
+std::list<ShapeParsingModel> ShapeParser::getReparsedShapeList(ShapeInfoPtr &shape_info_ptr, unsigned int parameterization) const
+{
+	std::list<ShapeParsingModel> shapes;
+	shapes.push_back(ShapeParsingModel());
+	// Create a shape parsing model with the shape cut graph
+	shapes.back().Create(shape_info_ptr, MaxNumParses());
+
+	// Find the K most probable shape parses
+	shapes.back().ComputeShapeParses(parameterization);
+
+	return shapes;
+}
+/*void ShapeParser::reparseShape(ShapeInfoPtr &shape_info_ptr, unsigned int parameterization)
+{
+	ShowStatus("Computing shape parsing model...");
+	m_shapes.clear();
+	m_shapes.push_back(ShapeParsingModel());
+
+	// Create a shape parsing model with the shape cut graph
+	m_shapes.back().Create(shape_info_ptr, MaxNumParses());
+
+	ShowStatus("Computing shape parse graphs...");
+				
+	// Find the K most probable shape parses
+	m_shapes.back().ComputeShapeParses(parameterization);
+
+	ShowStatus("Shape parsing is done!");
+}*/
 void ShapeParser::Run()
 {
 	if (!m_pRegAnalyzer)

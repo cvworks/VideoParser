@@ -189,7 +189,7 @@ public:
 		m_maxNumParses = rhs.m_maxNumParses;
 	}
 
-	void ComputeShapeParses();
+	void ComputeShapeParses(unsigned int parameterization = 0);
 
 	//! Gets the shape information
 	const ShapeInformation& GetShapeInfo() const 

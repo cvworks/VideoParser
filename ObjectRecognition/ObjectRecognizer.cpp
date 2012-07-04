@@ -476,13 +476,79 @@ void ObjectRecognizer::getAllModelIndicesOfGivenClass(std::vector<unsigned int> 
 		{
 			models.push_back(gmatch.modelViewIdx);
 		}
-		// [TODO] need some kind of function like this...
-		//m_pShapeParser->reparseShape(model, parameterization_goes_here);
 	}
 }
 
 void ObjectRecognizer::learnParsingModel()
-{}
+{
+	if (!m_params.learn_parsing_model)
+	{
+		return;
+	}
+
+	SPGMatch gmatch;
+	const ModelHierarchy &model_hierarchy = m_pObjectLearner->GetModelHierarchy();
+
+	std::vector<std::string> classes;
+	getAllClassesInDatabase(classes, model_hierarchy);
+
+	// temporary...
+	std::vector<unsigned int> parameterizations;
+	for (unsigned i = 0; i < 3; ++i)
+		parameterizations.push_back(i);
+
+
+	// for each class...
+	for (auto c = classes.begin(); c != classes.end(); ++c)
+	{
+		std::vector<unsigned int> models_of_this_class;
+		getAllModelIndicesOfGivenClass(models_of_this_class, *c, model_hierarchy);
+
+		// match against all parameterizations to determine the best one.
+		for (auto p = parameterizations.begin(); p != parameterizations.end(); ++p)
+		{
+			// So, each model from this class can potentially contribute +1 to this parameterization.
+			for (auto query = models_of_this_class.begin(); query != models_of_this_class.end(); ++query)
+			{
+				// re-parse the query
+				ShapeInfoPtr query_contour = model_hierarchy.GetModelView(*query).ptrShapeContour;
+				std::list<ShapeParsingModel> shape_list = m_pShapeParser->getReparsedShapeList(query_contour, *p);
+				std::vector<SPGPtr> query_spgs = element_at(shape_list, 0).GetShapeParses(); 
+				
+				// this loops over all models in the database.
+				for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < model_hierarchy.ModelViewCount(); ++gmatch.modelViewIdx)
+				{
+					unsigned int model = gmatch.modelViewIdx;
+					if (model == *query)
+						continue;
+
+					// re-parse the model.
+					ShapeInfoPtr model_contour = model_hierarchy.GetModelView(model).ptrShapeContour;
+					shape_list = m_pShapeParser->getReparsedShapeList(model_contour, model);
+					std::vector<SPGPtr> model_spgs = element_at(shape_list, 0).GetShapeParses();
+
+					// match...
+					for (auto query_parse = query_spgs.begin(); query_parse != query_spgs.end(); ++query_parse)
+					{
+						for (auto model_parse = model_spgs.begin(); model_parse != model_spgs.end(); ++model_parse)
+						{
+							double score = m_pShapeMatcher->Match(*(*query_parse), *(*model_parse));
+							//std::cout << "score: " << score << std::endl;
+
+							// save score in some kind of tuple.
+							/*
+							// a matching tuple has structure <query, model, score>
+		std::vector<boost::tuple<int, int, double> > matchings;
+		boost::tuple<int, int, double> matching;
+		*/
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
 
 void ObjectRecognizer::learnWeights()
 {
@@ -490,7 +556,7 @@ void ObjectRecognizer::learnWeights()
 	{
 		SPGMatch gmatch;
 		m_rankings.resize(m_pShapeParser->NumShapes());
-		const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
+		const ModelHierarchy &modelHierarchy = m_pObjectLearner->GetModelHierarchy();
 
 		const unsigned numModelViews = modelHierarchy.ModelViewCount();
 

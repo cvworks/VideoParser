@@ -461,7 +461,7 @@ void ShapeParsingModel::Create(ShapeInfoPtr ptrShapeInfo,
 	set_indices();
 }
 
-void ShapeParsingModel::ComputeShapeParses()
+void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 {
 #define TEST2
 #define FAVOUR_CUTS

@@ -39,6 +39,9 @@ protected:
 	std::shared_ptr<const ImageProcessor> m_pImgProcessor;
 	
 public:
+	//void reparseShape(ShapeInfoPtr &shape_info_ptr, unsigned int parameterization);
+	std::list<ShapeParsingModel> getReparsedShapeList(ShapeInfoPtr &shape_info_ptr, unsigned int parameterization) const;
+
 	unsigned NumShapes() const { return m_shapes.size(); }
 
 	const ShapeInformation& GetShapeInfo(unsigned i) const 
