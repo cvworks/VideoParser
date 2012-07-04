@@ -92,7 +92,6 @@ std::list<ShapeParsingModel> ShapeParser::getReparsedShapeList(ShapeInfoPtr &sha
 
 	// Find the K most probable shape parses
 	shapes.back().ComputeShapeParses(parameterization);
-
 	return shapes;
 }
 /*void ShapeParser::reparseShape(ShapeInfoPtr &shape_info_ptr, unsigned int parameterization)

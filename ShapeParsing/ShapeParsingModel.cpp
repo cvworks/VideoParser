@@ -463,8 +463,26 @@ void ShapeParsingModel::Create(ShapeInfoPtr ptrShapeInfo,
 
 void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 {
-#define TEST2
-#define FAVOUR_CUTS
+	bool favour_cuts = false;
+	bool reweighting_1 = false;
+	bool reweighting_2 = false;
+	switch (parameterization)
+	{
+	case 0:
+		favour_cuts = true;
+		reweighting_1 = true;
+		break;
+	case 1:
+		reweighting_1 = true;
+		break;
+	case 2:
+		favour_cuts = true;
+		reweighting_2 = true;
+		break;
+	case 3:
+		reweighting_2 = true;
+		break;
+	}
 
 	NodeMap<node> n2n(*this);
 	BeliefPropagationGraph bpg;
@@ -479,49 +497,37 @@ void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 	// in s_params.priors, and re-run this ParsingPotential ftn.
 	// For example...
 
-#ifdef FAVOUR_CUTS
-	s_params.priors.clear();
-	TruthTable<2>::States state;
-	state[0] = 1;
-	state[1] = 1;
-	s_params.priors.AddStates(state, 0.51);
-	//s_params.priors[state] = 0.51;
+	if (favour_cuts)
+	{
+		s_params.priors.clear();
+		TruthTable<2>::States state;
+		state[0] = 1;
+		state[1] = 1;
+		s_params.priors.AddStates(state, 0.51);
+		//s_params.priors[state] = 0.51;
 
-	state[0] = 1;
-	state[1] = 0;
-	s_params.priors.AddStates(state, 0.51);
-	//s_params.priors[state] = 0.51;
-#else
-	s_params.priors.clear();
-	TruthTable<2>::States state;
-	state[0] = 1;
-	state[1] = 1;
-	s_params.priors.AddStates(state, 0.49);
-	//s_params.priors[state] = 0.49;
+		state[0] = 1;
+		state[1] = 0;
+		s_params.priors.AddStates(state, 0.51);
+		//s_params.priors[state] = 0.51;
+	}
+	else
+	{
+		s_params.priors.clear();
+		TruthTable<2>::States state;
+		state[0] = 1;
+		state[1] = 1;
+		s_params.priors.AddStates(state, 0.49);
+		//s_params.priors[state] = 0.49;
 
-	state[0] = 1;
-	state[1] = 0;
-	s_params.priors.AddStates(state, 0.49);
-	//s_params.priors[state] = 0.49;
-#endif
-		
-#ifdef THIS_IS_NOT_DEFINED
-	
-	s_params.priors.clear();
-	TruthTable<2>::States state;
-	s_params.priors[state] = 0.51;
-	//states
-	/*
-	// this is wrong, but find some way to set the priors by states...
-	states[0] = IsShortestCutInAllCycles(cutEdge, roles);
-			states[1] = HasParallelCutInAnyCycle(cutEdge, roles);
-	s_params.priors.AddStates(some_state, 0.49);*/
-#endif
+		state[0] = 1;
+		state[1] = 0;
+		s_params.priors.AddStates(state, 0.49);
+		//s_params.priors[state] = 0.49;
+	}
 
 	pPot = new ParsingPotential(this);
-
 	node v;
-
 	forall_nodes(v, *this)
 	{
 		const CVClique& c = inf(v);
@@ -537,11 +543,11 @@ void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 	}
 
 	// [TODO] look into setting this back to m_maxnumparses for some parameterizations...
-#if defined TEST1 || defined TEST2
-		auto pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
-#else
-		auto pMsg = bpg.FindMostProbableConfigurations(m_maxNumParses);
-#endif
+	const BottomUpBeliefMessage *pMsg;
+	if (reweighting_1 || reweighting_2)
+		pMsg = bpg.FindMostProbableConfigurations(10);//m_maxNumParses);
+	else
+		pMsg = bpg.FindMostProbableConfigurations(m_maxNumParses);
 
 	/*std::vector<std::string> varNames(m_variables.size());
 	Num2StrConverter sc(NUM_TO_STRING_BUFFER_SIZE);
@@ -574,52 +580,55 @@ void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 	//
 	// we are against having a large number of cuts because this oversimplifies
 	// the shape, leading to small, simple, poorly discriminative features.
-#if defined  TEST1
-    double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
-    for (unsigned i = 0; i < candidates.size(); ++i)
-    {
-        auto cand = candidates[i];
-        int num_cuts = 0;
-        for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
-        {
-            if (it->value)
-                num_cuts++;
-        }
+	if (reweighting_1)
+	{
+		double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
+		for (unsigned i = 0; i < candidates.size(); ++i)
+		{
+			auto cand = candidates[i];
+			int num_cuts = 0;
+			for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
+			{
+				if (it->value)
+					num_cuts++;
+			}
 
-        if (num_cuts > 3)
-        {
-            candidates[i].pr *= (alpha*0.9);
-        }
-        else if (num_cuts == 0)
-        {
-            candidates[i].pr *= alpha;
+			if (num_cuts > 3)
+			{
+				candidates[i].pr *= (alpha*0.9);
+			}
+			else if (num_cuts == 0)
+			{
+				candidates[i].pr *= alpha;
 
-        }
+			}
 
-    }
-#elif defined TEST2
-    double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
-    for (unsigned i = 0; i < candidates.size(); ++i)
-    {
-        auto cand = candidates[i];
-        int num_cuts = 0;
-        for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
-        {
-            if (it->value)
-                num_cuts++;
-        }
+		}
+	}
+	else if (reweighting_2)
+	{
+		double alpha = (1/pow(.51, 3.0)) * pow(.49, 3.0) * .99;
+		for (unsigned i = 0; i < candidates.size(); ++i)
+		{
+			auto cand = candidates[i];
+			int num_cuts = 0;
+			for (auto it = cand.config.begin(); it != cand.config.end(); ++it)
+			{
+				if (it->value)
+					num_cuts++;
+			}
 
-        if (num_cuts <= 3)
-        {
-            candidates[i].pr *= (alpha*0.9);
-        }
-        else if (num_cuts == 0)
-        {
-            candidates[i].pr *= alpha;
+			if (num_cuts <= 3)
+			{
+				candidates[i].pr *= (alpha*0.9);
+			}
+			else if (num_cuts == 0)
+			{
+				candidates[i].pr *= alpha;
 
-        }
-    }
-#endif
+			}
+		}
+	}
     // truncate to m_maxNumParses
     ///
 

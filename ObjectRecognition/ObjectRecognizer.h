@@ -80,7 +80,8 @@ class ObjectRecognizer : public VisSysComponent
 private:
 	
 	void getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy);
-	void getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &modelHierarchy);
+	void getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &model_hierarchy);
+	void getModelToClassMapping(std::map<unsigned int, std::string> &model_to_class, const ModelHierarchy &model_hierarchy);
 
 	void learnWeights();
 	void learnParsingModel();
