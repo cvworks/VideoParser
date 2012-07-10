@@ -489,14 +489,6 @@ void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 	ParsingPotential* pPot;
 
 	// Choose a potential based on the user arguments
-	// [TODO] need a new ParsingPotential constructor that takes in
-	// different parsing probabilities.  This way,
-	// we can dynamically choose the parsing probabilities.
-	//
-	// Alternatively, we can just set the parsing probabilities here,
-	// in s_params.priors, and re-run this ParsingPotential ftn.
-	// For example...
-
 	if (favour_cuts)
 	{
 		s_params.priors.clear();
@@ -569,8 +561,6 @@ void ShapeParsingModel::ComputeShapeParses(unsigned int parameterization)
 
 	//std::vector<EdgeMap<bool>> configs(candidates.size());
 
-	// [TODO] add different parameterizations here, and add a method to select them.
-	///
     // reweight
 	// this reweighting punishes shape parses with a large number of cuts
 	// (more than 3), and punishes [less] parses with no cuts.

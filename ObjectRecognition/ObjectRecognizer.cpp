@@ -90,6 +90,12 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 		"Learn which model should be used to parse each model class",
 		false, &m_params.learn_parsing_model);
 
+	g_userArgs.ReadBoolArg("ObjectRecognizer", "use_learned_parsing_model", 
+		"Use a learned parsing model for each class",
+		false, &m_params.use_learned_parsing_model);
+
+	
+
 }
 
 void ObjectRecognizer::Initialize(vpl::graph::node v)
@@ -445,6 +451,20 @@ SPGPtr ObjectRecognizer::CreateSinglePartSPG(const ShapeInfoPtr &sip)
 	return ptrSPG;
 }
 
+int ObjectRecognizer::getQueryId(std::string class_name, int obj_id, const ModelHierarchy &model_hierarchy)
+{
+	SPGMatch gmatch;
+	for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < model_hierarchy.ModelViewCount(); ++gmatch.modelViewIdx)
+	{
+		const ModelHierarchy::ModelView &mv = model_hierarchy.GetModelView(gmatch.modelViewIdx);
+		if (model_hierarchy.HasParent(mv, class_name, obj_id))
+		{
+			return gmatch.modelViewIdx;
+		}
+	}
+	return -1;
+}
+
 void ObjectRecognizer::getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy)
 {
 	SPGMatch gmatch;
@@ -548,7 +568,7 @@ void ObjectRecognizer::learnParsingModel()
 
 					// re-parse the model.
 					ShapeInfoPtr model_contour = model_hierarchy.GetModelView(model).ptrShapeContour;
-					shape_list = m_pShapeParser->getReparsedShapeList(model_contour, model);
+					shape_list = m_pShapeParser->getReparsedShapeList(model_contour, *p);//model);
 					std::vector<SPGPtr> model_spgs = element_at(shape_list, 0).GetShapeParses();
 
 					// match all parses of the query against all parses of the model.
@@ -572,17 +592,24 @@ void ObjectRecognizer::learnParsingModel()
 
 			if (parameterization_votes > best_parameterization_votes)
 			{
+				std::cout << "overwriting " << best_parameterization_votes << " with " << parameterization_votes << std::endl;
 				best_parameterization_votes = parameterization_votes;
 				best_parameterization = *p;
+			}
+			else
+			{
+				std::cout << "not better.  Only got this many votes: " << parameterization_votes << " while the best is " << best_parameterization_votes << std::endl;
 			}
 		}
 
 		// the best parameterization has been determined.  Write it to file.
-		std::cout << "writing to file: " << *c << ", " << best_parameterization << std::endl;
+		std::cout << "writing to file: " << *c << ", " << best_parameterization << " out of " << models_of_this_class.size() << std::endl;
 		file << *c << "," << best_parameterization << "\n";
 	}
 
 	file.close();
+	std::cout << "Parsing model learning completed." << std::endl;
+	exit(1);
 }
 
 void ObjectRecognizer::learnWeights()
@@ -690,7 +717,8 @@ void ObjectRecognizer::learnWeights()
 		}
 		file.close();
 		std::cout << "-------------------------" << std::endl;
-		std::cout << "crash here if learning weights" << std::endl;
+		std::cout << "Weight learning completed." << std::endl;
+		exit(1);
 	}
 }
 
@@ -782,6 +810,23 @@ void ObjectRecognizer::loadWeights(Lookup_Table &lt)
 	}
 }
 
+void ObjectRecognizer::loadParsingModels(std::map<std::string, int> &parsing_models)
+{
+	if (parsing_models.size() <= 0 && m_params.use_learned_parsing_model)
+	{
+		std::ifstream stream;
+		stream.open("parsing_model.txt");
+
+		char ignore_char;
+		std::string model_class;
+		int parsing_model;
+		while (stream >> model_class >> ignore_char >> parsing_model)
+		{
+			parsing_models[model_class] = parsing_model;
+		}
+	}
+}
+
 void ObjectRecognizer::Run()
 {
 	if (!m_pObjectLearner)
@@ -809,10 +854,10 @@ void ObjectRecognizer::Run()
 	if (TaskName() != "Recognition")
 		return;
 
-	ShowStatus("Recognizing objects...");
-
 	learnParsingModel();
 	learnWeights();
+
+	ShowStatus("Recognizing objects...");
 
 	// Get the training info of the query shape if available only
 	// if we have to exclude the query object from the model DB
@@ -829,7 +874,9 @@ void ObjectRecognizer::Run()
 	}
 
 	static Lookup_Table lookup_table;
+	std::map<std::string, int> parsing_models;
 	loadWeights(lookup_table);
+	loadParsingModels(parsing_models);
 
 	SPGMatch gmatch;
 	unsigned dbg_match_counter = 0;
@@ -865,283 +912,354 @@ void ObjectRecognizer::Run()
 
 		const unsigned numQueryParses = qr.queryParses.size();
 
-		// For all parses of the query shape
-		// Note: part of the objective is to find the best parse of the query, so
-		// it is okay to have in the final ranking two different query parses that 
-		// match to the same model view, and, possibly, even the same model view parse.
-		for (gmatch.queryParseIdx = 0; gmatch.queryParseIdx < numQueryParses; 
-			++gmatch.queryParseIdx)
+		////////////////////////////////////////////////////// new matching code.
+		/////////////////////////////////////////////////////////////////////////////////
+		if (m_params.use_learned_parsing_model)
 		{
-			const ShapeParseGraph& G_q = *qr.queryParses[gmatch.queryParseIdx];
+			static std::map<unsigned int, std::string> model_to_class;
+			if (model_to_class.size() <= 0)
+				getModelToClassMapping(model_to_class, modelHierarchy);
 
+			int query_id = getQueryId(query_tod.className, query_tod.objId, modelHierarchy);
 
-			// For all model shapes in the model database
-			for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; 
-				++gmatch.modelViewIdx)
+			for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; ++gmatch.modelViewIdx)
 			{
-				// See if we have to exclude the query object from the model DB
-				if (hasQueryTOD)
-				{
-					const ModelHierarchy::ModelView& mv = 
-						modelHierarchy.GetModelView(gmatch.modelViewIdx);
+				if (query_id == gmatch.modelViewIdx)
+					continue;
 
-					//StreamStatus("Comparing to " 
-					//			<< modelHierarchy.ToString(mv));
+				// get parameterization.
+				const ModelHierarchy::ModelView &model = modelHierarchy.GetModelView(gmatch.modelViewIdx);
+				std::string class_name = modelHierarchy.getModelViewClass(model);
+				unsigned int parameterization = parsing_models[class_name];
 
-					// See if the current object view belongs to the query object
-					// this is only the exact same instance (the same image).  Not the same 'class'
-					if (modelHierarchy.HasParent(mv, query_tod.className, query_tod.objId))
-					{
-						query_id = gmatch.modelViewIdx;
-						// The query object is the same than the model object
-						if (m_params.excludeQueryObjectFromDB)
-						{
-							StreamStatus("Skipping model object " 
-								<< modelHierarchy.ToString(mv));
+				// re-parse the model.
+				ShapeInfoPtr model_contour = modelHierarchy.GetModelView(gmatch.modelViewIdx).ptrShapeContour;
+				std::list<ShapeParsingModel> shape_list = m_pShapeParser->getReparsedShapeList(model_contour, parameterization); 
+				std::vector<SPGPtr> model_spgs = element_at(shape_list, 0).GetShapeParses();
 
-							continue;
-						}
-						else if (m_params.excludeQueryViewFromDB && 
-							query_tod.Compare(mv.viewInfo))
-						{
-							// The query view is the same than the model view	
-							StreamStatus("Skipping model view " 
-								<< modelHierarchy.ToString(mv));
+				// re-parse the query.
+				ShapeInfoPtr query_contour = modelHierarchy.GetModelView(query_id).ptrShapeContour;
+				shape_list = m_pShapeParser->getReparsedShapeList(query_contour, parameterization); 
+				std::vector<SPGPtr> query_spgs = element_at(shape_list, 0).GetShapeParses();
 
-							continue;
-						}
-					}
-				}
-
-				// Get the number of parses of the current model view
-				const unsigned numModelParses = 
-					modelHierarchy.ShapeParseCount(gmatch.modelViewIdx);
-
-				// Get the slot where we saved the model view parse that best matches
-				// the current query view parse (set to SPG_MATCH_NOT_SET initially)
 				SPGMatch& bestMatch = qr.matches[gmatch.modelViewIdx];
 
-				// Note: do not init the best model match value found here because
-				// the "best" is across model parses. It is init when resizing
-				// ranking of models per queries
-
-				// For all parses of the model shapes
-				// in this scenario, we've selected one view (one instance shape) and we are looking at all of its SPGs
-				for (gmatch.modelParseIdx = 0; gmatch.modelParseIdx < numModelParses; 
-					++gmatch.modelParseIdx)
+				// over all model spgs...
+				for (gmatch.modelParseIdx = 0; gmatch.modelParseIdx < model_spgs.size(); 
+						++gmatch.modelParseIdx)
 				{
-					const ShapeParseGraph& G_m = modelHierarchy.GetShapeParse(
-						gmatch.modelViewIdx, gmatch.modelParseIdx);
+					const ShapeParseGraph &model_spg = *model_spgs[gmatch.modelParseIdx];
 
-					
-					gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
-					//const ShapeParseGraph test = modelHierarchy.GetShapeParse(gmatch.modelViewIdx, gmatch.modelParseIdx);
-					/*NodeMatchMap mapping = gmatch.nodeMap;
-					
-					graph::node u = G_m.first_node();
-					while (true)
+					// and over all query spgs for each model spg...
+					for (gmatch.queryParseIdx = 0; gmatch.queryParseIdx < query_spgs.size(); 
+						++gmatch.queryParseIdx)
 					{
-						if (u == NULL)
-							break;
+						const ShapeParseGraph &query_spg = *query_spgs[gmatch.queryParseIdx];
+						gmatch.value = m_pShapeMatcher->Match(query_spg, model_spg);
 
-						// do stuff.
-						PointArray *pts = new PointArray();
-						std::cout << "shape part size: " << G_m.inf(u).boundarySegments.size() << std::endl;
-						G_m.inf(u).ptrDescriptor->GetPoints(pts);
-						std::cout << "point array size: " << pts->size() << std::endl;
-						std::cout << "total shape boundary size: " << G_m.getNumberOfBoundaryPoints() << std::endl;
+						if (m_params.onlySumModelNodeMatches)
+						{
+							gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
+						}
 
-						u = G_m.succ_node(u);
-					}*/
+						// keep track of best matching.
+						if (bestMatch.value == SPGMatch::ValueNotSet() 
+							|| gmatch.value < bestMatch.value)
+						{
+							bestMatch.SetBasicInfo(gmatch);
 
-
-								//PointArray *pts = new PointArray();
-			//std::cout << "shape part size: " << m_pModelGraph->inf(u).boundarySegments.size() << std::endl;
-			//m_pModelGraph->inf(u).ptrDescriptor->GetPoints(pts);
-			//std::cout << "point array size: " << pts->size() << std::endl;
-			//std::cout << "total shape boundary size: " << m_pModelGraph->getNumberOfBoundaryPoints() << std::endl;
-
-					if (m_params.onlySumModelNodeMatches)
-					{
-						gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
-					}
-
-					/*if (dbg_match_counter > 0 &&
-						dbg_match_counter / 1000.0 == int(dbg_match_counter / 1000.0))
-					{
-						StreamStatus("(query id " << s_q << ", query parse " 
-							      << gmatch.queryParseIdx << ") -> "
-							      << "(model id " << gmatch.modelViewIdx 
-								  << ", model parse " << gmatch.modelParseIdx << ") " 
-						          << "[match id " << dbg_match_counter << "]");
-
-						//DBG_PRINT_ELAPSED_TIME(timer, "Matched 1000 SPGs")
-						//DBG_RESET_TIMER(timer)
-					}*/
-
-					dbg_match_counter++;
-
-					// @todo mark comparison place
-					if (bestMatch.value == SPGMatch::ValueNotSet() 
-						|| gmatch.value < bestMatch.value)
-					{
-						bestMatch.SetBasicInfo(gmatch);
-
-						m_pShapeMatcher->GetF2SNodeMap(bestMatch.nodeMap);
+							m_pShapeMatcher->GetF2SNodeMap(bestMatch.nodeMap);
+						}
 					}
 				}
 			}
+			// sort the matches; we're done.
+			std::sort(qr.matches.begin(), qr.matches.end(), std::less<SPGMatch>());
+			qr.matchingTime = matchingTimer.ElapsedTime();
+			StreamStatus("Matching done in " << qr.matchingTime << " seconds.");
 		}
-
-		// Sort the matches of the current query shape
-		// @todo mark comparison place
-		// but first, re-weight matches.
-		
-		unsigned model_id = 0;
-		std::vector<SPGMatch>::iterator matching = qr.matches.begin();
-		for (matching; matching != qr.matches.end(); ++matching)
+		else
 		{
-			// skip matching against self.
-			if (query_id == model_id || (*matching).modelParseIdx > 1000)
+			////////////////////////////////////////////////////// cutoff to old match........
+			//////////////////////////////////////////////////////////////////////////////////
+			// For all parses of the query shape
+			// Note: part of the objective is to find the best parse of the query, so
+			// it is okay to have in the final ranking two different query parses that 
+			// match to the same model view, and, possibly, even the same model view parse.
+			for (gmatch.queryParseIdx = 0; gmatch.queryParseIdx < numQueryParses; 
+				++gmatch.queryParseIdx)
 			{
-				model_id++;
-				continue;
-			}
-			
+				const ShapeParseGraph& G_q = *qr.queryParses[gmatch.queryParseIdx];
 
-			if (m_params.use_importance_weights)
-			{
-				double weight = 0.0;
-				const ShapeParseGraph &model_graph = modelHierarchy.GetShapeParse((*matching).modelViewIdx, (*matching).modelParseIdx);
-				const ShapeParseGraph &query_graph = *qr.queryParses[(*matching).queryParseIdx];
 
-				double score = m_pShapeMatcher->Match(query_graph, model_graph);
-				m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap); 
-
-				// check which parts (if any) went unmatched, and punish accordingly.
-				// 1. gather list of model and query graph parts.
-				const unsigned query_part_count = query_graph.number_of_nodes();
-				std::vector<double> query_part_scores;
-				for (unsigned i = 0; i < query_part_count; ++i)
+				// For all model shapes in the model database
+				for (gmatch.modelViewIdx = 0; gmatch.modelViewIdx < numModelViews; 
+					++gmatch.modelViewIdx)
 				{
-					query_part_scores.push_back(-1);
-				}
-			
-				const int model_part_count = model_graph.number_of_nodes();
-				(*matching).value += (0.5 * model_part_count);
-				/*
-				std::vector<double> model_part_scores;
-				for (unsigned i = 0; i < model_part_count; ++i)
-				{
-					model_part_scores.push_back(-1);
-				}
-
-				// 2. gather the mean score
-				// 3. punish unmatched parts proportional to the mean score for matched parts.
-				double new_value = 0.0;
-				unsigned num_vals = 0;
-				for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
-				{
-					new_value += (*matching).nodeMap.at(i).nodeAttDist;
-				}
-
-				for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
-				{
-					Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, (*matching).nodeMap.at(i).tgtNodeIdx));
-					if (true)//it2 != lookup_table.end())
+					// See if we have to exclude the query object from the model DB
+					if (hasQueryTOD)
 					{
-						//if ((*it2).second > 5)
-						{
-							weight = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
-							//(*matching).value += weight;
-							//new_value += (*matching).nodeMap.at(i).nodeAttDist;//weight;
+						const ModelHierarchy::ModelView& mv = 
+							modelHierarchy.GetModelView(gmatch.modelViewIdx);
 
-							//new_value += ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
-							model_part_scores[(*matching).nodeMap.at(i).tgtNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
-							query_part_scores[(*matching).nodeMap.at(i).srcNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
-							num_vals++;
-							//(*it).value *= 0.85;
-							//(*matching).value += ((1/(*it2).second) * 0.05);
+						//StreamStatus("Comparing to " 
+						//			<< modelHierarchy.ToString(mv));
+
+						// See if the current object view belongs to the query object
+						// this is only the exact same instance (the same image).  Not the same 'class'
+						if (modelHierarchy.HasParent(mv, query_tod.className, query_tod.objId))
+						{
+							query_id = gmatch.modelViewIdx;
+							// The query object is the same than the model object
+							if (m_params.excludeQueryObjectFromDB)
+							{
+								StreamStatus("Skipping model object " 
+									<< modelHierarchy.ToString(mv));
+
+								continue;
+							}
+							else if (m_params.excludeQueryViewFromDB && 
+								query_tod.Compare(mv.viewInfo))
+							{
+								// The query view is the same than the model view	
+								StreamStatus("Skipping model view " 
+									<< modelHierarchy.ToString(mv));
+
+								continue;
+							}
 						}
 					}
-					else
-					{
-						// unmatched.  won't find that in the weight-set.
-						//new_value += (*matching).nodeMap.at(i).nodeAttDist;
-					}
-					//num_vals++;
-				}
-			
-			
-				double mean_weight = new_value/num_vals;
-				// now add weights for all unmatched nodes.
-				for (unsigned i = 0; i < model_part_scores.size(); ++i)
-				{
-					if (model_part_scores[i] == -1)
-					{
-						double part_clique_size = 0.0;
-						Lookup_Table::const_iterator part_it = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, i));
-						part_clique_size = (*part_it).second;
 
-						//(*matching).value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
-						//new_value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
-						model_part_scores[i] = 1/part_clique_size;
-						//(*matching).value += part_clique_size * 0.85;
-					}
-				}
-			
-				for (unsigned i = 0; i < query_part_scores.size(); ++i)
-				{
-					if (query_part_scores[i] == -1)
-					{
-						//(*matching).value += mean_weight;
-						//new_value += (*matching).nodeMap.at(i).nodeAttDist;
-						//new_value += mean_weight;
-						query_part_scores[i] = 1/mean_weight;
-					}
-				}
-			
-				//(*matching).value += 0.5 * model_part_count;
-				//std::cout << (*matching).value << std::endl;
-					/////////////////////////////////////*/
+					// Get the number of parses of the current model view
+					const unsigned numModelParses = 
+						modelHierarchy.ShapeParseCount(gmatch.modelViewIdx);
 
+					// Get the slot where we saved the model view parse that best matches
+					// the current query view parse (set to SPG_MATCH_NOT_SET initially)
+					SPGMatch& bestMatch = qr.matches[gmatch.modelViewIdx];
 
-				/*
-				NodeMatchMap mapping = gmatch.nodeMap;
-				graph::node u,v;
-				// loop over all nodes u in the query shape parse...
-				forall_nodes(u, query_graph)
-				{
-					Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*it).modelViewIdx, (*it).modelParseIdx, mapping[u].tgtNodeIdx));
-					if (it2 != lookup_table.end())
+					// Note: do not init the best model match value found here because
+					// the "best" is across model parses. It is init when resizing
+					// ranking of models per queries
+
+					// For all parses of the model shapes
+					// in this scenario, we've selected one view (one instance shape) and we are looking at all of its SPGs
+					for (gmatch.modelParseIdx = 0; gmatch.modelParseIdx < numModelParses; 
+						++gmatch.modelParseIdx)
 					{
-						//std::cout << "found, adding to the weight. " << std::endl;
-						weight += (double)(*it2).second;
-						// try something else...
-						if ((*it2).second > 5)
+						const ShapeParseGraph& G_m = modelHierarchy.GetShapeParse(
+							gmatch.modelViewIdx, gmatch.modelParseIdx);
+
+					
+						gmatch.value = m_pShapeMatcher->Match(G_q, G_m);
+						//const ShapeParseGraph test = modelHierarchy.GetShapeParse(gmatch.modelViewIdx, gmatch.modelParseIdx);
+						/*NodeMatchMap mapping = gmatch.nodeMap;
+					
+						graph::node u = G_m.first_node();
+						while (true)
 						{
-							(*it).value *= 0.85;
+							if (u == NULL)
+								break;
+
+							// do stuff.
+							PointArray *pts = new PointArray();
+							std::cout << "shape part size: " << G_m.inf(u).boundarySegments.size() << std::endl;
+							G_m.inf(u).ptrDescriptor->GetPoints(pts);
+							std::cout << "point array size: " << pts->size() << std::endl;
+							std::cout << "total shape boundary size: " << G_m.getNumberOfBoundaryPoints() << std::endl;
+
+							u = G_m.succ_node(u);
+						}*/
+
+
+									//PointArray *pts = new PointArray();
+				//std::cout << "shape part size: " << m_pModelGraph->inf(u).boundarySegments.size() << std::endl;
+				//m_pModelGraph->inf(u).ptrDescriptor->GetPoints(pts);
+				//std::cout << "point array size: " << pts->size() << std::endl;
+				//std::cout << "total shape boundary size: " << m_pModelGraph->getNumberOfBoundaryPoints() << std::endl;
+
+						if (m_params.onlySumModelNodeMatches)
+						{
+							gmatch.value = m_pShapeMatcher->GetGraphDistanceS2F();
+						}
+
+						/*if (dbg_match_counter > 0 &&
+							dbg_match_counter / 1000.0 == int(dbg_match_counter / 1000.0))
+						{
+							StreamStatus("(query id " << s_q << ", query parse " 
+									  << gmatch.queryParseIdx << ") -> "
+									  << "(model id " << gmatch.modelViewIdx 
+									  << ", model parse " << gmatch.modelParseIdx << ") " 
+									  << "[match id " << dbg_match_counter << "]");
+
+							//DBG_PRINT_ELAPSED_TIME(timer, "Matched 1000 SPGs")
+							//DBG_RESET_TIMER(timer)
+						}*/
+
+						dbg_match_counter++;
+
+						// @todo mark comparison place
+						if (bestMatch.value == SPGMatch::ValueNotSet() 
+							|| gmatch.value < bestMatch.value)
+						{
+							bestMatch.SetBasicInfo(gmatch);
+
+							m_pShapeMatcher->GetF2SNodeMap(bestMatch.nodeMap);
 						}
 					}
-					else
-					{
-						// unmatched.  won't find that in the weight-set.
-					}
 				}
-				// now average the weight...
-				weight /= query_graph.number_of_nodes();
-				//(*it).weightValue(weight);		
-				*/   
-			
-				model_id++;
 			}
+
+			// Sort the matches of the current query shape
+			// @todo mark comparison place
+			// but first, re-weight matches.
+		
+			unsigned model_id = 0;
+			std::vector<SPGMatch>::iterator matching = qr.matches.begin();
+			for (matching; matching != qr.matches.end(); ++matching)
+			{
+				// skip matching against self.
+				if (query_id == model_id || (*matching).modelParseIdx > 1000)
+				{
+					model_id++;
+					continue;
+				}
+			
+
+				if (m_params.use_importance_weights)
+				{
+					double weight = 0.0;
+					const ShapeParseGraph &model_graph = modelHierarchy.GetShapeParse((*matching).modelViewIdx, (*matching).modelParseIdx);
+					const ShapeParseGraph &query_graph = *qr.queryParses[(*matching).queryParseIdx];
+
+					double score = m_pShapeMatcher->Match(query_graph, model_graph);
+					m_pShapeMatcher->GetF2SNodeMap(gmatch.nodeMap); 
+
+					// check which parts (if any) went unmatched, and punish accordingly.
+					// 1. gather list of model and query graph parts.
+					const unsigned query_part_count = query_graph.number_of_nodes();
+					std::vector<double> query_part_scores;
+					for (unsigned i = 0; i < query_part_count; ++i)
+					{
+						query_part_scores.push_back(-1);
+					}
+			
+					const int model_part_count = model_graph.number_of_nodes();
+					(*matching).value += (0.5 * model_part_count);
+					/*
+					std::vector<double> model_part_scores;
+					for (unsigned i = 0; i < model_part_count; ++i)
+					{
+						model_part_scores.push_back(-1);
+					}
+
+					// 2. gather the mean score
+					// 3. punish unmatched parts proportional to the mean score for matched parts.
+					double new_value = 0.0;
+					unsigned num_vals = 0;
+					for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
+					{
+						new_value += (*matching).nodeMap.at(i).nodeAttDist;
+					}
+
+					for (unsigned i = 0; i < (*matching).nodeMap.size(); ++i)
+					{
+						Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, (*matching).nodeMap.at(i).tgtNodeIdx));
+						if (true)//it2 != lookup_table.end())
+						{
+							//if ((*it2).second > 5)
+							{
+								weight = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+								//(*matching).value += weight;
+								//new_value += (*matching).nodeMap.at(i).nodeAttDist;//weight;
+
+								//new_value += ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+								model_part_scores[(*matching).nodeMap.at(i).tgtNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+								query_part_scores[(*matching).nodeMap.at(i).srcNodeIdx] = ((*matching).nodeMap.at(i).nodeAttDist * 1/(*it2).second);
+								num_vals++;
+								//(*it).value *= 0.85;
+								//(*matching).value += ((1/(*it2).second) * 0.05);
+							}
+						}
+						else
+						{
+							// unmatched.  won't find that in the weight-set.
+							//new_value += (*matching).nodeMap.at(i).nodeAttDist;
+						}
+						//num_vals++;
+					}
+			
+			
+					double mean_weight = new_value/num_vals;
+					// now add weights for all unmatched nodes.
+					for (unsigned i = 0; i < model_part_scores.size(); ++i)
+					{
+						if (model_part_scores[i] == -1)
+						{
+							double part_clique_size = 0.0;
+							Lookup_Table::const_iterator part_it = lookup_table.find(WeightKey((*matching).modelViewIdx, (*matching).modelParseIdx, i));
+							part_clique_size = (*part_it).second;
+
+							//(*matching).value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
+							//new_value += ((double)(1/part_clique_size) * (double)(1/part_clique_size));
+							model_part_scores[i] = 1/part_clique_size;
+							//(*matching).value += part_clique_size * 0.85;
+						}
+					}
+			
+					for (unsigned i = 0; i < query_part_scores.size(); ++i)
+					{
+						if (query_part_scores[i] == -1)
+						{
+							//(*matching).value += mean_weight;
+							//new_value += (*matching).nodeMap.at(i).nodeAttDist;
+							//new_value += mean_weight;
+							query_part_scores[i] = 1/mean_weight;
+						}
+					}
+			
+					//(*matching).value += 0.5 * model_part_count;
+					//std::cout << (*matching).value << std::endl;
+						/////////////////////////////////////*/
+
+
+					/*
+					NodeMatchMap mapping = gmatch.nodeMap;
+					graph::node u,v;
+					// loop over all nodes u in the query shape parse...
+					forall_nodes(u, query_graph)
+					{
+						Lookup_Table::const_iterator it2 = lookup_table.find(WeightKey((*it).modelViewIdx, (*it).modelParseIdx, mapping[u].tgtNodeIdx));
+						if (it2 != lookup_table.end())
+						{
+							//std::cout << "found, adding to the weight. " << std::endl;
+							weight += (double)(*it2).second;
+							// try something else...
+							if ((*it2).second > 5)
+							{
+								(*it).value *= 0.85;
+							}
+						}
+						else
+						{
+							// unmatched.  won't find that in the weight-set.
+						}
+					}
+					// now average the weight...
+					weight /= query_graph.number_of_nodes();
+					//(*it).weightValue(weight);		
+					*/   
+			
+					model_id++;
+				}
+			}
+
+			std::sort(qr.matches.begin(), qr.matches.end(), std::less<SPGMatch>());
+
+			qr.matchingTime = matchingTimer.ElapsedTime();
+
+			StreamStatus("Matching done in " << qr.matchingTime << " seconds.");
 		}
-
-		std::sort(qr.matches.begin(), qr.matches.end(), std::less<SPGMatch>());
-
-		qr.matchingTime = matchingTimer.ElapsedTime();
-
-		StreamStatus("Matching done in " << qr.matchingTime << " seconds.");
 	}
 }
 
@@ -1176,9 +1294,10 @@ void ObjectRecognizer::Draw(const DisplayInfoIn& dii) const
 	}
 
 	const SPGMatch& match = m_rankings[q_idx].matches[m_idx];
-	std::cout << "q_idx: " << q_idx << std::endl;
+	// this is just me trying to figure out how to get that second slider running.
+	/*std::cout << "q_idx: " << q_idx << std::endl;
 	std::cout << "m_idx: " << m_idx << std::endl;
-	std::cout << "---------------------" << std::endl << std::endl;
+	std::cout << "---------------------" << std::endl << std::endl;*/
 	
 	// See if it's the query view window
 	if (dii.displayId == 0)

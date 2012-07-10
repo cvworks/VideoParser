@@ -73,6 +73,7 @@ class ObjectRecognizer : public VisSysComponent
 		bool use_importance_weights;
 		bool learn_importance_weights;
 		bool learn_parsing_model;
+		bool use_learned_parsing_model;
 	};
 
 	Params m_params;
@@ -82,10 +83,13 @@ private:
 	void getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy);
 	void getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &model_hierarchy);
 	void getModelToClassMapping(std::map<unsigned int, std::string> &model_to_class, const ModelHierarchy &model_hierarchy);
+	int getQueryId(std::string class_name, int obj_id, const ModelHierarchy &model_hierarchy);
 
 	void learnWeights();
 	void learnParsingModel();
 	void loadWeights(Lookup_Table &lt);
+	void loadParsingModels(std::map<std::string, int> &parsing_models);
+
 	void testShapeContext(SPGMatch &gmatch, const ModelHierarchy &modelHierarchy);
 	void findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 
 						std::vector<int> model_id, std::vector<int> model_parse_id,std::vector<int> model_part_id, 
