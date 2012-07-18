@@ -30,19 +30,22 @@
     <MySQLInc>$(MySQLDir)\include</MySQLInc>
     <MySQLLib>$(MySQLDir)\lib\opt</MySQLLib>
     <MySQLBin>$(MySQLLib)</MySQLBin>
+    <lbfgsRoot>$(LibRoot)\liblbfgs</lbfgsRoot>
+    <lbfgsLib>$(lbfgsRoot)\$(Configuration)</lbfgsLib>
+    <lbfgsInc>$(lbfgsRoot)\include</lbfgsInc>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir>$(BuildDir)\$(SolutionName)\$(Configuration)\</OutDir>
     <IntDir>$(BuildDir)\$(SolutionName)\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>C:\Projects\Libraries\boost_1_48_0;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Projects\Libraries\boost_1_48_0;$(lbfgsInc);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalOptions>/D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 
 /D _CRT_SECURE_NO_DEPRECATE
 /DCOMPILE_DBG_STATEMENTS %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(VXLBin)\vcl;$(VXLInc)\vcl;$(VXLBin)\core;$(VXLInc)\core;$(OpenCVInc);$(LEMONInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..;$(VXLBin)\vcl;$(VXLInc)\vcl;$(VXLBin)\core;$(VXLInc)\core;$(OpenCVInc);$(LEMONInc);$(lbfgsInc);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -139,6 +142,15 @@
     </BuildMacro>
     <BuildMacro Include="MySQLBin">
       <Value>$(MySQLBin)</Value>
+    </BuildMacro>
+    <BuildMacro Include="lbfgsRoot">
+      <Value>$(lbfgsRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="lbfgsLib">
+      <Value>$(lbfgsLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="lbfgsInc">
+      <Value>$(lbfgsInc)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

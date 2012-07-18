@@ -93,9 +93,6 @@ void ObjectRecognizer::ReadParamsFromUserArguments()
 	g_userArgs.ReadBoolArg("ObjectRecognizer", "use_learned_parsing_model", 
 		"Use a learned parsing model for each class",
 		false, &m_params.use_learned_parsing_model);
-
-	
-
 }
 
 void ObjectRecognizer::Initialize(vpl::graph::node v)
@@ -497,6 +494,14 @@ void ObjectRecognizer::getAllModelIndicesOfGivenClass(std::vector<unsigned int> 
 	}
 }
 
+void ObjectRecognizer::getClassToIndexMapping(std::map<std::string, unsigned int> &class_to_index, std::vector<std::string> classes)
+{
+	for (unsigned i = 0; i < classes.size(); ++i)
+	{
+		class_to_index[classes[i]] = i;
+	}
+}
+
 void ObjectRecognizer::getModelToClassMapping(std::map<unsigned int, std::string> &model_to_class, const ModelHierarchy &model_hierarchy)
 {
 	SPGMatch gmatch;
@@ -508,8 +513,220 @@ void ObjectRecognizer::getModelToClassMapping(std::map<unsigned int, std::string
 	}
 }
 
+void generateAllPermutations(std::map<std::string, unsigned int> &unfinished_mapping, unsigned int index, 
+	std::vector<unsigned int> &parameterizations, std::vector<std::string> &classes,
+	std::vector<std::map<std::string, unsigned int> > &joint_parameterizations)
+{
+	for (auto param = parameterizations.begin(); param != parameterizations.end(); ++param)
+	{
+		std::map<std::string, unsigned int> new_map = unfinished_mapping;
+		new_map[classes[index]] = *param;
+		if (index == classes.size() - 1)
+		{
+			joint_parameterizations.push_back(new_map);
+		}
+		else
+		{
+			generateAllPermutations(new_map, index + 1, parameterizations, classes, joint_parameterizations);
+		}
+	}
+}
+
+unsigned int getParameterization(lbfgsfloatval_t val)
+{
+	if (val < 0.25)
+	{
+		return 1;
+	}
+	else if (val < 0.5)
+	{
+		return 2;
+	}
+	else if (val < 0.75)
+	{
+		return 3;
+	}
+	else
+	{
+		return 4;
+	}
+}
+
+double ObjectRecognizer::evaluate(GAPhenotype &pheno)
+{
+	const ModelHierarchy &mh = m_pObjectLearner->GetModelHierarchy();
+
+	// evaluate this parameterization.  fx is its score.
+	unsigned int correct_matches = 0; 
+
+	for (unsigned query = 0; query < mh.ModelViewCount(); ++query)
+	{
+		if (query % 100 == 0)
+		{
+			cout << "query " << query << "...";
+		}
+
+		unsigned int query_class_index = class_to_index[model_to_class[query]];
+		double best_score = numeric_limits<double>::max();
+		unsigned int best_model_id = 0;
+
+		for (unsigned model = 0; model < mh.ModelViewCount(); ++model)
+		{
+			if (query == model) continue;
+			unsigned int model_class_index = class_to_index[model_to_class[model]];
+
+			// re-parse both by this parameterization.
+			ShapeInfoPtr query_contour = mh.GetModelView(query).ptrShapeContour;
+			std::list<ShapeParsingModel> shape_list = m_pShapeParser->getReparsedShapeList(query_contour, pheno.chromosome[model_class_index]);
+			std::vector<SPGPtr> query_spgs = element_at(shape_list, 0).GetShapeParses();
+
+			ShapeInfoPtr model_contour = mh.GetModelView(model).ptrShapeContour;
+			shape_list = m_pShapeParser->getReparsedShapeList(model_contour, pheno.chromosome[model_class_index]);
+			std::vector<SPGPtr> model_spgs = element_at(shape_list, 0).GetShapeParses();
+
+			// match all parses of the query against all parses of the model.
+			for (auto query_parse = query_spgs.begin(); query_parse != query_spgs.end(); ++query_parse)
+			{
+				for (auto model_parse = model_spgs.begin(); model_parse != model_spgs.end(); ++model_parse)
+				{
+					double score = m_pShapeMatcher->Match(*(*query_parse), *(*model_parse));
+					if (score < best_score)
+					{
+						best_score = score;
+						best_model_id = model;
+					}
+				}
+			}
+		} // end model loop.
+
+		if (model_to_class[best_model_id] == model_to_class[query])
+			correct_matches++;
+	}
+
+	return correct_matches;
+}
+
+void ObjectRecognizer::learnJointParsingModel()
+{
+	if (!m_params.learn_parsing_model)
+		return;
+
+	ofstream file;
+	file.open("parsing_model.txt");
+
+	SPGMatch gmatch;
+	const ModelHierarchy &model_hierarchy = m_pObjectLearner->GetModelHierarchy();
+
+	////////////////////////
+
+	// temporary.  Once we have our parameterizations set up a bit better,
+	// we will have a better way to address this.
+	unsigned int population_size = 10;
+	double crossover_rate = 0.8;
+	unsigned int iterations = 2;
+	unsigned int number_of_classes = all_classes.size();
+	std::vector<unsigned int> parameterizations;
+	for (unsigned i = 0; i < 4; ++i)
+		parameterizations.push_back(i);
+	
+	// initialize population.
+	std::vector<GAPhenotype> population;
+	for (unsigned i = 0; i < population_size; ++i)
+	{
+		population.push_back(GAPhenotype(parameterizations, number_of_classes));
+	}
+
+	for (unsigned int iteration = 0; iteration < iterations; ++iteration)
+	{
+		cout << "iteration " << iteration + 1 << endl;
+		// elitism (save max sltn at every step)
+		GAPhenotype most_fit = population[population_size - 1];
+
+		// generate new candidates.
+		random_shuffle(population.begin(), population.end());
+		for (unsigned i = 0; i < population_size; i += 2)
+		{
+			double potential_crossover = rand() / (RAND_MAX + 1);
+			if (potential_crossover < crossover_rate)
+			{
+				pair<GAPhenotype, GAPhenotype> children = population[i].crossover(population[i + 1]);
+				population.push_back(children.first);
+				population.push_back(children.second);
+			}
+			population[i].mutate();
+			population[i + 1].mutate();
+		}
+
+		cout << "eval" << endl;
+		// evaluate all of our candidates.
+		for (unsigned i = 0; i < population.size(); ++i)
+		{
+			population[i].fitness = evaluate(population[i]);
+			cout << endl;
+			for (unsigned g = 0; g < population[i].chromosome.size(); ++g)
+			{
+				cout << population[i].chromosome[g] << ", ";
+			}
+			cout << population[i].fitness << endl;
+		}
+
+		// tournament selection to trim the fat.
+		while (population.size() > population_size)
+		{
+			random_shuffle(population.begin(), population.end());
+			double selector = rand() / (RAND_MAX + 1);
+
+			if (population[0].fitness > population[1].fitness)
+			{
+				if (selector < 0.95)
+				{
+					population.erase(population.begin() + 1);
+				}
+				else
+				{
+					population.erase(population.begin());
+				}
+			}
+			else
+			{
+				if (selector < 0.95)
+				{
+					population.erase(population.begin());
+				}
+				else
+				{
+					population.erase(population.begin() + 1);
+				}
+			}
+		}
+
+		// sort by fitness at the end.
+		sort(population.begin(), population.end());
+
+		// elitism removes the least fit with the most fit from previous generation.
+		population[0] = most_fit;
+	}
+
+	sort(population.begin(), population.end());
+	cout << "best phenotype" << endl << "--------------------" << endl;
+	population[population_size - 1].toString();
+
+	for (unsigned int i = 0; i < population_size; ++i)
+	{
+		file << all_classes[i] << ", " << population[population_size - 1].chromosome[i] << "\n";
+	}
+	file.close();
+	//////////////////////////
+}
+
+
+// Currently, this is learning the individual class-wise MAP parsing parameterization.
+// Would prefer holistic joint MAP assignment.
 void ObjectRecognizer::learnParsingModel()
 {
+	learnJointParsingModel();
+	return;
+	//////
 	if (!m_params.learn_parsing_model)
 		return;
 
@@ -525,12 +742,9 @@ void ObjectRecognizer::learnParsingModel()
 	std::map<unsigned int, std::string> model_to_class;
 	getModelToClassMapping(model_to_class, model_hierarchy);
 
-	// temporary.  Once we have our parameterizations set up a bit better,
-	// we will have a better way to address this.
 	std::vector<unsigned int> parameterizations;
 	for (unsigned i = 0; i < 4; ++i)
 		parameterizations.push_back(i);
-
 
 	// for each class...
 	for (auto c = classes.begin(); c != classes.end(); ++c)
@@ -854,10 +1068,18 @@ void ObjectRecognizer::Run()
 	if (TaskName() != "Recognition")
 		return;
 
+	ShowStatus("Recognizing objects...");
+
+	const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
+	const unsigned numModelViews = modelHierarchy.ModelViewCount();
+
+	// these are used elsewhere within the objectrecognizer module.  initialize early.
+	getAllClassesInDatabase(all_classes, modelHierarchy);
+	getModelToClassMapping(model_to_class, modelHierarchy);
+	getClassToIndexMapping(class_to_index, all_classes);
+
 	learnParsingModel();
 	learnWeights();
-
-	ShowStatus("Recognizing objects...");
 
 	// Get the training info of the query shape if available only
 	// if we have to exclude the query object from the model DB
@@ -883,8 +1105,6 @@ void ObjectRecognizer::Run()
 
 	const unsigned numQueryShapes = m_pShapeParser->NumShapes();
 
-	const ModelHierarchy& modelHierarchy = m_pObjectLearner->GetModelHierarchy();
-	const unsigned numModelViews = modelHierarchy.ModelViewCount();
 	unsigned query_id = 0;
 	Timer matchingTimer;
 

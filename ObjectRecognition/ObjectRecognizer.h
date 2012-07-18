@@ -11,6 +11,8 @@
 #include <fstream>
 #include <iostream>
 #include <boost/tuple/tuple_comparison.hpp>
+#include <lbfgs.h>
+#include "ObjectRecognition/GAPhenotype.h"
 
 namespace vpl {
 
@@ -79,7 +81,8 @@ class ObjectRecognizer : public VisSysComponent
 	Params m_params;
 
 private:
-	
+	double evaluate(GAPhenotype &pheno);
+	void getClassToIndexMapping(std::map<std::string, unsigned int> &class_to_index, std::vector<std::string> classes);
 	void getAllClassesInDatabase(std::vector<std::string> &classes, const ModelHierarchy &modelHierarchy);
 	void getAllModelIndicesOfGivenClass(std::vector<unsigned int> &models, std::string target_class, const ModelHierarchy &model_hierarchy);
 	void getModelToClassMapping(std::map<unsigned int, std::string> &model_to_class, const ModelHierarchy &model_hierarchy);
@@ -87,8 +90,13 @@ private:
 
 	void learnWeights();
 	void learnParsingModel();
+	void learnJointParsingModel();
 	void loadWeights(Lookup_Table &lt);
 	void loadParsingModels(std::map<std::string, int> &parsing_models);
+
+	std::vector<std::string> all_classes;
+	std::map<unsigned int, std::string> model_to_class;
+	std::map<std::string, unsigned int> class_to_index;
 
 	void testShapeContext(SPGMatch &gmatch, const ModelHierarchy &modelHierarchy);
 	void findMaxClique(int query_model_id, int query_parse_id, int query_shape_part, 

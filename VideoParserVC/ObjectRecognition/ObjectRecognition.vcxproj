@@ -106,11 +106,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectRecognition\CvPeopleDetector.h" />
+    <ClInclude Include="..\..\ObjectRecognition\GAPhenotype.h" />
     <ClInclude Include="..\..\ObjectRecognition\ObjectRecognizer.h" />
     <ClInclude Include="..\..\ObjectRecognition\PeopleDetector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ObjectRecognition\CvPeopleDetector.cpp" />
+    <ClCompile Include="..\..\ObjectRecognition\GAPhenotype.cpp" />
     <ClCompile Include="..\..\ObjectRecognition\ObjectRecognizer.cpp" />
     <ClCompile Include="..\..\ObjectRecognition\PeopleDetector.cpp" />
   </ItemGroup>
