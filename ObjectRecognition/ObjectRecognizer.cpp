@@ -532,7 +532,7 @@ void generateAllPermutations(std::map<std::string, unsigned int> &unfinished_map
 	}
 }
 
-unsigned int getParameterization(lbfgsfloatval_t val)
+/*unsigned int getParameterization(lbfgsfloatval_t val)
 {
 	if (val < 0.25)
 	{
@@ -550,7 +550,7 @@ unsigned int getParameterization(lbfgsfloatval_t val)
 	{
 		return 4;
 	}
-}
+}*/
 
 double ObjectRecognizer::evaluate(GAPhenotype &pheno)
 {
@@ -561,7 +561,7 @@ double ObjectRecognizer::evaluate(GAPhenotype &pheno)
 
 	for (unsigned query = 0; query < mh.ModelViewCount(); ++query)
 	{
-		if (query % 100 == 0)
+		if (query % 20 == 0)
 		{
 			cout << "query " << query << "...";
 		}
@@ -613,6 +613,7 @@ void ObjectRecognizer::learnJointParsingModel()
 
 	ofstream file;
 	file.open("parsing_model.txt");
+	srand(time(NULL));
 
 	SPGMatch gmatch;
 	const ModelHierarchy &model_hierarchy = m_pObjectLearner->GetModelHierarchy();
@@ -623,15 +624,30 @@ void ObjectRecognizer::learnJointParsingModel()
 	// we will have a better way to address this.
 	unsigned int population_size = 10;
 	double crossover_rate = 0.8;
-	unsigned int iterations = 2;
+	unsigned int iterations = 3;
 	unsigned int number_of_classes = all_classes.size();
+	std::cout << "number of classes: " << number_of_classes << endl;
 	std::vector<unsigned int> parameterizations;
 	for (unsigned i = 0; i < 4; ++i)
 		parameterizations.push_back(i);
 	
 	// initialize population.
 	std::vector<GAPhenotype> population;
-	for (unsigned i = 0; i < population_size; ++i)
+
+	// first phenotypes are one parameterization for all classes.
+	for (unsigned int i = 0; i < parameterizations.size(); ++i)
+	{
+		vector<unsigned int> chromosome;
+		for (unsigned j = 0; j < number_of_classes; ++j)
+		{
+			chromosome.push_back(parameterizations[i]);
+		}
+		population.push_back(GAPhenotype(parameterizations, number_of_classes, chromosome));
+	}
+
+	// now random ones for the remainder.  the assumption here is that there are more
+	// members in the population than parameterizations.
+	for (unsigned i = 0; i < population_size - parameterizations.size(); ++i)
 	{
 		population.push_back(GAPhenotype(parameterizations, number_of_classes));
 	}
@@ -709,13 +725,19 @@ void ObjectRecognizer::learnJointParsingModel()
 
 	sort(population.begin(), population.end());
 	cout << "best phenotype" << endl << "--------------------" << endl;
-	population[population_size - 1].toString();
+	for (unsigned g = 0; g < population[population_size - 1].chromosome.size(); ++g)
+	{
+		cout << population[population_size - 1].chromosome[g] << ", ";
+	}
+	cout << population[population_size - 1].fitness << endl;
 
-	for (unsigned int i = 0; i < population_size; ++i)
+	for (unsigned int i = 0; i < population[population_size - 1].chromosome.size(); ++i)
 	{
 		file << all_classes[i] << ", " << population[population_size - 1].chromosome[i] << "\n";
 	}
 	file.close();
+	cout << "Parameterization written.  Exiting." << endl;
+	exit(0);
 	//////////////////////////
 }
 

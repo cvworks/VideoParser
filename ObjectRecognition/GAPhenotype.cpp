@@ -19,6 +19,14 @@ GAPhenotype::GAPhenotype(vector<unsigned int> a, unsigned int l)
 	init();
 }
 
+GAPhenotype::GAPhenotype(vector<unsigned int> a, unsigned int l, vector<unsigned int> c)
+{
+	alleles = a;
+	length = l;
+	chromosome = c;
+	fitness = 0;
+}
+
 void GAPhenotype::init()
 {
 	// random initialization.

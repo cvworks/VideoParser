@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <boost/tuple/tuple_comparison.hpp>
-#include <lbfgs.h>
+//#include <lbfgs.h>
 #include "ObjectRecognition/GAPhenotype.h"
 
 namespace vpl {

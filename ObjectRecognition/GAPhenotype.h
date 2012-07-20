@@ -15,6 +15,7 @@ class GAPhenotype
 {
 public:
 	GAPhenotype(vector<unsigned int> a, unsigned int l);
+	GAPhenotype(vector<unsigned int> a, unsigned int l, vector<unsigned int> c);
 	GAPhenotype();
 
 	void mutate(double mutation_rate = 0.1);
